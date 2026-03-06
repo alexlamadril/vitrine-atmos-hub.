@@ -226,8 +226,8 @@
                 </header>
                 <div class="p-10 space-y-10 overflow-y-auto flex-1">
                     <div class="grid grid-cols-3 gap-8">
-                        <div class="glass-panel p-8 rounded-[2rem] text-center border-white/5"><p class="text-stone-600 text-[10px] uppercase font-black mb-2 tracking-widest italic">Captado Hoje</p><span class="text-4xl font-black text-white" id="a-statToday">R$ 0,00</span></div>
-                        <div class="glass-panel p-8 rounded-[2rem] text-center border-white/5"><p class="text-stone-600 text-[10px] uppercase font-black mb-2 tracking-widest italic">Mês Atual</p><span class="text-4xl font-black text-white" id="a-statMonth">R$ 0,00</span></div>
+                        <div class="glass-panel p-8 rounded-[2rem] text-center border-white/5"><p class="text-stone-600 text-[10px] uppercase font-black mb-2 tracking-widest italic">Recebido Hoje</p><span class="text-4xl font-black text-white" id="a-statToday">R$ 0,00</span></div>
+                        <div class="glass-panel p-8 rounded-[2rem] text-center border-white/5"><p class="text-stone-600 text-[10px] uppercase font-black mb-2 tracking-widest italic">Pagantes do Mês</p><span class="text-4xl font-black text-white" id="a-statMonth">R$ 0,00</span></div>
                         <div class="glass-panel p-8 rounded-[2rem] border-amber-500/20 text-center shadow-2xl"><p class="text-amber-500 text-[10px] uppercase font-black mb-2 tracking-widest underline underline-offset-8">Acumulado Anual</p><span class="text-5xl font-black text-white" id="a-statYear">R$ 0,00</span></div>
                     </div>
                     <div class="glass-panel rounded-[2.5rem] overflow-hidden shadow-2xl border-white/5">
@@ -322,7 +322,7 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { initializeFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // CONFIGURAÇÃO DOS PREÇOS - Trimestral mantido nos R$ 95,00 originais
+        // CONFIGURAÇÃO DOS PREÇOS
         const PRICING = { mensal: { 1: 35, 2: 40 }, trimestral: { 1: 95, 2: 110 }, estudante: { 1: 14.90, 2: 14.90 } };
         const COST_PER_SCREEN = 3.50;
         
@@ -380,7 +380,6 @@
                             lpAssets = data.lpAssets || getFallbackAssets();
                             pendingReferrals = data.pendingReferrals || [];
                         } else {
-                            // CINTURÃO DE SEGURANÇA (DUPLO BACKUP)
                             const localBackup = JSON.parse(localStorage.getItem('atmos_cash_clients'));
                             if (localBackup && localBackup.length > 0) {
                                 clients = localBackup;
@@ -467,16 +466,39 @@
                 document.getElementById('p-affiliate-code').innerText = c.affiliateCode;
                 document.getElementById('p-bonus-badge').innerText = (c.bonusMonths || 0) + " BÔNUS DISPONÍVEL";
                 
-                // NOVO: Gerar o Histórico de Pagamentos no Portal
+                // NOVO: Gerar o Histórico de Pagamentos de forma inteligente
                 const historyContainer = document.getElementById('p-payment-history');
                 historyContainer.innerHTML = '';
                 if (c.payments && c.payments.length > 0) {
-                    const sortedPayments = [...c.payments].sort((a, b) => new Date(b.date) - new Date(a.date));
-                    sortedPayments.forEach(p => {
-                        const pDate = new Date(p.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+                    let allHistoryItems = [];
+                    
+                    c.payments.forEach((p, pIndex) => {
+                        let mCovered = p.monthsCovered || 1;
+                        let pBaseDate = new Date(p.date);
+                        
+                        // Expande o pagamento pelos meses que ele cobre (Ex: 1 para mensal, 3 para trimestral)
+                        for(let i = 0; i < mCovered; i++) {
+                            let mDate = new Date(pBaseDate);
+                            mDate.setMonth(mDate.getMonth() + i);
+                            
+                            let isAdesao = (pIndex === 0 && i === 0);
+                            let label = isAdesao ? "Data de Adesão" : "Ciclo Mensal";
+                            
+                            if(mCovered > 1 && !isAdesao) label = `Mês ${i+1} (Trimestral)`;
+                            if(mCovered > 1 && isAdesao) label = `Adesão (Mês 1)`;
+
+                            allHistoryItems.push({ dateObj: mDate, label: label });
+                        }
+                    });
+                    
+                    // Ordena a lista do mais recente para o mais antigo
+                    allHistoryItems.sort((a, b) => b.dateObj - a.dateObj);
+                    
+                    allHistoryItems.forEach(item => {
+                        const dateStr = item.dateObj.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
                         historyContainer.innerHTML += `
                             <div class="flex justify-between items-center border-b border-white/5 pb-2 last:border-0 last:pb-0">
-                                <span class="text-stone-400 text-[10px] uppercase font-bold tracking-widest">Renovado em: ${pDate}</span>
+                                <span class="text-stone-400 text-[10px] uppercase font-bold tracking-widest">${item.label}: ${dateStr}</span>
                                 <span class="text-green-500 text-[9px] font-black tracking-widest uppercase bg-green-500/10 px-2 py-1 rounded">Pago</span>
                             </div>
                         `;
@@ -485,7 +507,6 @@
                     historyContainer.innerHTML = `<p class="text-stone-600 text-[10px] uppercase tracking-widest italic text-center py-2">Nenhum histórico registado.</p>`;
                 }
                 lucide.createIcons();
-                // FIM DO NOVO BLOCO
 
                 window.showFeedback("BEM-VINDO EMBAIXADOR");
             } else { window.showFeedback("CLIENTE NÃO LOCALIZADO"); }
@@ -570,7 +591,7 @@
 
         function updateHQStats() {
             const now = new Date(); 
-            const todayStr = now.toLocaleDateString('pt-BR'); // Pega o dia exato no fuso horário local
+            const todayStr = now.toLocaleDateString('pt-BR'); 
             const currentMonth = now.getMonth(); 
             const currentYear = now.getFullYear();
             
@@ -579,11 +600,8 @@
             clients.forEach(c => {
                 (c.payments || []).forEach(p => {
                     const pd = new Date(p.date);
-                    // 1. Recebido Hoje
                     if (pd.toLocaleDateString('pt-BR') === todayStr) d += p.amountNet;
-                    // 2. Pagantes do Mês (Zera na virada do mês pois currentMonth muda)
                     if (pd.getMonth() === currentMonth && pd.getFullYear() === currentYear) m += p.amountNet;
-                    // 3. Acumulado Anual
                     if (pd.getFullYear() === currentYear) y += p.amountNet;
                 });
             });
@@ -598,8 +616,17 @@
             let net = pr - (COST_PER_SCREEN * c.screens * months);
             if(c.bonusMonths > 0) { c.bonusMonths--; net = 0; window.showFeedback("BÔNUS APLICADO"); }
             if(!c.payments) c.payments = [];
-            c.payments.push({ date: new Date().toISOString(), amountNet: net });
-            let nxt = new Date(c.nextBillingDate + 'T00:00:00'); nxt.setDate(nxt.getDate() + (30 * months));
+            
+            // Registo de renovação inclui a quantidade de meses cobertos para o histórico
+            c.payments.push({ 
+                date: new Date().toISOString(), 
+                amountNet: net,
+                monthsCovered: months 
+            });
+            
+            let nxt = new Date(c.nextBillingDate + 'T00:00:00'); 
+            // Avança meses exatos de calendário (Ex: 19 de Fev para 19 de Mai)
+            nxt.setMonth(nxt.getMonth() + months);
             c.nextBillingDate = nxt.toISOString().split('T')[0];
             syncData();
         }
@@ -699,10 +726,12 @@
                 e.target.reset(); 
                 window.showFeedback("DADOS ATUALIZADOS");
             } else {
-                // MODO CRIAÇÃO
+                // MODO CRIAÇÃO (Registando a Data Exata no Histórico)
                 let months = (plan === 'trimestral') ? 3 : 1;
-                let nxt = new Date(inputDateStr + 'T00:00:00');
-                nxt.setDate(nxt.getDate() + (30 * months));
+                
+                let baseDate = new Date(inputDateStr + 'T00:00:00');
+                let nxt = new Date(baseDate);
+                nxt.setMonth(nxt.getMonth() + months);
                 const nextBillingDate = nxt.toISOString().split('T')[0];
 
                 const pr = PRICING[plan][screens];
@@ -714,7 +743,12 @@
                     plan: plan, 
                     screens: screens, 
                     nextBillingDate: nextBillingDate, 
-                    payments: [{ date: new Date().toISOString(), amountNet: net }], 
+                    // O primeiro pagamento usa a data exata inserida no formulário (Data de Adesão) e inclui a cobertura de meses
+                    payments: [{ 
+                        date: baseDate.toISOString(), 
+                        amountNet: net,
+                        monthsCovered: months
+                    }], 
                     affiliateCode: 'ATMOS-' + Math.random().toString(36).substr(2, 4).toUpperCase(), 
                     bonusMonths: 0 
                 };
