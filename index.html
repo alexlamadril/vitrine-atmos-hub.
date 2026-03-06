@@ -181,11 +181,14 @@
                 </div>
                 
                 <div class="glass-panel p-10 rounded-[3rem] space-y-6 text-center border-white/5">
-                    <button onclick="window.claimBonus()" id="p-bonus-badge" class="bg-green-500/10 hover:bg-green-500/20 text-green-500 hover:text-green-400 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest inline-block border border-green-500/20 transition-all cursor-pointer shadow-lg shadow-green-500/5">0 BÔNUS DISPONÍVEL</button>
-                    <div class="bg-black/40 p-6 rounded-2xl border border-white/5">
+                    <button onclick="window.claimBonus()" id="p-bonus-badge" class="bg-green-500/10 hover:bg-green-500/20 text-green-500 hover:text-green-400 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest inline-block border border-green-500/20 transition-all cursor-pointer shadow-lg shadow-green-500/5 mb-6">0 BÔNUS DISPONÍVEL</button>
+                    
+                    <div class="bg-black/40 p-6 rounded-2xl border border-white/5 mb-6">
                         <p class="text-[9px] text-stone-600 uppercase font-black mb-2 tracking-widest">Seu Código de Embaixador:</p>
                         <span id="p-affiliate-code" class="text-xl font-black text-amber-500 tracking-[0.3em]">ATMOS-CODE</span>
                     </div>
+                    
+                    <!-- ESTRATÉGIA DE CAPTAÇÃO DE LEADS DE VOLTA -->
                     <div class="flex gap-2">
                         <input type="text" id="referralFriendPhone" placeholder="WhatsApp do Amigo (Apenas Nrs)" class="flex-1 bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
                         <button onclick="window.sendReferral()" class="bg-amber-500 text-black px-6 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-amber-400 transition-all">Indicar</button>
@@ -294,13 +297,22 @@
                         <select id="reg-screens" class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-6 text-white appearance-none cursor-pointer focus:border-amber-500 italic"><option value="1">1 Tela</option><option value="2">2 Telas</option></select>
                     </div>
                 </div>
-                <div class="space-y-1">
-                    <label id="client-date-label" class="text-[9px] text-amber-500 uppercase font-black ml-4 tracking-widest flex items-center gap-2 italic"><i data-lucide="calendar" class="w-3 h-3"></i> Data de Ativação:</label>
-                    <div class="relative group">
-                        <input type="date" id="reg-activation-date" required class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-6 text-white focus:border-amber-500 focus:outline-none transition-all cursor-pointer font-black tracking-widest uppercase text-xs">
-                        <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none opacity-20 group-hover:opacity-100 transition-opacity"><i data-lucide="calendar" class="w-4 h-4 text-amber-500"></i></div>
+                
+                <div class="grid grid-cols-2 gap-5" id="reg-date-ref-grid">
+                    <div class="space-y-1">
+                        <label id="client-date-label" class="text-[9px] text-amber-500 uppercase font-black ml-4 tracking-widest flex items-center gap-2 italic"><i data-lucide="calendar" class="w-3 h-3"></i> Data de Ativação:</label>
+                        <div class="relative group">
+                            <input type="date" id="reg-activation-date" required class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-6 text-white focus:border-amber-500 focus:outline-none transition-all cursor-pointer font-black tracking-widest uppercase text-xs">
+                            <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none opacity-20 group-hover:opacity-100 transition-opacity"><i data-lucide="calendar" class="w-4 h-4 text-amber-500"></i></div>
+                        </div>
+                    </div>
+                    <!-- NOVO: Campo de Código de Indicação -->
+                    <div class="space-y-1" id="reg-ref-container">
+                        <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Cód. Indicação (Se houver):</label>
+                        <input type="text" id="reg-referral-code" placeholder="Ex: ATMOS-XXXX" class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-6 text-white focus:border-amber-500 focus:outline-none transition-all font-mono uppercase text-xs">
                     </div>
                 </div>
+
                 <button type="submit" id="client-submit-btn" class="w-full bg-amber-500 text-black py-6 rounded-2xl font-black uppercase mt-4 shadow-xl hover:bg-amber-400 transition-all tracking-widest text-xs">Ativar Ativo no Sistema</button>
                 
                 <div class="flex gap-2 mt-2">
@@ -328,7 +340,7 @@
         
         let clients = [];
         let lpAssets = [];
-        let pendingReferrals = [];
+        let pendingReferrals = []; // Mantido apenas para compatibilidade de banco de dados
         let activeClient = null;
         let editingClientIndex = -1;
 
@@ -466,7 +478,6 @@
                 document.getElementById('p-affiliate-code').innerText = c.affiliateCode;
                 document.getElementById('p-bonus-badge').innerText = (c.bonusMonths || 0) + " BÔNUS DISPONÍVEL";
                 
-                // NOVO: Gerar o Histórico de Pagamentos de forma inteligente
                 const historyContainer = document.getElementById('p-payment-history');
                 historyContainer.innerHTML = '';
                 if (c.payments && c.payments.length > 0) {
@@ -476,7 +487,6 @@
                         let mCovered = p.monthsCovered || 1;
                         let pBaseDate = new Date(p.date);
                         
-                        // Expande o pagamento pelos meses que ele cobre (Ex: 1 para mensal, 3 para trimestral)
                         for(let i = 0; i < mCovered; i++) {
                             let mDate = new Date(pBaseDate);
                             mDate.setMonth(mDate.getMonth() + i);
@@ -491,7 +501,6 @@
                         }
                     });
                     
-                    // Ordena a lista do mais recente para o mais antigo
                     allHistoryItems.sort((a, b) => b.dateObj - a.dateObj);
                     
                     allHistoryItems.forEach(item => {
@@ -512,17 +521,27 @@
             } else { window.showFeedback("CLIENTE NÃO LOCALIZADO"); }
         }
 
+        // FUNÇÃO DE INDICAÇÃO COM CAPTAÇÃO DE LEADS NO BANCO DE DADOS
         window.sendReferral = function() {
+            if(!activeClient) return;
             const friendPhone = document.getElementById('referralFriendPhone').value.replace(/\D/g, '');
             if(friendPhone.length < 10) { window.showFeedback("WHATSAPP INVÁLIDO"); return; }
-            pendingReferrals.push({ affiliatePhone: activeClient.phone, guestPhone: friendPhone });
-            syncData();
             
-            const urlAtmos = window.location.href;
-            const msg = `Olá! ✨ O seu amigo ${activeClient.name} convidou-te para conhecer a Atmos Experience! 🎬 Tenha acesso ao melhor sinal 4K HDR. Confira aqui: ${urlAtmos}`;
+            // 1. GUARDA O NÚMERO DO AMIGO NO SEU BANCO DE DADOS (Firebase) PARA USO FUTURO!
+            pendingReferrals.push({ 
+                affiliatePhone: activeClient.phone, 
+                guestPhone: friendPhone,
+                captureDate: new Date().toISOString()
+            });
+            syncData(); // Envia para a nuvem na hora
+            
+            // 2. Abre o WhatsApp do cliente já com a mensagem e o número preenchidos
+            const urlAtmos = window.location.href.split('?')[0];
+            const msg = `🎬 *ATMOS EXPERIENCE* | O Próximo Nível\n\nOlá! Eu sou assinante da Atmos e quero te convidar para ter acesso ao melhor sinal 4K HDR do mercado, sem travamentos.\n\n🎁 Apresenta o meu código promocional *${activeClient.affiliateCode}* no atendimento para garantir as tuas vantagens na ativação!\n\nConfere a nossa vitrine aqui: ${urlAtmos}`;
             window.open(`https://api.whatsapp.com/send?phone=${friendPhone}&text=${encodeURIComponent(msg)}`, '_blank');
+            
             document.getElementById('referralFriendPhone').value = "";
-            window.showFeedback("CONVITE ENVIADO");
+            window.showFeedback("LEAD CAPTADO E CONVITE ENVIADO");
         }
 
         window.initPay = function(method) {
@@ -555,6 +574,11 @@
                 document.getElementById('client-submit-btn').innerText = "Ativar Ativo no Sistema";
                 document.getElementById('client-date-label').innerHTML = `<i data-lucide="calendar" class="w-3 h-3"></i> Data de Ativação:`;
                 document.getElementById('client-delete-btn').classList.add('hidden');
+                
+                // Mostrar o campo de Código de Indicação apenas na criação
+                document.getElementById('reg-ref-container').classList.remove('hidden');
+                document.getElementById('reg-date-ref-grid').classList.add('grid-cols-2');
+                document.getElementById('reg-date-ref-grid').classList.remove('grid-cols-1');
             }
             document.getElementById(id + 'Modal').classList.remove('hidden'); 
             document.getElementById(id + 'Modal').classList.add('flex'); 
@@ -578,6 +602,11 @@
             document.getElementById('client-submit-btn').innerText = "Salvar Alterações";
             document.getElementById('client-date-label').innerHTML = `<i data-lucide="calendar" class="w-3 h-3"></i> Próximo Vencimento:`;
             document.getElementById('client-delete-btn').classList.remove('hidden');
+            
+            // Ocultar campo de indicação durante edição
+            document.getElementById('reg-ref-container').classList.add('hidden');
+            document.getElementById('reg-date-ref-grid').classList.remove('grid-cols-2');
+            document.getElementById('reg-date-ref-grid').classList.add('grid-cols-1');
 
             document.getElementById('clientModal').classList.remove('hidden');
             document.getElementById('clientModal').classList.add('flex');
@@ -627,7 +656,6 @@
             if(c.bonusMonths > 0) { c.bonusMonths--; net = 0; window.showFeedback("BÔNUS APLICADO"); }
             if(!c.payments) c.payments = [];
             
-            // Registo de renovação inclui a quantidade de meses cobertos para o histórico
             c.payments.push({ 
                 date: new Date().toISOString(), 
                 amountNet: net,
@@ -635,7 +663,6 @@
             });
             
             let nxt = new Date(c.nextBillingDate + 'T00:00:00'); 
-            // Avança meses exatos de calendário (Ex: 19 de Fev para 19 de Mai)
             nxt.setMonth(nxt.getMonth() + months);
             c.nextBillingDate = nxt.toISOString().split('T')[0];
             syncData();
@@ -736,7 +763,7 @@
                 e.target.reset(); 
                 window.showFeedback("DADOS ATUALIZADOS");
             } else {
-                // MODO CRIAÇÃO (Registando a Data Exata no Histórico)
+                // MODO CRIAÇÃO (Novo Registo)
                 let months = (plan === 'trimestral') ? 3 : 1;
                 
                 let baseDate = new Date(inputDateStr + 'T00:00:00');
@@ -753,7 +780,6 @@
                     plan: plan, 
                     screens: screens, 
                     nextBillingDate: nextBillingDate, 
-                    // O primeiro pagamento usa a data exata inserida no formulário (Data de Adesão) e inclui a cobertura de meses
                     payments: [{ 
                         date: baseDate.toISOString(), 
                         amountNet: net,
@@ -763,11 +789,14 @@
                     bonusMonths: 0 
                 };
                 
-                const referralMatch = pendingReferrals.find(r => r.guestPhone === phone);
-                if(referralMatch) {
-                    const affiliate = clients.find(cl => cl.phone === referralMatch.affiliatePhone);
-                    if(affiliate) { affiliate.bonusMonths = (affiliate.bonusMonths || 0) + 1; window.showFeedback("BÔNUS ATRIBUÍDO"); }
-                    pendingReferrals = pendingReferrals.filter(r => r.guestPhone !== phone);
+                // NOVO CÉREBRO DE INDICAÇÃO: Se a Amanda inseriu o código do amigo, já dá o bónus!
+                const refCodeInput = document.getElementById('reg-referral-code').value.trim().toUpperCase();
+                if(refCodeInput) {
+                    const affiliate = clients.find(cl => cl.affiliateCode === refCodeInput);
+                    if(affiliate) { 
+                        affiliate.bonusMonths = (affiliate.bonusMonths || 0) + 1; 
+                        window.showFeedback("BÔNUS ATRIBUÍDO AO EMBAIXADOR"); 
+                    }
                 }
                 
                 clients.push(newClient); 
