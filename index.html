@@ -172,7 +172,7 @@
                     <p class="text-stone-500 text-[10px] uppercase font-bold tracking-widest italic">Vencimento Atual: <b class="text-white not-italic" id="p-client-date">00/00/0000</b></p>
                 </div>
                 
-                <!-- Histórico de Pagamentos -->
+                <!-- Histórico de Pagamentos (Baseado no Ciclo Correto) -->
                 <div class="glass-panel p-8 rounded-[2.5rem] border-white/5 space-y-4">
                     <h3 class="text-white text-sm font-black italic uppercase tracking-widest flex items-center gap-2"><i data-lucide="history" class="w-4 h-4 text-amber-500"></i> Histórico de Ciclos</h3>
                     <div id="p-payment-history" class="space-y-3 max-h-40 overflow-y-auto pr-2">
@@ -188,10 +188,14 @@
                         <span id="p-affiliate-code" class="text-xl font-black text-amber-500 tracking-[0.3em]">ATMOS-CODE</span>
                     </div>
                     
-                    <!-- ESTRATÉGIA DE CAPTAÇÃO DE LEADS DE VOLTA -->
-                    <div class="flex gap-2">
-                        <input type="text" id="referralFriendPhone" placeholder="WhatsApp do Amigo (Apenas Nrs)" class="flex-1 bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
-                        <button onclick="window.sendReferral()" class="bg-amber-500 text-black px-6 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-amber-400 transition-all">Indicar</button>
+                    <!-- NOVO: FORMULÁRIO DE LEADS E INDICAÇÃO PERFEITO -->
+                    <div class="space-y-3 border-t border-white/5 pt-6">
+                        <p class="text-[9px] text-stone-500 uppercase font-black tracking-widest text-left ml-2">Indique e Ganhe (Dados do Amigo):</p>
+                        <input type="text" id="referralFriendName" placeholder="Nome do seu amigo" class="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
+                        <div class="flex gap-2">
+                            <input type="text" id="referralFriendPhone" placeholder="WhatsApp (DDD + Número)" class="flex-1 bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
+                            <button onclick="window.sendReferral()" class="bg-amber-500 text-black px-6 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-amber-400 transition-all shadow-lg">Indicar</button>
+                        </div>
                     </div>
                 </div>
 
@@ -306,7 +310,7 @@
                             <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none opacity-20 group-hover:opacity-100 transition-opacity"><i data-lucide="calendar" class="w-4 h-4 text-amber-500"></i></div>
                         </div>
                     </div>
-                    <!-- NOVO: Campo de Código de Indicação -->
+                    <!-- Campo de Código de Indicação -->
                     <div class="space-y-1" id="reg-ref-container">
                         <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Cód. Indicação (Se houver):</label>
                         <input type="text" id="reg-referral-code" placeholder="Ex: ATMOS-XXXX" class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-6 text-white focus:border-amber-500 focus:outline-none transition-all font-mono uppercase text-xs">
@@ -340,7 +344,7 @@
         
         let clients = [];
         let lpAssets = [];
-        let pendingReferrals = []; // Mantido apenas para compatibilidade de banco de dados
+        let pendingReferrals = []; 
         let activeClient = null;
         let editingClientIndex = -1;
 
@@ -478,6 +482,7 @@
                 document.getElementById('p-affiliate-code').innerText = c.affiliateCode;
                 document.getElementById('p-bonus-badge').innerText = (c.bonusMonths || 0) + " BÔNUS DISPONÍVEL";
                 
+                // NOVO: Gerar o Histórico de Pagamentos de forma baseada no CICLO que foi pago
                 const historyContainer = document.getElementById('p-payment-history');
                 historyContainer.innerHTML = '';
                 if (c.payments && c.payments.length > 0) {
@@ -485,7 +490,8 @@
                     
                     c.payments.forEach((p, pIndex) => {
                         let mCovered = p.monthsCovered || 1;
-                        let pBaseDate = new Date(p.date);
+                        // Usa o cycleDate (ciclo que foi pago) se existir, senao fallback para date antigo
+                        let pBaseDate = new Date(p.cycleDate || p.date); 
                         
                         for(let i = 0; i < mCovered; i++) {
                             let mDate = new Date(pBaseDate);
@@ -521,25 +527,31 @@
             } else { window.showFeedback("CLIENTE NÃO LOCALIZADO"); }
         }
 
-        // FUNÇÃO DE INDICAÇÃO COM CAPTAÇÃO DE LEADS NO BANCO DE DADOS
+        // FUNÇÃO DE INDICAÇÃO COM CAPTAÇÃO DE LEADS (Nome + WhatsApp)
         window.sendReferral = function() {
             if(!activeClient) return;
+            
+            const friendName = document.getElementById('referralFriendName').value.trim();
             const friendPhone = document.getElementById('referralFriendPhone').value.replace(/\D/g, '');
+            
+            if(!friendName) { window.showFeedback("DIGITE O NOME DO AMIGO"); return; }
             if(friendPhone.length < 10) { window.showFeedback("WHATSAPP INVÁLIDO"); return; }
             
-            // 1. GUARDA O NÚMERO DO AMIGO NO SEU BANCO DE DADOS (Firebase) PARA USO FUTURO!
+            // 1. GUARDA O LEAD NO BANCO DE DADOS (Firebase)
             pendingReferrals.push({ 
                 affiliatePhone: activeClient.phone, 
+                guestName: friendName,
                 guestPhone: friendPhone,
                 captureDate: new Date().toISOString()
             });
-            syncData(); // Envia para a nuvem na hora
+            syncData(); 
             
-            // 2. Abre o WhatsApp do cliente já com a mensagem e o número preenchidos
+            // 2. ABRE O WHATSAPP COM MENSAGEM PERSONALIZADA
             const urlAtmos = window.location.href.split('?')[0];
-            const msg = `🎬 *ATMOS EXPERIENCE* | O Próximo Nível\n\nOlá! Eu sou assinante da Atmos e quero te convidar para ter acesso ao melhor sinal 4K HDR do mercado, sem travamentos.\n\n🎁 Apresenta o meu código promocional *${activeClient.affiliateCode}* no atendimento para garantir as tuas vantagens na ativação!\n\nConfere a nossa vitrine aqui: ${urlAtmos}`;
+            const msg = `🎬 *ATMOS EXPERIENCE* | O Próximo Nível\n\nOlá ${friendName}! Eu sou assinante da Atmos e quero te convidar para ter acesso ao melhor sinal 4K HDR do mercado, sem travamentos.\n\n🎁 Apresenta o meu código promocional *${activeClient.affiliateCode}* no atendimento para garantir as tuas vantagens na ativação!\n\nConfere a nossa vitrine aqui: ${urlAtmos}`;
             window.open(`https://api.whatsapp.com/send?phone=${friendPhone}&text=${encodeURIComponent(msg)}`, '_blank');
             
+            document.getElementById('referralFriendName').value = "";
             document.getElementById('referralFriendPhone').value = "";
             window.showFeedback("LEAD CAPTADO E CONVITE ENVIADO");
         }
@@ -575,7 +587,6 @@
                 document.getElementById('client-date-label').innerHTML = `<i data-lucide="calendar" class="w-3 h-3"></i> Data de Ativação:`;
                 document.getElementById('client-delete-btn').classList.add('hidden');
                 
-                // Mostrar o campo de Código de Indicação apenas na criação
                 document.getElementById('reg-ref-container').classList.remove('hidden');
                 document.getElementById('reg-date-ref-grid').classList.add('grid-cols-2');
                 document.getElementById('reg-date-ref-grid').classList.remove('grid-cols-1');
@@ -603,7 +614,6 @@
             document.getElementById('client-date-label').innerHTML = `<i data-lucide="calendar" class="w-3 h-3"></i> Próximo Vencimento:`;
             document.getElementById('client-delete-btn').classList.remove('hidden');
             
-            // Ocultar campo de indicação durante edição
             document.getElementById('reg-ref-container').classList.add('hidden');
             document.getElementById('reg-date-ref-grid').classList.remove('grid-cols-2');
             document.getElementById('reg-date-ref-grid').classList.add('grid-cols-1');
@@ -638,6 +648,7 @@
             
             clients.forEach(c => {
                 (c.payments || []).forEach(p => {
+                    // Para o cálculo financeiro, usamos a data em que o dinheiro REALMENTE ENTROU (p.date)
                     const pd = new Date(p.date);
                     if (pd.toLocaleDateString('pt-BR') === todayStr) d += p.amountNet;
                     if (pd.getMonth() === currentMonth && pd.getFullYear() === currentYear) m += p.amountNet;
@@ -656,8 +667,12 @@
             if(c.bonusMonths > 0) { c.bonusMonths--; net = 0; window.showFeedback("BÔNUS APLICADO"); }
             if(!c.payments) c.payments = [];
             
+            // NOVO: Separar a Data da Transação da Data do Ciclo Pago
+            let cycleToPay = c.nextBillingDate; // O mês que ele está efetivamente a pagar
+            
             c.payments.push({ 
-                date: new Date().toISOString(), 
+                date: new Date().toISOString(), // Dinheiro entra hoje no painel (Transação)
+                cycleDate: cycleToPay + 'T00:00:00', // Mas no histórico do cliente aparece o ciclo que ele quitou
                 amountNet: net,
                 monthsCovered: months 
             });
@@ -763,7 +778,7 @@
                 e.target.reset(); 
                 window.showFeedback("DADOS ATUALIZADOS");
             } else {
-                // MODO CRIAÇÃO (Novo Registo)
+                // MODO CRIAÇÃO 
                 let months = (plan === 'trimestral') ? 3 : 1;
                 
                 let baseDate = new Date(inputDateStr + 'T00:00:00');
@@ -781,7 +796,8 @@
                     screens: screens, 
                     nextBillingDate: nextBillingDate, 
                     payments: [{ 
-                        date: baseDate.toISOString(), 
+                        date: new Date().toISOString(), // Dinheiro entra hoje
+                        cycleDate: baseDate.toISOString(), // Mas paga o ciclo selecionado no calendário
                         amountNet: net,
                         monthsCovered: months
                     }], 
@@ -789,7 +805,6 @@
                     bonusMonths: 0 
                 };
                 
-                // NOVO CÉREBRO DE INDICAÇÃO: Se a Amanda inseriu o código do amigo, já dá o bónus!
                 const refCodeInput = document.getElementById('reg-referral-code').value.trim().toUpperCase();
                 if(refCodeInput) {
                     const affiliate = clients.find(cl => cl.affiliateCode === refCodeInput);
