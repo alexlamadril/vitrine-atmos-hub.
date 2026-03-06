@@ -569,13 +569,25 @@
         }
 
         function updateHQStats() {
-            const now = new Date(); const ts = now.toLocaleDateString('en-CA'); const cm = now.getMonth(); const cy = now.getFullYear();
+            const now = new Date(); 
+            const todayStr = now.toLocaleDateString('pt-BR'); // Pega o dia exato no fuso horário local
+            const currentMonth = now.getMonth(); 
+            const currentYear = now.getFullYear();
+            
             let d = 0, m = 0, y = 0;
-            clients.forEach(c => (c.payments || []).forEach(p => {
-                const pd = new Date(p.date); if (pd.toLocaleDateString('en-CA') === ts) d += p.amountNet;
-                if (pd.getMonth() === cm && pd.getFullYear() === cy) m += p.amountNet;
-                if (pd.getFullYear() === cy) y += p.amountNet;
-            }));
+            
+            clients.forEach(c => {
+                (c.payments || []).forEach(p => {
+                    const pd = new Date(p.date);
+                    // 1. Recebido Hoje
+                    if (pd.toLocaleDateString('pt-BR') === todayStr) d += p.amountNet;
+                    // 2. Pagantes do Mês (Zera na virada do mês pois currentMonth muda)
+                    if (pd.getMonth() === currentMonth && pd.getFullYear() === currentYear) m += p.amountNet;
+                    // 3. Acumulado Anual
+                    if (pd.getFullYear() === currentYear) y += p.amountNet;
+                });
+            });
+            
             document.getElementById('a-statToday').innerText = `R$ ${d.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
             document.getElementById('a-statMonth').innerText = `R$ ${m.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
             document.getElementById('a-statYear').innerText = `R$ ${y.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
