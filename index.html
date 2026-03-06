@@ -172,6 +172,14 @@
                     <p class="text-stone-500 text-[10px] uppercase font-bold tracking-widest italic">Vencimento Atual: <b class="text-white not-italic" id="p-client-date">00/00/0000</b></p>
                 </div>
                 
+                <!-- Histórico de Pagamentos -->
+                <div class="glass-panel p-8 rounded-[2.5rem] border-white/5 space-y-4">
+                    <h3 class="text-white text-sm font-black italic uppercase tracking-widest flex items-center gap-2"><i data-lucide="history" class="w-4 h-4 text-amber-500"></i> Histórico de Ciclos</h3>
+                    <div id="p-payment-history" class="space-y-3 max-h-40 overflow-y-auto pr-2">
+                        <!-- Preenchido via JS -->
+                    </div>
+                </div>
+                
                 <div class="glass-panel p-10 rounded-[3rem] space-y-6 text-center border-white/5">
                     <div id="p-bonus-badge" class="bg-green-500/10 text-green-500 px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest inline-block border border-green-500/20">0 BÔNUS DISPONÍVEL</div>
                     <div class="bg-black/40 p-6 rounded-2xl border border-white/5">
@@ -263,10 +271,10 @@
         </div>
     </div>
 
-    <!-- MODAL: REGISTO NOVO ATIVO -->
+    <!-- MODAL: REGISTO NOVO ATIVO / EDIÇÃO -->
     <div id="clientModal" class="fixed inset-0 bg-black/95 backdrop-blur-xl z-[700] hidden items-center justify-center p-4">
         <div class="glass-panel w-full max-w-md rounded-[3rem] p-12 border-amber-500/20 shadow-2xl">
-            <h3 class="text-2xl font-black text-white mb-10 italic uppercase text-center tracking-tighter">Registo de <span class="text-amber-500">Fluxo</span></h3>
+            <h3 id="client-modal-title" class="text-2xl font-black text-white mb-10 italic uppercase text-center tracking-tighter">Registo de <span class="text-amber-500">Fluxo</span></h3>
             <form id="client-form" class="space-y-6">
                 <div class="space-y-1">
                     <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Nome do Assinante:</label>
@@ -287,15 +295,18 @@
                     </div>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-[9px] text-amber-500 uppercase font-black ml-4 tracking-widest flex items-center gap-2 italic"><i data-lucide="calendar" class="w-3 h-3"></i> Data de Ativação:</label>
+                    <label id="client-date-label" class="text-[9px] text-amber-500 uppercase font-black ml-4 tracking-widest flex items-center gap-2 italic"><i data-lucide="calendar" class="w-3 h-3"></i> Data de Ativação:</label>
                     <div class="relative group">
-                        <!-- ID alterado para reg-activation-date e label ajustada -->
                         <input type="date" id="reg-activation-date" required class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-6 text-white focus:border-amber-500 focus:outline-none transition-all cursor-pointer font-black tracking-widest uppercase text-xs">
                         <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none opacity-20 group-hover:opacity-100 transition-opacity"><i data-lucide="calendar" class="w-4 h-4 text-amber-500"></i></div>
                     </div>
                 </div>
-                <button type="submit" class="w-full bg-amber-500 text-black py-6 rounded-2xl font-black uppercase mt-4 shadow-xl hover:bg-amber-400 transition-all tracking-widest text-xs">Ativar Ativo no Sistema</button>
-                <button type="button" onclick="window.closeModal('client')" class="w-full text-stone-700 text-[10px] uppercase font-black mt-2 tracking-widest hover:text-white transition-colors text-center w-full">Fechar Janela</button>
+                <button type="submit" id="client-submit-btn" class="w-full bg-amber-500 text-black py-6 rounded-2xl font-black uppercase mt-4 shadow-xl hover:bg-amber-400 transition-all tracking-widest text-xs">Ativar Ativo no Sistema</button>
+                
+                <div class="flex gap-2 mt-2">
+                    <button type="button" onclick="window.closeModal('client')" class="flex-1 text-stone-500 text-[10px] uppercase font-black tracking-widest hover:text-white transition-colors text-center p-3">Cancelar Janela</button>
+                    <button type="button" id="client-delete-btn" onclick="window.deleteClientAdmin()" class="hidden flex-1 text-red-500 text-[10px] uppercase font-black tracking-widest hover:text-red-400 transition-colors text-center p-3 bg-red-500/10 rounded-xl border border-red-500/20">Excluir Ativo</button>
+                </div>
             </form>
         </div>
     </div>
@@ -311,6 +322,7 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { initializeFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // CONFIGURAÇÃO DOS PREÇOS - Trimestral mantido nos R$ 95,00 originais
         const PRICING = { mensal: { 1: 35, 2: 40 }, trimestral: { 1: 95, 2: 110 }, estudante: { 1: 14.90, 2: 14.90 } };
         const COST_PER_SCREEN = 3.50;
         
@@ -318,6 +330,7 @@
         let lpAssets = [];
         let pendingReferrals = [];
         let activeClient = null;
+        let editingClientIndex = -1;
 
         let app, auth, db, docRef;
         let isCloudActive = false;
@@ -394,12 +407,10 @@
         }
 
         function syncData() {
-            // BACKUP LOCAL AUTOMÁTICO
             localStorage.setItem('atmos_cash_clients', JSON.stringify(clients));
             localStorage.setItem('atmos_showcase_assets', JSON.stringify(lpAssets));
             localStorage.setItem('atmos_pending_referrals', JSON.stringify(pendingReferrals));
 
-            // ENVIO PARA A NUVEM
             if (isCloudActive && docRef && auth.currentUser) {
                 setDoc(docRef, { clients, lpAssets, pendingReferrals }, { merge: true }).catch(e => console.error(e));
             }
@@ -455,6 +466,27 @@
                 document.getElementById('p-client-date').innerText = new Date(c.nextBillingDate + 'T00:00:00').toLocaleDateString('pt-BR');
                 document.getElementById('p-affiliate-code').innerText = c.affiliateCode;
                 document.getElementById('p-bonus-badge').innerText = (c.bonusMonths || 0) + " BÔNUS DISPONÍVEL";
+                
+                // NOVO: Gerar o Histórico de Pagamentos no Portal
+                const historyContainer = document.getElementById('p-payment-history');
+                historyContainer.innerHTML = '';
+                if (c.payments && c.payments.length > 0) {
+                    const sortedPayments = [...c.payments].sort((a, b) => new Date(b.date) - new Date(a.date));
+                    sortedPayments.forEach(p => {
+                        const pDate = new Date(p.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+                        historyContainer.innerHTML += `
+                            <div class="flex justify-between items-center border-b border-white/5 pb-2 last:border-0 last:pb-0">
+                                <span class="text-stone-400 text-[10px] uppercase font-bold tracking-widest">Renovado em: ${pDate}</span>
+                                <span class="text-green-500 text-[9px] font-black tracking-widest uppercase bg-green-500/10 px-2 py-1 rounded">Pago</span>
+                            </div>
+                        `;
+                    });
+                } else {
+                    historyContainer.innerHTML = `<p class="text-stone-600 text-[10px] uppercase tracking-widest italic text-center py-2">Nenhum histórico registado.</p>`;
+                }
+                lucide.createIcons();
+                // FIM DO NOVO BLOCO
+
                 window.showFeedback("BEM-VINDO EMBAIXADOR");
             } else { window.showFeedback("CLIENTE NÃO LOCALIZADO"); }
         }
@@ -484,9 +516,51 @@
             document.getElementById('admin-media').classList.toggle('hidden', t !== 'media'); 
         }
         
-        window.openModal = function(id) { document.getElementById(id + 'Modal').classList.remove('hidden'); document.getElementById(id + 'Modal').classList.add('flex'); }
-        window.closeModal = function(id) { document.getElementById(id + '-modal')?.classList.add('hidden'); document.getElementById(id + 'Modal')?.classList.add('hidden'); }
-        
+        window.openModal = function(id) { 
+            if(id === 'client') {
+                editingClientIndex = -1;
+                document.getElementById('client-form').reset();
+                document.getElementById('client-modal-title').innerHTML = `Registo de <span class="text-amber-500">Fluxo</span>`;
+                document.getElementById('client-submit-btn').innerText = "Ativar Ativo no Sistema";
+                document.getElementById('client-date-label').innerHTML = `<i data-lucide="calendar" class="w-3 h-3"></i> Data de Ativação:`;
+                document.getElementById('client-delete-btn').classList.add('hidden');
+            }
+            document.getElementById(id + 'Modal').classList.remove('hidden'); 
+            document.getElementById(id + 'Modal').classList.add('flex'); 
+        }
+
+        window.closeModal = function(id) { 
+            document.getElementById(id + '-modal')?.classList.add('hidden'); 
+            document.getElementById(id + 'Modal')?.classList.add('hidden'); 
+        }
+
+        window.editClientAdmin = function(index) {
+            editingClientIndex = index;
+            const c = clients[index];
+            document.getElementById('reg-name').value = c.name;
+            document.getElementById('reg-phone').value = c.phone.replace(/\D/g, '');
+            document.getElementById('reg-plan').value = c.plan;
+            document.getElementById('reg-screens').value = c.screens || 1;
+            document.getElementById('reg-activation-date').value = c.nextBillingDate;
+
+            document.getElementById('client-modal-title').innerHTML = `Editar <span class="text-amber-500">Ativo</span>`;
+            document.getElementById('client-submit-btn').innerText = "Salvar Alterações";
+            document.getElementById('client-date-label').innerHTML = `<i data-lucide="calendar" class="w-3 h-3"></i> Próximo Vencimento:`;
+            document.getElementById('client-delete-btn').classList.remove('hidden');
+
+            document.getElementById('clientModal').classList.remove('hidden');
+            document.getElementById('clientModal').classList.add('flex');
+        }
+
+        window.deleteClientAdmin = function() {
+            if(confirm("ATENÇÃO: Tem certeza que deseja excluir este assinante? A ação não pode ser desfeita.")) {
+                clients.splice(editingClientIndex, 1);
+                syncData();
+                window.closeModal('client');
+                window.showFeedback("ATIVO EXCLUÍDO");
+            }
+        }
+
         window.showFeedback = function(m) { 
             const b = document.getElementById('feedbackBox'); 
             document.getElementById('feedbackMsg').innerText = m; 
@@ -539,9 +613,10 @@
                     <td class="p-8 text-center font-bold text-stone-200">${nxt.toLocaleDateString('pt-BR')}</td>
                     <td class="p-8 text-center"><span class="px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${sC}">${sL}</span></td>
                     <td class="p-8 text-center">
-                        <div class="flex items-center justify-center gap-3">
-                            ${showM ? `<a href="${wLink}" target="_blank" class="magic-button-animation bg-amber-500 text-black px-5 py-2.5 rounded-xl text-[10px] font-black uppercase flex items-center gap-2 hover:bg-amber-400 transition-all"><i data-lucide="sparkles" class="w-3 h-3"></i> Cobrança</a>` : `<span class="text-stone-800 font-black text-[9px]">MONITORADO</span>`}
-                            <button onclick="window.logPaymentAdmin(${i})" class="bg-white/5 hover:bg-white text-white hover:text-black px-5 py-2.5 rounded-xl text-[10px] font-black uppercase transition-all">Recebi</button>
+                        <div class="flex items-center justify-center gap-2">
+                            ${showM ? `<a href="${wLink}" target="_blank" class="magic-button-animation bg-amber-500 text-black px-4 py-2.5 rounded-xl text-[10px] font-black uppercase flex items-center gap-1 hover:bg-amber-400 transition-all"><i data-lucide="sparkles" class="w-3 h-3"></i> Cobrar</a>` : `<span class="text-stone-800 font-black text-[9px] mr-2">MONITORADO</span>`}
+                            <button onclick="window.logPaymentAdmin(${i})" class="bg-white/5 hover:bg-white text-white hover:text-black px-4 py-2.5 rounded-xl text-[10px] font-black uppercase transition-all">Recebi</button>
+                            <button onclick="window.editClientAdmin(${i})" class="bg-stone-900 hover:bg-amber-500/20 text-stone-500 hover:text-amber-500 p-2.5 rounded-xl transition-all" title="Editar Cliente"><i data-lucide="pencil" class="w-3.5 h-3.5"></i></button>
                         </div>
                     </td>
                     <td class="p-8 text-right font-black text-white">R$ ${(c.payments||[]).reduce((a,p)=>a+p.amountNet,0).toLocaleString('pt-BR')}</td>`;
@@ -596,39 +671,55 @@
             const phone = document.getElementById('reg-phone').value.replace(/\D/g, '');
             const plan = document.getElementById('reg-plan').value;
             const screens = parseInt(document.getElementById('reg-screens').value);
-            const actDateStr = document.getElementById('reg-activation-date').value;
+            const inputDateStr = document.getElementById('reg-activation-date').value;
 
-            let months = (plan === 'trimestral') ? 3 : 1;
-            let nxt = new Date(actDateStr + 'T00:00:00');
-            nxt.setDate(nxt.getDate() + (30 * months));
-            const nextBillingDate = nxt.toISOString().split('T')[0];
+            if (editingClientIndex >= 0) {
+                // MODO EDIÇÃO
+                let c = clients[editingClientIndex];
+                c.name = document.getElementById('reg-name').value;
+                c.phone = phone;
+                c.plan = plan;
+                c.screens = screens;
+                c.nextBillingDate = inputDateStr;
 
-            const pr = PRICING[plan][screens];
-            const net = pr - (COST_PER_SCREEN * screens * months);
+                syncData(); 
+                window.closeModal('client'); 
+                e.target.reset(); 
+                window.showFeedback("DADOS ATUALIZADOS");
+            } else {
+                // MODO CRIAÇÃO
+                let months = (plan === 'trimestral') ? 3 : 1;
+                let nxt = new Date(inputDateStr + 'T00:00:00');
+                nxt.setDate(nxt.getDate() + (30 * months));
+                const nextBillingDate = nxt.toISOString().split('T')[0];
 
-            const newClient = { 
-                name: document.getElementById('reg-name').value, 
-                phone: phone, 
-                plan: plan, 
-                screens: screens, 
-                nextBillingDate: nextBillingDate, 
-                payments: [{ date: new Date().toISOString(), amountNet: net }], 
-                affiliateCode: 'ATMOS-' + Math.random().toString(36).substr(2, 4).toUpperCase(), 
-                bonusMonths: 0 
-            };
-            
-            const referralMatch = pendingReferrals.find(r => r.guestPhone === phone);
-            if(referralMatch) {
-                const affiliate = clients.find(cl => cl.phone === referralMatch.affiliatePhone);
-                if(affiliate) { affiliate.bonusMonths = (affiliate.bonusMonths || 0) + 1; window.showFeedback("BÔNUS ATRIBUÍDO"); }
-                pendingReferrals = pendingReferrals.filter(r => r.guestPhone !== phone);
+                const pr = PRICING[plan][screens];
+                const net = pr - (COST_PER_SCREEN * screens * months);
+
+                const newClient = { 
+                    name: document.getElementById('reg-name').value, 
+                    phone: phone, 
+                    plan: plan, 
+                    screens: screens, 
+                    nextBillingDate: nextBillingDate, 
+                    payments: [{ date: new Date().toISOString(), amountNet: net }], 
+                    affiliateCode: 'ATMOS-' + Math.random().toString(36).substr(2, 4).toUpperCase(), 
+                    bonusMonths: 0 
+                };
+                
+                const referralMatch = pendingReferrals.find(r => r.guestPhone === phone);
+                if(referralMatch) {
+                    const affiliate = clients.find(cl => cl.phone === referralMatch.affiliatePhone);
+                    if(affiliate) { affiliate.bonusMonths = (affiliate.bonusMonths || 0) + 1; window.showFeedback("BÔNUS ATRIBUÍDO"); }
+                    pendingReferrals = pendingReferrals.filter(r => r.guestPhone !== phone);
+                }
+                
+                clients.push(newClient); 
+                syncData(); 
+                window.closeModal('client'); 
+                e.target.reset(); 
+                window.showFeedback("ATIVO REGISTADO E FATURADO");
             }
-            
-            clients.push(newClient); 
-            syncData(); 
-            window.closeModal('client'); 
-            e.target.reset(); 
-            window.showFeedback("ATIVO REGISTADO E FATURADO");
         });
 
         document.addEventListener('DOMContentLoaded', refreshAllUI);
