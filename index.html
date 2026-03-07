@@ -127,23 +127,38 @@
         <!-- Planos -->
         <section class="relative z-10 container mx-auto px-8 pb-32 pt-10">
             <div class="grid md:grid-cols-3 gap-10 items-stretch">
+                <!-- CARD ESTUDANTE MELHORADO -->
                 <div class="glass-panel p-10 rounded-[2.5rem] flex flex-col">
                     <span class="text-amber-500 text-[10px] font-bold uppercase mb-4 italic">Plano Modular</span>
                     <h3 class="text-2xl font-bold text-white mb-2 uppercase tracking-tighter">Estudante</h3>
-                    <div class="mb-8 flex items-baseline gap-1"><span class="text-5xl font-black text-white tracking-tighter">14,90</span><span class="text-stone-600 text-[10px] font-bold uppercase">/mês</span></div>
-                    <button onclick="window.showPortal()" class="premium-btn w-full py-4 rounded-2xl font-bold uppercase text-[10px] tracking-widest">Renovar Agora</button>
+                    <div class="mb-4 flex items-baseline gap-1"><span class="text-5xl font-black text-white tracking-tighter">14,90</span><span class="text-stone-600 text-[10px] font-bold uppercase">/mês</span></div>
+                    
+                    <div class="flex-1 flex flex-col justify-center">
+                        <p class="text-stone-400 text-xs leading-relaxed mb-4">Escolha a sua preferência de acesso:</p>
+                        <select class="w-full bg-black/50 border border-white/10 rounded-xl p-3 text-stone-300 text-xs mb-6 focus:border-amber-500 outline-none font-bold">
+                            <option>📺 TV Online (Canais)</option>
+                            <option>🎬 Streaming de Filmes</option>
+                            <option>🍿 Streaming de Séries</option>
+                        </select>
+                    </div>
+
+                    <button onclick="window.showPortal()" class="premium-btn w-full py-4 rounded-2xl font-bold uppercase text-[10px] tracking-widest mt-auto">Renovar Agora</button>
                 </div>
-                <div class="glass-panel p-10 rounded-[3rem] border-amber-500/40 bg-amber-500/[0.03] scale-105 shadow-2xl relative overflow-hidden text-center">
+
+                <div class="glass-panel p-10 rounded-[3rem] border-amber-500/40 bg-amber-500/[0.03] scale-105 shadow-2xl relative overflow-hidden text-center flex flex-col">
                     <div class="absolute -top-4 -right-12 bg-amber-500 text-black px-12 py-6 rotate-45 font-black text-[9px] uppercase tracking-widest shadow-xl">Best-Seller</div>
-                    <h3 class="text-2xl font-bold text-white mb-2 italic font-serif">Combo Full Atmos</h3>
-                    <div class="mb-8 flex justify-center items-baseline gap-1"><span class="text-6xl font-black text-white tracking-tighter">35,00</span><span class="text-stone-600 text-[10px] font-bold uppercase">/mês</span></div>
-                    <button onclick="window.showPortal()" class="premium-btn w-full py-5 rounded-2xl font-bold uppercase text-xs tracking-widest">Garantir VIP</button>
+                    <h3 class="text-2xl font-bold text-white mb-2 italic font-serif mt-2">Combo Full Atmos</h3>
+                    <div class="mb-6 flex justify-center items-baseline gap-1"><span class="text-6xl font-black text-white tracking-tighter">35,00</span><span class="text-stone-600 text-[10px] font-bold uppercase">/mês</span></div>
+                    <p class="text-stone-300 text-xs leading-relaxed mb-8 flex-1 px-2">Acesso <b class="text-amber-500">total e ilimitado</b>. Tenha tudo num só lugar: TV ao Vivo, Lançamentos, Filmes e as Séries mais badaladas do momento.</p>
+                    <button onclick="window.showPortal()" class="premium-btn w-full py-5 rounded-2xl font-bold uppercase text-xs tracking-widest mt-auto">Garantir VIP</button>
                 </div>
+
                 <div class="glass-panel p-10 rounded-[2.5rem] flex flex-col">
                     <span class="text-stone-500 text-[10px] font-bold uppercase mb-4 italic text-amber-500">Conforto Atmos</span>
                     <h3 class="text-2xl font-bold text-white mb-2 uppercase tracking-tighter">Ciclo Trimestral</h3>
-                    <div class="mb-8 flex items-baseline gap-1"><span class="text-5xl font-black text-white tracking-tighter">95,00</span><span class="text-stone-600 text-[10px] font-bold uppercase">/90 dias</span></div>
-                    <button onclick="window.showPortal()" class="bg-white/5 hover:bg-white hover:text-black text-white w-full py-4 rounded-2xl font-bold uppercase text-[10px] transition-all">Escolher Estabilidade</button>
+                    <div class="mb-6 flex items-baseline gap-1"><span class="text-5xl font-black text-white tracking-tighter">95,00</span><span class="text-stone-600 text-[10px] font-bold uppercase">/90 dias</span></div>
+                    <p class="text-stone-400 text-xs leading-relaxed mb-8 flex-1">Pacote com <b class="text-white">acesso total</b> a tudo (TV, Filmes e Séries) aliado à paz de espírito e estabilidade de um ciclo de 90 dias ininterruptos.</p>
+                    <button onclick="window.showPortal()" class="bg-white/5 hover:bg-white hover:text-black text-white w-full py-4 rounded-2xl font-bold uppercase text-[10px] transition-all mt-auto">Escolher Estabilidade</button>
                 </div>
             </div>
         </section>
@@ -203,6 +218,10 @@
                         <option value="mensal">Mensal Regular</option>
                         <option value="trimestral">Trimestral (Combo)</option>
                         <option value="anual">Anual (Premium)</option>
+                        <!-- OPÇÕES DETALHADAS PARA ESTUDANTES -->
+                        <option value="estudante - tv online">Estudante (Apenas TV Online)</option>
+                        <option value="estudante - filmes">Estudante (Apenas Filmes)</option>
+                        <option value="estudante - séries">Estudante (Apenas Séries)</option>
                     </select>
                     <div class="grid grid-cols-2 gap-4">
                         <button onclick="window.initPay('PIX')" class="p-6 rounded-3xl border border-stone-800 hover:bg-amber-500/10 hover:border-amber-500/30 transition-all text-center group"><i data-lucide="qr-code" class="mx-auto mb-2 text-amber-500 group-hover:scale-110 transition-transform"></i><span class="text-[10px] font-black uppercase text-white">Via PIX</span></button>
@@ -294,7 +313,6 @@
                     <input type="text" id="reg-phone" placeholder="5553999999999" required class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-5 text-white focus:border-amber-500 focus:outline-none transition-all">
                 </div>
                 
-                <!-- BLOCO INTELIGENTE DE PRECIFICAÇÃO -->
                 <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-1">
                         <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Plano:</label>
@@ -302,7 +320,10 @@
                             <option value="mensal">Mensal</option>
                             <option value="trimestral">Trimestral</option>
                             <option value="anual">Anual</option>
-                            <option value="estudante">Estudante</option>
+                            <!-- OPÇÕES ESTUDANTE DETALHADAS NO HQ -->
+                            <option value="estudante - tv online">Estudante - TV Online</option>
+                            <option value="estudante - filmes">Estudante - Filmes</option>
+                            <option value="estudante - séries">Estudante - Séries</option>
                         </select>
                     </div>
                     <div class="space-y-1">
@@ -358,12 +379,15 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { initializeFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // MATRIZ DE PREÇOS BASE (Serve apenas como sugestão inicial ao preencher o formulário)
+        // MATRIZ DE PREÇOS BASE
         const PRICING = { 
-            mensal: { 1: 35, 2: 40, 3: 50, 4: 60, 5: 70 }, 
-            trimestral: { 1: 95, 2: 110, 3: 140, 4: 170, 5: 200 }, 
-            anual: { 1: 238.80, 2: 288, 3: 350, 4: 400, 5: 450 },
-            estudante: { 1: 14.90, 2: 14.90, 3: 14.90, 4: 14.90, 5: 14.90 } 
+            "mensal": { 1: 35, 2: 40, 3: 50, 4: 60, 5: 70 }, 
+            "trimestral": { 1: 95, 2: 110, 3: 140, 4: 170, 5: 200 }, 
+            "anual": { 1: 238.80, 2: 288, 3: 350, 4: 400, 5: 450 },
+            "estudante": { 1: 14.90, 2: 14.90, 3: 14.90, 4: 14.90, 5: 14.90 }, // Mantido por retrocompatibilidade
+            "estudante - tv online": { 1: 14.90, 2: 14.90, 3: 14.90, 4: 14.90, 5: 14.90 },
+            "estudante - filmes": { 1: 14.90, 2: 14.90, 3: 14.90, 4: 14.90, 5: 14.90 },
+            "estudante - séries": { 1: 14.90, 2: 14.90, 3: 14.90, 4: 14.90, 5: 14.90 }
         };
         const COST_PER_SCREEN = 3.50;
         
@@ -483,15 +507,14 @@
         function getMonthsByPlan(plan) {
             if(plan === 'trimestral') return 3;
             if(plan === 'anual') return 12;
-            return 1; // mensal, estudante, etc.
+            return 1; // mensal, estudante...
         }
 
-        // Inteligência para preencher o preço sugerido na criação
         window.updatePriceField = function() {
-            if(editingClientIndex >= 0) return; // Não substitui se a Amanda estiver a editar um cliente antigo
+            if(editingClientIndex >= 0) return; 
             const plan = document.getElementById('reg-plan').value;
             const screens = parseInt(document.getElementById('reg-screens').value);
-            const suggestedPrice = PRICING[plan][screens] || 0;
+            const suggestedPrice = PRICING[plan] ? (PRICING[plan][screens] || 0) : 0;
             document.getElementById('reg-price').value = suggestedPrice.toFixed(2);
         }
 
@@ -579,9 +602,10 @@
         }
 
         window.initPay = function(method) {
-            const plan = document.getElementById('p-plan-select').value;
+            const selectEl = document.getElementById('p-plan-select');
+            const planText = selectEl.options[selectEl.selectedIndex].text;
             const telAlex = "5553981676662";
-            const msg = `Olá Amanda! ✨ Solicito renovação do plano ${plan.toUpperCase()} via ${method}. Sou o sócio ${activeClient.name}. Pode validar?`;
+            const msg = `Olá Amanda! ✨ Solicito renovação do plano ${planText.toUpperCase()} via ${method}. Sou o sócio ${activeClient.name}. Pode validar?`;
             setTimeout(() => window.open(`https://api.whatsapp.com/send?phone=${telAlex}&text=${encodeURIComponent(msg)}`, '_blank'), 1000);
         }
 
@@ -613,7 +637,7 @@
                 document.getElementById('reg-date-ref-grid').classList.add('grid-cols-2');
                 document.getElementById('reg-date-ref-grid').classList.remove('grid-cols-1');
                 
-                window.updatePriceField(); // Força o preenchimento sugerido ao abrir para criar novo
+                window.updatePriceField(); 
             }
             document.getElementById(id + 'Modal').classList.remove('hidden'); 
             document.getElementById(id + 'Modal').classList.add('flex'); 
@@ -633,8 +657,7 @@
             document.getElementById('reg-screens').value = c.screens || 1;
             document.getElementById('reg-activation-date').value = c.nextBillingDate;
             
-            // Carrega o Preço Customizado (se existir) ou calcula o padrão da tabela
-            let defaultPrice = PRICING[c.plan][c.screens] || 0;
+            let defaultPrice = PRICING[c.plan] ? (PRICING[c.plan][c.screens] || 0) : 0;
             document.getElementById('reg-price').value = (c.customPrice !== undefined ? c.customPrice : defaultPrice).toFixed(2);
 
             document.getElementById('client-modal-title').innerHTML = `Editar <span class="text-amber-500">Ativo</span>`;
@@ -690,9 +713,7 @@
 
         window.logPaymentAdmin = function(index) {
             const c = clients[index]; 
-            
-            // INTELIGÊNCIA: Se ele tem um Preço Customizado guardado, usa-o. Senão, vai pela tabela.
-            const pr = c.customPrice !== undefined ? parseFloat(c.customPrice) : (PRICING[c.plan][c.screens] || 0);
+            const pr = c.customPrice !== undefined ? parseFloat(c.customPrice) : (PRICING[c.plan] ? (PRICING[c.plan][c.screens] || 0) : 0);
             
             let months = getMonthsByPlan(c.plan);
             let net = pr - (COST_PER_SCREEN * c.screens * months);
@@ -727,7 +748,7 @@
                 nxt.setMonth(nxt.getMonth() - monthsToRevert);
                 c.nextBillingDate = nxt.toISOString().split('T')[0];
                 
-                const pr = c.customPrice !== undefined ? parseFloat(c.customPrice) : (PRICING[c.plan][c.screens] || 0);
+                const pr = c.customPrice !== undefined ? parseFloat(c.customPrice) : (PRICING[c.plan] ? (PRICING[c.plan][c.screens] || 0) : 0);
                 const expectedNet = pr - (COST_PER_SCREEN * c.screens * monthsToRevert);
                 if (lastPayment.amountNet === 0 && expectedNet > 0) {
                     c.bonusMonths = (c.bonusMonths || 0) + 1;
@@ -752,7 +773,6 @@
                 const msg = `Olá ${c.name}! ✨ Aqui é a Amanda da Atmos TV. Vim te avisar que o seu sinal renova em ${diff < 0 ? 'alguns dias (vencido)' : diff + ' dias'}! Garanta sua diversão 4K sem travas no nosso portal. 🎬`;
                 const wLink = `https://api.whatsapp.com/send?phone=${c.phone.replace(/\D/g,'')}&text=${encodeURIComponent(msg)}`;
 
-                // Etiqueta visual se o cliente tiver Preço Customizado
                 const planTag = c.customPrice !== undefined ? `${c.plan} (Especial)` : c.plan;
 
                 tr.className = 'hover:bg-white/[0.03] transition-all group';
@@ -823,26 +843,23 @@
             const screens = parseInt(document.getElementById('reg-screens').value);
             const inputDateStr = document.getElementById('reg-activation-date').value;
             
-            // Capta o valor que a Amanda digitou no campo de preço
             const finalPriceStr = document.getElementById('reg-price').value;
             const finalPrice = parseFloat(finalPriceStr);
 
             if (editingClientIndex >= 0) {
-                // EDIÇÃO
                 let c = clients[editingClientIndex];
                 c.name = document.getElementById('reg-name').value;
                 c.phone = phone;
                 c.plan = plan;
                 c.screens = screens;
                 c.nextBillingDate = inputDateStr;
-                c.customPrice = finalPrice; // Atualiza o preço customizado
+                c.customPrice = finalPrice; 
 
                 syncData(); 
                 window.closeModal('client'); 
                 e.target.reset(); 
                 window.showFeedback("DADOS ATUALIZADOS");
             } else {
-                // CRIAÇÃO
                 let months = getMonthsByPlan(plan);
                 
                 let baseDate = new Date(inputDateStr + 'T00:00:00');
@@ -857,7 +874,7 @@
                     phone: phone, 
                     plan: plan, 
                     screens: screens, 
-                    customPrice: finalPrice, // Guarda a memória do preço especial
+                    customPrice: finalPrice, 
                     nextBillingDate: nextBillingDate, 
                     payments: [{ 
                         date: new Date().toISOString(),
