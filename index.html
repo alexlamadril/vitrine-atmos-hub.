@@ -32,11 +32,11 @@
         .movie-card:hover { transform: scale(1.02); border-color: rgba(212, 175, 55, 0.4); }
         .movie-overlay { background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, rgba(0,0,0,0.4) 50%, transparent 100%); }
 
-        /* App Marquee - Logos */
+        /* App Marquee - Logos (ATUALIZADO PARA MATCH COM IMAGEM 1) */
         .animate-marquee-reverse { display: flex; width: max-content; animation: marquee 50s linear infinite reverse; }
         .animate-marquee-reverse:hover { animation-play-state: paused; }
-        .app-card { width: 120px; height: 120px; border-radius: 20px; flex-shrink: 0; margin-right: 24px; border: 1px solid rgba(255,255,255,0.05); display:flex; align-items:center; justify-content:center; padding: 15px; transition: all 0.3s ease; }
-        .app-card:hover { transform: scale(1.05); border-color: rgba(212, 175, 55, 0.4); background: rgba(212, 175, 55, 0.05); }
+        .app-card { width: 140px; height: 140px; border-radius: 24px; flex-shrink: 0; margin-right: 24px; border: 1px solid rgba(255,255,255,0.05); background: #0a0a0a; display:flex; align-items:center; justify-content:center; padding: 20px; transition: all 0.3s ease; }
+        .app-card:hover { transform: scale(1.05); border-color: rgba(212, 175, 55, 0.4); background: #111; }
 
         /* Status Styles */
         .status-due { color: #ef4444; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); }
@@ -63,7 +63,7 @@
 </head>
 <body class="min-h-screen">
 
-    <!-- NOVO: TELA DE CARREGAMENTO GLOBAL -->
+    <!-- TELA DE CARREGAMENTO GLOBAL (OFFLINE-FIRST) -->
     <div id="global-loader" class="fixed inset-0 z-[9999] bg-[#020202] flex flex-col items-center justify-center transition-opacity duration-500">
         <div class="relative w-24 h-24 flex items-center justify-center mb-6">
             <div class="absolute inset-0 rounded-full border-t-2 border-b-2 border-amber-500 animate-spin"></div>
@@ -98,7 +98,7 @@
             <p class="max-w-2xl mx-auto text-stone-400 text-lg md:text-xl font-light mb-12 italic">Estabilidade absoluta em 4K HDR. A Vitrine Atmos é a sua melhor escolha.</p>
         </header>
 
-        <!-- Showcase Marquee (Posters) -->
+        <!-- Showcase Marquee -->
         <section class="relative z-10 py-10 overflow-hidden">
             <div class="relative overflow-hidden group">
                 <div class="animate-marquee" id="landing-marquee"></div>
@@ -120,7 +120,7 @@
         </section>
 
         <!-- Prova Social & Indicação -->
-        <section class="relative z-10 container mx-auto px-8 py-24">
+        <section class="relative z-10 container mx-auto px-8 py-24 border-t border-white/5">
             <div class="grid lg:grid-cols-2 gap-16 items-start">
                 <div>
                     <h2 class="text-white text-3xl font-black italic tracking-tighter mb-8 uppercase">Aprovações <span class="text-amber-500">Premium</span></h2>
@@ -153,27 +153,51 @@
             </div>
         </section>
 
-        <!-- Planos -->
+        <!-- Planos RESTAURADOS (Design Fiel às Imagens 2 e 3) -->
         <section class="relative z-10 container mx-auto px-8 pb-32 pt-10">
             <div class="grid md:grid-cols-3 gap-10 items-stretch">
-                <div class="glass-panel p-10 rounded-[2.5rem] flex flex-col">
-                    <span class="text-amber-500 text-[10px] font-bold uppercase mb-4 italic">Plano Modular</span>
-                    <h3 class="text-2xl font-bold text-white mb-2 uppercase tracking-tighter">Estudante</h3>
-                    <div class="mb-8 flex items-baseline gap-1"><span class="text-5xl font-black text-white tracking-tighter">14,90</span><span class="text-stone-600 text-[10px] font-bold uppercase">/mês</span></div>
-                    <button onclick="window.showPortal()" class="premium-btn w-full py-4 rounded-2xl font-bold uppercase text-[10px] tracking-widest">Renovar Agora</button>
+                
+                <!-- CARD ESTUDANTE -->
+                <div class="bg-[#0a0a0a] border border-white/5 p-10 rounded-[2.5rem] flex flex-col">
+                    <span class="text-amber-500 text-[10px] font-black uppercase mb-2 italic tracking-wider">Plano Modular</span>
+                    <h3 class="text-3xl font-black text-white mb-4 uppercase tracking-tighter">Estudante</h3>
+                    <div class="mb-2 flex items-baseline gap-1"><span class="text-6xl font-black text-white tracking-tighter">14,90</span><span class="text-stone-500 text-[10px] font-black uppercase">/mês</span></div>
+                    
+                    <div class="flex-1 flex flex-col justify-center border-t border-white/5 pt-6 mt-6 mb-8">
+                        <p class="text-stone-400 text-xs leading-relaxed mb-4">Escolha a sua preferência de acesso:</p>
+                        <select class="w-full bg-black border border-white/10 rounded-xl p-4 text-stone-300 text-xs font-bold focus:border-amber-500 outline-none transition-colors">
+                            <option>📺 TV Online (Canais)</option>
+                            <option>🎬 Streaming de Filmes</option>
+                            <option>🍿 Streaming de Séries</option>
+                        </select>
+                    </div>
+
+                    <button onclick="window.showPortal()" class="premium-btn w-full py-5 rounded-[20px] font-black uppercase text-xs tracking-widest mt-auto text-black shadow-lg shadow-amber-500/10">Ativar Plano</button>
                 </div>
-                <div class="glass-panel p-10 rounded-[3rem] border-amber-500/40 bg-amber-500/[0.03] scale-105 shadow-2xl relative overflow-hidden text-center">
-                    <div class="absolute -top-4 -right-12 bg-amber-500 text-black px-12 py-6 rotate-45 font-black text-[9px] uppercase tracking-widest shadow-xl">Best-Seller</div>
-                    <h3 class="text-2xl font-bold text-white mb-2 italic font-serif">Combo Full Atmos</h3>
-                    <div class="mb-8 flex justify-center items-baseline gap-1"><span class="text-6xl font-black text-white tracking-tighter">35,00</span><span class="text-stone-600 text-[10px] font-bold uppercase">/mês</span></div>
-                    <button onclick="window.showPortal()" class="premium-btn w-full py-5 rounded-2xl font-bold uppercase text-xs tracking-widest">Garantir VIP</button>
+
+                <!-- CARD FULL (BEST-SELLER) -->
+                <div class="bg-[#0a0a0a] border border-amber-500/40 p-10 rounded-[3rem] shadow-2xl relative overflow-hidden text-center flex flex-col scale-105 z-10">
+                    <div class="absolute top-6 -right-12 bg-amber-500 text-black px-14 py-2.5 rotate-45 font-black text-[10px] uppercase tracking-widest shadow-xl">Best-Seller</div>
+                    
+                    <h3 class="text-3xl font-bold text-white mb-4 italic font-serif mt-6">Combo Full Atmos</h3>
+                    <div class="mb-2 flex justify-center items-baseline gap-1"><span class="text-7xl font-black text-white tracking-tighter">35,00</span><span class="text-stone-500 text-[10px] font-black uppercase">/mês</span></div>
+                    
+                    <p class="text-stone-400 text-sm leading-relaxed mb-8 flex-1 px-4 border-t border-white/5 pt-6 mt-6">Acesso <b class="text-amber-500">total e ilimitado</b>. Tenha tudo num só lugar: TV ao Vivo, Lançamentos, Filmes e as Séries mais badaladas do momento.</p>
+                    
+                    <button onclick="window.showPortal()" class="premium-btn w-full py-5 rounded-[20px] font-black uppercase text-xs tracking-widest mt-auto text-black shadow-lg shadow-amber-500/20">Garantir VIP</button>
                 </div>
-                <div class="glass-panel p-10 rounded-[2.5rem] flex flex-col">
-                    <span class="text-stone-500 text-[10px] font-bold uppercase mb-4 italic text-amber-500">Conforto Atmos</span>
-                    <h3 class="text-2xl font-bold text-white mb-2 uppercase tracking-tighter">Ciclo Trimestral</h3>
-                    <div class="mb-8 flex items-baseline gap-1"><span class="text-5xl font-black text-white tracking-tighter">95,00</span><span class="text-stone-600 text-[10px] font-bold uppercase">/90 dias</span></div>
-                    <button onclick="window.showPortal()" class="bg-white/5 hover:bg-white hover:text-black text-white w-full py-4 rounded-2xl font-bold uppercase text-[10px] transition-all">Escolher Estabilidade</button>
+
+                <!-- CARD TRIMESTRAL -->
+                <div class="bg-[#0a0a0a] border border-white/5 p-10 rounded-[2.5rem] flex flex-col">
+                    <span class="text-stone-500 text-[10px] font-black uppercase mb-2 italic tracking-wider">Conforto Atmos</span>
+                    <h3 class="text-3xl font-black text-white mb-4 uppercase tracking-tighter">Ciclo Trimestral</h3>
+                    <div class="mb-2 flex items-baseline gap-1"><span class="text-6xl font-black text-white tracking-tighter">95,00</span><span class="text-stone-500 text-[10px] font-black uppercase">/90 dias</span></div>
+                    
+                    <p class="text-stone-400 text-sm leading-relaxed mb-8 flex-1 border-t border-white/5 pt-6 mt-6">Pacote com <b class="text-white">acesso total</b> a tudo (TV, Filmes e Séries) aliado à paz de espírito e estabilidade de um ciclo de 90 dias ininterruptos.</p>
+                    
+                    <button onclick="window.showPortal()" class="bg-[#111] border border-white/5 hover:bg-white hover:text-black text-white w-full py-5 rounded-[20px] font-black uppercase text-xs tracking-widest transition-all mt-auto">Escolher Estabilidade</button>
                 </div>
+
             </div>
         </section>
 
@@ -216,20 +240,34 @@
                 </div>
                 
                 <div class="glass-panel p-10 rounded-[3rem] space-y-6 text-center border-white/5">
-                    <div id="p-bonus-badge" class="bg-green-500/10 text-green-500 px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest inline-block border border-green-500/20">0 BÔNUS DISPONÍVEL</div>
-                    <div class="bg-black/40 p-6 rounded-2xl border border-white/5">
+                    <div id="p-bonus-badge" class="bg-green-500/10 text-green-500 px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest inline-block border border-green-500/20 mb-6">0 BÔNUS DISPONÍVEL</div>
+                    
+                    <div class="bg-black/40 p-6 rounded-2xl border border-white/5 mb-6">
                         <p class="text-[9px] text-stone-600 uppercase font-black mb-2 tracking-widest">Seu Código de Embaixador:</p>
                         <span id="p-affiliate-code" class="text-xl font-black text-amber-500 tracking-[0.3em]">ATMOS-CODE</span>
                     </div>
-                    <div class="flex gap-2">
-                        <input type="text" id="referralFriendPhone" placeholder="WhatsApp do Amigo (Apenas Nrs)" class="flex-1 bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
-                        <button onclick="window.sendReferral()" class="bg-amber-500 text-black px-6 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-amber-400 transition-all">Indicar</button>
+                    
+                    <!-- CAPTAÇÃO DE NOME E NÚMERO BLINDADA CONTRA AUTOFILL -->
+                    <div class="space-y-3 border-t border-white/5 pt-6 mt-6">
+                        <p class="text-[9px] text-stone-500 uppercase font-black tracking-widest text-left ml-2">Indique e Ganhe (Dados do Amigo):</p>
+                        <input type="text" id="referralFriendName" name="dummy_name_prevent_autofill" autocomplete="nope" data-lpignore="true" placeholder="Nome do amigo" class="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
+                        <div class="flex gap-2 mt-2">
+                            <input type="text" inputmode="numeric" id="referralFriendPhone" name="dummy_phone_prevent_autofill" autocomplete="nope" data-lpignore="true" placeholder="WhatsApp do Amigo" class="flex-1 bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
+                            <button onclick="window.sendReferral()" class="bg-amber-500 text-black px-6 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-amber-400 transition-all shadow-lg">Indicar</button>
+                        </div>
                     </div>
                 </div>
 
                 <div class="glass-panel p-10 rounded-[3rem] space-y-6">
                     <label class="text-[10px] text-stone-600 uppercase font-black tracking-widest block text-center">Renovar Plano:</label>
-                    <select id="p-plan-select" class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-5 text-white font-bold appearance-none text-center focus:border-amber-500 outline-none"><option value="mensal">Mensal Regular</option><option value="trimestral">Trimestral (Combo)</option></select>
+                    <select id="p-plan-select" class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-5 text-white font-bold appearance-none text-center focus:border-amber-500 outline-none">
+                        <option value="mensal">Mensal Regular</option>
+                        <option value="trimestral">Trimestral (Combo)</option>
+                        <option value="anual">Anual (Premium)</option>
+                        <option value="estudante - tv online">Estudante (Apenas TV Online)</option>
+                        <option value="estudante - filmes">Estudante (Apenas Filmes)</option>
+                        <option value="estudante - séries">Estudante (Apenas Séries)</option>
+                    </select>
                     <div class="grid grid-cols-2 gap-4">
                         <button onclick="window.initPay('PIX')" class="p-6 rounded-3xl border border-stone-800 hover:bg-amber-500/10 hover:border-amber-500/30 transition-all text-center group"><i data-lucide="qr-code" class="mx-auto mb-2 text-amber-500 group-hover:scale-110 transition-transform"></i><span class="text-[10px] font-black uppercase text-white">Via PIX</span></button>
                         <button onclick="window.initPay('InfinitePay')" class="p-6 rounded-3xl border border-stone-800 hover:bg-blue-500/10 hover:border-blue-500/30 transition-all text-center group"><i data-lucide="credit-card" class="mx-auto mb-2 text-blue-400 group-hover:scale-110 transition-transform"></i><span class="text-[10px] font-black uppercase text-white">Cartão</span></button>
@@ -245,7 +283,9 @@
             <div class="flex items-center gap-4 mb-16"><div class="bg-amber-500 p-2 rounded-xl text-black shadow-lg"><i data-lucide="shield"></i></div><span class="font-bold tracking-widest text-white uppercase tracking-widest">Atmos HQ</span></div>
             <nav class="space-y-4 flex-1">
                 <button onclick="window.switchAdminTab('dash')" id="tab-btn-dash" class="w-full text-left p-4 rounded-xl bg-amber-500/10 text-amber-500 font-black text-[10px] uppercase tracking-widest transition-colors">Financeiro Real</button>
-                <button onclick="window.switchAdminTab('media')" id="tab-btn-media" class="w-full text-left p-4 rounded-xl text-stone-500 font-black text-[10px] uppercase tracking-widest transition-colors">Gerir Vitrine</button>
+                <!-- NOVA ABA: LISTA MESTRA (LEADS) -->
+                <button onclick="window.switchAdminTab('leads')" id="tab-btn-leads" class="w-full text-left p-4 rounded-xl text-stone-500 font-black text-[10px] uppercase tracking-widest transition-colors hover:bg-stone-900">Lista Mestra</button>
+                <button onclick="window.switchAdminTab('media')" id="tab-btn-media" class="w-full text-left p-4 rounded-xl text-stone-500 font-black text-[10px] uppercase tracking-widest transition-colors hover:bg-stone-900">Gerir Vitrine</button>
             </nav>
             <button onclick="window.showLanding()" class="bg-stone-900/50 p-4 rounded-xl text-stone-700 hover:text-white uppercase text-[9px] font-black tracking-widest mt-auto transition-colors">Sair do HQ</button>
         </aside>
@@ -276,14 +316,35 @@
                 </div>
             </div>
 
-            <!-- ÁREA DE GESTÃO VISUAL (POSTERS + APPS) -->
+            <!-- NOVA ABA: LISTA MESTRA -->
+            <div id="admin-leads" class="hidden h-full flex flex-col">
+                <header class="h-24 border-b border-stone-900 flex items-center px-10 bg-black/40"><h1 class="text-white text-2xl font-black italic uppercase tracking-tighter">Lista <span class="text-amber-500">Mestra</span></h1></header>
+                <div class="p-10 overflow-y-auto flex-1 bg-[#020202]">
+                    <div class="glass-panel rounded-[2.5rem] overflow-hidden shadow-2xl border-amber-500/10">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-stone-900/50 text-stone-600 uppercase tracking-widest">
+                                <tr>
+                                    <th class="p-8">Lead Prospectado</th>
+                                    <th class="p-8">WhatsApp</th>
+                                    <th class="p-8">Indicado Por (Sócio)</th>
+                                    <th class="p-8 text-center">Data</th>
+                                    <th class="p-8 text-center">Ação Amanda</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leads-table" class="divide-y divide-white/5"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ÁREA DE GESTÃO VISUAL (POSTERS E APPS) -->
             <div id="admin-media" class="hidden h-full flex flex-col">
                 <header class="h-24 border-b border-stone-900 flex items-center px-10 bg-black/40"><h1 class="text-white text-2xl font-black italic uppercase tracking-tighter">Gestão <span class="text-amber-500">Visual</span></h1></header>
                 <div class="p-10 overflow-y-auto flex-1 bg-neutral-950">
                     <div class="max-w-5xl glass-panel p-12 rounded-[3.5rem] border-amber-500/10">
                         <form id="media-form" class="space-y-12">
                             
-                            <!-- SEÇÃO DE POSTERS -->
+                            <!-- SEÇÃO POSTERS -->
                             <div>
                                 <div class="flex justify-between items-center mb-8">
                                     <div><h3 class="text-white font-black text-xl italic mb-1 uppercase tracking-tighter">Curadoria Marquee</h3><p class="text-[10px] text-stone-600 uppercase tracking-widest font-bold">Posters do Carrossel de Filmes/Séries</p></div>
@@ -294,7 +355,7 @@
 
                             <hr class="border-white/5">
 
-                            <!-- SEÇÃO DE APPS -->
+                            <!-- SEÇÃO APPS -->
                             <div>
                                 <div class="flex justify-between items-center mb-8">
                                     <div><h3 class="text-white font-black text-xl italic mb-1 uppercase tracking-tighter">Ecossistema Atmos</h3><p class="text-[10px] text-stone-600 uppercase tracking-widest font-bold">Logos dos Apps (AssistPlus, PlaySim, Roku, etc)</p></div>
@@ -325,35 +386,63 @@
 
     <!-- MODAL: REGISTO NOVO ATIVO / EDIÇÃO -->
     <div id="clientModal" class="fixed inset-0 bg-black/95 backdrop-blur-xl z-[700] hidden items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-md rounded-[3rem] p-12 border-amber-500/20 shadow-2xl">
+        <div class="glass-panel w-full max-w-md rounded-[3rem] p-12 border-amber-500/20 shadow-2xl overflow-y-auto max-h-[90vh]">
             <h3 id="client-modal-title" class="text-2xl font-black text-white mb-10 italic uppercase text-center tracking-tighter">Registo de <span class="text-amber-500">Fluxo</span></h3>
             <form id="client-form" class="space-y-6">
                 <div class="space-y-1">
                     <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Nome do Assinante:</label>
-                    <input type="text" id="reg-name" placeholder="Ex: Alex Sander" required class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-6 text-white focus:border-amber-500 focus:outline-none transition-all">
+                    <input type="text" id="reg-name" placeholder="Ex: Alex Sander" required class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-5 text-white focus:border-amber-500 focus:outline-none transition-all">
                 </div>
                 <div class="space-y-1">
                     <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">WhatsApp Atmos:</label>
-                    <input type="text" id="reg-phone" placeholder="5553999999999" required class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-6 text-white focus:border-amber-500 focus:outline-none transition-all">
+                    <input type="text" id="reg-phone" placeholder="5553999999999" required class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-5 text-white focus:border-amber-500 focus:outline-none transition-all">
                 </div>
-                <div class="grid grid-cols-2 gap-5">
+                
+                <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-1">
                         <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Plano:</label>
-                        <select id="reg-plan" class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-6 text-white appearance-none cursor-pointer focus:border-amber-500 italic"><option value="mensal">Mensal</option><option value="trimestral">Trimestral</option><option value="estudante">Estudante</option></select>
+                        <select id="reg-plan" onchange="window.updatePriceField()" class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-5 text-white appearance-none cursor-pointer focus:border-amber-500 italic">
+                            <option value="mensal">Mensal</option>
+                            <option value="trimestral">Trimestral</option>
+                            <option value="anual">Anual</option>
+                            <option value="estudante - tv online">Estudante - TV Online</option>
+                            <option value="estudante - filmes">Estudante - Filmes</option>
+                            <option value="estudante - séries">Estudante - Séries</option>
+                        </select>
                     </div>
                     <div class="space-y-1">
                         <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Telas:</label>
-                        <select id="reg-screens" class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-6 text-white appearance-none cursor-pointer focus:border-amber-500 italic"><option value="1">1 Tela</option><option value="2">2 Telas</option></select>
+                        <select id="reg-screens" onchange="window.updatePriceField()" class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-5 text-white appearance-none cursor-pointer focus:border-amber-500 italic">
+                            <option value="1">1 Tela</option>
+                            <option value="2">2 Telas</option>
+                            <option value="3">3 Telas</option>
+                            <option value="4">4 Telas</option>
+                            <option value="5">5 Telas</option>
+                        </select>
                     </div>
                 </div>
-                <div class="space-y-1">
-                    <label id="client-date-label" class="text-[9px] text-amber-500 uppercase font-black ml-4 tracking-widest flex items-center gap-2 italic"><i data-lucide="calendar" class="w-3 h-3"></i> Data de Ativação:</label>
-                    <div class="relative group">
-                        <input type="date" id="reg-activation-date" required class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-6 text-white focus:border-amber-500 focus:outline-none transition-all cursor-pointer font-black tracking-widest uppercase text-xs">
-                        <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none opacity-20 group-hover:opacity-100 transition-opacity"><i data-lucide="calendar" class="w-4 h-4 text-amber-500"></i></div>
+                <div class="space-y-1 bg-amber-500/5 p-4 rounded-2xl border border-amber-500/20">
+                    <label class="text-[9px] text-amber-500 uppercase font-black ml-2 tracking-widest italic flex items-center justify-between">
+                        <span>Valor Final Cobrado (R$):</span>
+                        <span class="text-stone-500 text-[8px]">(Editável)</span>
+                    </label>
+                    <input type="number" step="0.01" id="reg-price" required class="w-full bg-black border border-stone-800 rounded-xl p-4 text-white focus:border-amber-500 focus:outline-none transition-all font-black text-xl text-center">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4" id="reg-date-ref-grid">
+                    <div class="space-y-1">
+                        <label id="client-date-label" class="text-[9px] text-amber-500 uppercase font-black ml-4 tracking-widest flex items-center gap-2 italic"><i data-lucide="calendar" class="w-3 h-3"></i> Data de Ativação:</label>
+                        <div class="relative group">
+                            <input type="date" id="reg-activation-date" required class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-5 text-white focus:border-amber-500 focus:outline-none transition-all cursor-pointer font-black tracking-widest uppercase text-xs">
+                        </div>
+                    </div>
+                    <div class="space-y-1" id="reg-ref-container">
+                        <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Cód. Indicação:</label>
+                        <input type="text" id="reg-referral-code" placeholder="Ex: ATMOS-XXXX" class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-5 text-white focus:border-amber-500 focus:outline-none transition-all font-mono uppercase text-xs">
                     </div>
                 </div>
-                <button type="submit" id="client-submit-btn" class="w-full bg-amber-500 text-black py-6 rounded-2xl font-black uppercase mt-4 shadow-xl hover:bg-amber-400 transition-all tracking-widest text-xs">Ativar Ativo no Sistema</button>
+
+                <button type="submit" id="client-submit-btn" class="w-full bg-amber-500 text-black py-5 rounded-2xl font-black uppercase mt-4 shadow-xl hover:bg-amber-400 transition-all tracking-widest text-xs">Ativar Ativo no Sistema</button>
                 
                 <div class="flex gap-2 mt-2">
                     <button type="button" onclick="window.closeModal('client')" class="flex-1 text-stone-500 text-[10px] uppercase font-black tracking-widest hover:text-white transition-colors text-center p-3">Cancelar Janela</button>
@@ -374,8 +463,16 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { initializeFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // CONFIGURAÇÃO DOS PREÇOS
-        const PRICING = { mensal: { 1: 35, 2: 40 }, trimestral: { 1: 95, 2: 110 }, estudante: { 1: 14.90, 2: 14.90 } };
+        // MATRIZ DE PREÇOS ATUALIZADA
+        const PRICING = { 
+            "mensal": { 1: 35, 2: 40, 3: 50, 4: 60, 5: 70 }, 
+            "trimestral": { 1: 95, 2: 110, 3: 140, 4: 170, 5: 200 }, 
+            "anual": { 1: 238.80, 2: 288, 3: 350, 4: 400, 5: 450 },
+            "estudante": { 1: 14.90, 2: 14.90, 3: 14.90, 4: 14.90, 5: 14.90 },
+            "estudante - tv online": { 1: 14.90, 2: 14.90, 3: 14.90, 4: 14.90, 5: 14.90 },
+            "estudante - filmes": { 1: 14.90, 2: 14.90, 3: 14.90, 4: 14.90, 5: 14.90 },
+            "estudante - séries": { 1: 14.90, 2: 14.90, 3: 14.90, 4: 14.90, 5: 14.90 }
+        };
         const COST_PER_SCREEN = 3.50;
         
         let clients = [];
@@ -385,7 +482,7 @@
         let activeClient = null;
         let editingClientIndex = -1;
 
-        // --- NOVO: SISTEMA DE ANIMAÇÃO E PROTEÇÃO DE TEMPO ---
+        // --- SISTEMA DE CARREGAMENTO OFFLINE-FIRST ---
         const globalLoader = document.getElementById('global-loader');
         const loaderText = document.getElementById('loader-text');
         let isAppReady = false;
@@ -394,16 +491,35 @@
             if(isAppReady) return;
             isAppReady = true;
             globalLoader.style.opacity = '0';
-            setTimeout(() => globalLoader.classList.add('hidden'), 500); // Remove do DOM após o fade
+            setTimeout(() => globalLoader.classList.add('hidden'), 500); 
         }
 
-        // Relógio de segurança: Se a Nuvem falhar e demorar mais de 3 segundos, força a abertura
         setTimeout(() => {
             if(!isAppReady) {
                 loaderText.innerText = "Modo Offline Ativado";
                 setTimeout(hideLoader, 800);
             }
         }, 3000);
+
+        function bootOfflineFirst() {
+            const localClients = localStorage.getItem('atmos_cash_clients');
+            if (localClients) clients = JSON.parse(localClients);
+            
+            const localPosters = localStorage.getItem('atmos_showcase_assets');
+            window.lpAssets = localPosters ? JSON.parse(localPosters) : [];
+            if(window.lpAssets.length === 0) window.lpAssets = getFallbackAssets();
+
+            const localApps = localStorage.getItem('atmos_app_assets');
+            window.appAssets = localApps ? JSON.parse(localApps) : [];
+            if(window.appAssets.length === 0) window.appAssets = getFallbackAppAssets();
+
+            const localRefs = localStorage.getItem('atmos_pending_referrals');
+            if (localRefs) pendingReferrals = JSON.parse(localRefs);
+
+            refreshAllUI(); 
+        }
+
+        bootOfflineFirst();
 
         let app, auth, db, docRef;
         let isCloudActive = false;
@@ -429,7 +545,7 @@
         } catch(e) {
             console.error("Falha ao iniciar nuvem:", e);
             initLocal();
-            hideLoader(); // Liberta a tela se falhar de imediato
+            hideLoader();
         }
 
         async function initCloud() {
@@ -455,23 +571,13 @@
                             window.appAssets = data.appAssets || getFallbackAppAssets();
                             pendingReferrals = data.pendingReferrals || [];
                         } else {
-                            const localBackup = JSON.parse(localStorage.getItem('atmos_cash_clients'));
-                            if (localBackup && localBackup.length > 0) {
-                                clients = localBackup;
-                                window.lpAssets = JSON.parse(localStorage.getItem('atmos_showcase_assets')) || getFallbackAssets();
-                                window.appAssets = JSON.parse(localStorage.getItem('atmos_app_assets')) || getFallbackAppAssets();
-                                pendingReferrals = JSON.parse(localStorage.getItem('atmos_pending_referrals')) || [];
-                            } else {
-                                if(window.lpAssets.length === 0) window.lpAssets = getFallbackAssets();
-                                if(window.appAssets.length === 0) window.appAssets = getFallbackAppAssets();
-                            }
                             syncData(); 
                         }
                         refreshAllUI();
-                        hideLoader(); // A Nuvem conectou com sucesso, liberta a tela!
+                        hideLoader();
                     }, (error) => {
                         console.error("Erro na sincronização:", error);
-                        hideLoader(); // Falha de conexão, liberta a tela!
+                        hideLoader();
                     });
                 }
             });
@@ -519,6 +625,7 @@
             lucide.createIcons();
             updateHQStats();
             renderHQTable();
+            renderLeadsTable(); 
             renderMarquee();
             renderAppMarquee();
             renderPosterInputs();
@@ -530,6 +637,20 @@
                     document.getElementById('p-bonus-badge').innerText = (activeClient.bonusMonths || 0) + " BÔNUS DISPONÍVEL";
                 }
             }
+        }
+
+        function getMonthsByPlan(plan) {
+            if(plan === 'trimestral') return 3;
+            if(plan === 'anual') return 12;
+            return 1; 
+        }
+
+        window.updatePriceField = function() {
+            if(editingClientIndex >= 0) return; 
+            const plan = document.getElementById('reg-plan').value;
+            const screens = parseInt(document.getElementById('reg-screens').value);
+            const suggestedPrice = PRICING[plan] ? (PRICING[plan][screens] || 0) : 0;
+            document.getElementById('reg-price').value = suggestedPrice.toFixed(2);
         }
 
         window.showLanding = function() { document.getElementById('view-landing').classList.remove('hidden'); document.getElementById('view-portal').classList.add('hidden'); document.getElementById('view-admin').classList.add('hidden'); window.scrollTo(0,0); }
@@ -603,28 +724,95 @@
         }
 
         window.sendReferral = function() {
+            if(!activeClient) return;
+            const friendName = document.getElementById('referralFriendName').value.trim();
             const friendPhone = document.getElementById('referralFriendPhone').value.replace(/\D/g, '');
+            
+            if(!friendName) { window.showFeedback("DIGITE O NOME DO AMIGO"); return; }
             if(friendPhone.length < 10) { window.showFeedback("WHATSAPP INVÁLIDO"); return; }
-            pendingReferrals.push({ affiliatePhone: activeClient.phone, guestPhone: friendPhone });
+            
+            pendingReferrals.push({ 
+                affiliatePhone: activeClient.phone, 
+                affiliateName: activeClient.name,
+                guestName: friendName,
+                guestPhone: friendPhone,
+                date: new Date().toISOString()
+            });
             syncData();
             
-            const urlAtmos = window.location.href;
-            const msg = `Olá! ✨ O seu amigo ${activeClient.name} convidou-te para conhecer a Atmos Experience! 🎬 Tenha acesso ao melhor sinal 4K HDR. Confira aqui: ${urlAtmos}`;
+            const urlAtmos = window.location.href.split('?')[0];
+            const msg = `🎬 *ATMOS EXPERIENCE* | O Próximo Nível\n\nOlá ${friendName}! O seu amigo(a) ${activeClient.name} indicou a Atmos TV para você ter acesso ao melhor sinal 4K HDR do mercado, sem travamentos.\n\nConfere a nossa vitrine e acesse o portal: ${urlAtmos}`;
             window.open(`https://api.whatsapp.com/send?phone=${friendPhone}&text=${encodeURIComponent(msg)}`, '_blank');
+            
+            document.getElementById('referralFriendName').value = "";
             document.getElementById('referralFriendPhone').value = "";
-            window.showFeedback("CONVITE ENVIADO");
+            window.showFeedback("CONVITE ENVIADO E GUARDADO NO HQ");
+            if(typeof renderLeadsTable === 'function') renderLeadsTable();
         }
 
         window.initPay = function(method) {
-            const plan = document.getElementById('p-plan-select').value;
+            const selectEl = document.getElementById('p-plan-select');
+            const planText = selectEl.options[selectEl.selectedIndex].text;
             const telAlex = "5553981676662";
-            const msg = `Olá Amanda! ✨ Solicito renovação do plano ${plan.toUpperCase()} via ${method}. Sou o sócio ${activeClient.name}. Pode validar?`;
+            const msg = `Olá Amanda! ✨ Solicito renovação do plano ${planText.toUpperCase()} via ${method}. Sou o sócio ${activeClient.name}. Pode validar?`;
             setTimeout(() => window.open(`https://api.whatsapp.com/send?phone=${telAlex}&text=${encodeURIComponent(msg)}`, '_blank'), 1000);
         }
 
         window.switchAdminTab = function(t) { 
             document.getElementById('admin-dash').classList.toggle('hidden', t !== 'dash'); 
+            document.getElementById('admin-leads').classList.toggle('hidden', t !== 'leads'); 
             document.getElementById('admin-media').classList.toggle('hidden', t !== 'media'); 
+            
+            document.getElementById('tab-btn-dash').className = `w-full text-left p-4 rounded-xl font-black text-[10px] uppercase tracking-widest transition-colors ${t === 'dash' ? 'bg-amber-500/10 text-amber-500' : 'text-stone-500 hover:bg-stone-900'}`;
+            document.getElementById('tab-btn-leads').className = `w-full text-left p-4 rounded-xl font-black text-[10px] uppercase tracking-widest transition-colors ${t === 'leads' ? 'bg-amber-500/10 text-amber-500' : 'text-stone-500 hover:bg-stone-900'}`;
+            document.getElementById('tab-btn-media').className = `w-full text-left p-4 rounded-xl font-black text-[10px] uppercase tracking-widest transition-colors ${t === 'media' ? 'bg-amber-500/10 text-amber-500' : 'text-stone-500 hover:bg-stone-900'}`;
+        }
+        
+        function renderLeadsTable() {
+            const tb = document.getElementById('leads-table'); if(!tb) return; tb.innerHTML = '';
+            
+            const sortedLeads = [...pendingReferrals].reverse(); 
+            
+            if(sortedLeads.length === 0) {
+                tb.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-stone-600 font-bold italic">Nenhum Lead pendente.</td></tr>`;
+                return;
+            }
+
+            sortedLeads.forEach((lead, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-white/[0.03] transition-all group';
+                
+                const realIndex = pendingReferrals.length - 1 - index; 
+                const d = lead.date ? new Date(lead.date).toLocaleDateString('pt-BR') : 'Recente';
+                const socName = lead.affiliateName || 'Sócio Atmos';
+                
+                const msg = `Olá ${lead.guestName || ''}! ✨ Vi que o seu amigo(a) ${socName} indicou a Atmos Experience para você! Aqui é a Amanda. Já conseguiu resgatar o seu acesso 4K? 🎬`;
+                const wLink = `https://api.whatsapp.com/send?phone=${lead.guestPhone.replace(/\D/g,'')}&text=${encodeURIComponent(msg)}`;
+
+                tr.innerHTML = `
+                    <td class="p-8 font-black text-white text-sm uppercase">${lead.guestName || 'Sem Nome'}</td>
+                    <td class="p-8 text-stone-400 font-mono tracking-widest">${lead.guestPhone}</td>
+                    <td class="p-8 text-stone-300 font-bold uppercase text-[9px]"><span class="text-amber-500">${socName}</span><br>${lead.affiliatePhone}</td>
+                    <td class="p-8 text-center text-stone-500 font-bold">${d}</td>
+                    <td class="p-8 text-center">
+                        <div class="flex items-center justify-center gap-2">
+                            <a href="${wLink}" target="_blank" class="bg-green-500/10 text-green-500 hover:bg-green-500 hover:text-black px-4 py-2.5 rounded-xl text-[10px] font-black uppercase transition-all inline-block border border-green-500/20">Chamar</a>
+                            <button onclick="window.removeLead(${realIndex})" class="bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-2.5 rounded-xl transition-all" title="Remover Lead"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+                        </div>
+                    </td>
+                `;
+                tb.appendChild(tr);
+            });
+            lucide.createIcons();
+        }
+
+        window.removeLead = function(index) {
+            if(confirm("Tem certeza que deseja apagar este Lead da Lista Mestra?")) {
+                pendingReferrals.splice(index, 1);
+                syncData();
+                renderLeadsTable();
+                window.showFeedback("LEAD APAGADO");
+            }
         }
         
         window.openModal = function(id) { 
@@ -635,6 +823,12 @@
                 document.getElementById('client-submit-btn').innerText = "Ativar Ativo no Sistema";
                 document.getElementById('client-date-label').innerHTML = `<i data-lucide="calendar" class="w-3 h-3"></i> Data de Ativação:`;
                 document.getElementById('client-delete-btn').classList.add('hidden');
+                
+                document.getElementById('reg-ref-container').classList.remove('hidden');
+                document.getElementById('reg-date-ref-grid').classList.add('grid-cols-2');
+                document.getElementById('reg-date-ref-grid').classList.remove('grid-cols-1');
+                
+                window.updatePriceField(); 
             }
             document.getElementById(id + 'Modal').classList.remove('hidden'); 
             document.getElementById(id + 'Modal').classList.add('flex'); 
@@ -653,11 +847,18 @@
             document.getElementById('reg-plan').value = c.plan;
             document.getElementById('reg-screens').value = c.screens || 1;
             document.getElementById('reg-activation-date').value = c.nextBillingDate;
+            
+            let defaultPrice = PRICING[c.plan] ? (PRICING[c.plan][c.screens] || 0) : 0;
+            document.getElementById('reg-price').value = (c.customPrice !== undefined ? c.customPrice : defaultPrice).toFixed(2);
 
             document.getElementById('client-modal-title').innerHTML = `Editar <span class="text-amber-500">Ativo</span>`;
             document.getElementById('client-submit-btn').innerText = "Salvar Alterações";
             document.getElementById('client-date-label').innerHTML = `<i data-lucide="calendar" class="w-3 h-3"></i> Próximo Vencimento:`;
             document.getElementById('client-delete-btn').classList.remove('hidden');
+            
+            document.getElementById('reg-ref-container').classList.add('hidden');
+            document.getElementById('reg-date-ref-grid').classList.remove('grid-cols-2');
+            document.getElementById('reg-date-ref-grid').classList.add('grid-cols-1');
 
             document.getElementById('clientModal').classList.remove('hidden');
             document.getElementById('clientModal').classList.add('flex');
@@ -702,23 +903,51 @@
         }
 
         window.logPaymentAdmin = function(index) {
-            const c = clients[index]; const pr = PRICING[c.plan][c.screens]; let months = (c.plan === 'trimestral') ? 3 : 1;
+            const c = clients[index]; 
+            const pr = c.customPrice !== undefined ? parseFloat(c.customPrice) : (PRICING[c.plan] ? (PRICING[c.plan][c.screens] || 0) : 0);
+            
+            let months = getMonthsByPlan(c.plan);
             let net = pr - (COST_PER_SCREEN * c.screens * months);
+            
             if(c.bonusMonths > 0) { c.bonusMonths--; net = 0; window.showFeedback("BÔNUS APLICADO"); }
             if(!c.payments) c.payments = [];
             
-            // Registo de renovação inclui a quantidade de meses cobertos para o histórico
+            let cycleToPay = c.nextBillingDate; 
+            
             c.payments.push({ 
                 date: new Date().toISOString(), 
+                cycleDate: cycleToPay + 'T00:00:00', 
                 amountNet: net,
                 monthsCovered: months 
             });
             
             let nxt = new Date(c.nextBillingDate + 'T00:00:00'); 
-            // Avança meses exatos de calendário (Ex: 19 de Fev para 19 de Mai)
             nxt.setMonth(nxt.getMonth() + months);
             c.nextBillingDate = nxt.toISOString().split('T')[0];
             syncData();
+        }
+
+        window.undoPaymentAdmin = function(index) {
+            const c = clients[index];
+            if (!c.payments || c.payments.length === 0) return;
+            
+            if (confirm(`ATENÇÃO: Tem certeza que deseja DESFAZER o último pagamento de ${c.name}? O valor sairá do caixa e o vencimento voltará para trás.`)) {
+                let lastPayment = c.payments.pop();
+                let monthsToRevert = lastPayment.monthsCovered || 1;
+                
+                let nxt = new Date(c.nextBillingDate + 'T00:00:00');
+                nxt.setMonth(nxt.getMonth() - monthsToRevert);
+                c.nextBillingDate = nxt.toISOString().split('T')[0];
+                
+                const pr = c.customPrice !== undefined ? parseFloat(c.customPrice) : (PRICING[c.plan] ? (PRICING[c.plan][c.screens] || 0) : 0);
+                const expectedNet = pr - (COST_PER_SCREEN * c.screens * monthsToRevert);
+                if (lastPayment.amountNet === 0 && expectedNet > 0) {
+                    c.bonusMonths = (c.bonusMonths || 0) + 1;
+                }
+                
+                syncData();
+                window.showFeedback("PAGAMENTO DESFEITO");
+            }
         }
 
         function renderHQTable() {
@@ -735,10 +964,12 @@
                 const msg = `Olá ${c.name}! ✨ Aqui é a Amanda da Atmos TV. Vim te avisar que o seu sinal renova em ${diff < 0 ? 'alguns dias (vencido)' : diff + ' dias'}! Garanta sua diversão 4K sem travas no nosso portal. 🎬`;
                 const wLink = `https://api.whatsapp.com/send?phone=${c.phone.replace(/\D/g,'')}&text=${encodeURIComponent(msg)}`;
 
+                const planTag = c.customPrice !== undefined ? `${c.plan} (Especial)` : c.plan;
+
                 tr.className = 'hover:bg-white/[0.03] transition-all group';
                 tr.innerHTML = `
                     <td class="p-8"><div class="font-black text-white text-base uppercase">${c.name}</div><div class="text-[9px] text-stone-600 font-mono tracking-widest">${c.phone}</div></td>
-                    <td class="p-8"><div class="text-stone-300 font-black uppercase text-[9px] italic">${c.plan}</div><div class="text-green-500 font-black text-[9px] mt-1 uppercase">${c.bonusMonths || 0} BÔNUS</div></td>
+                    <td class="p-8"><div class="text-stone-300 font-black uppercase text-[9px] italic">${planTag}</div><div class="text-green-500 font-black text-[9px] mt-1 uppercase">${c.bonusMonths || 0} BÔNUS</div></td>
                     <td class="p-8 text-center font-bold text-stone-200">${nxt.toLocaleDateString('pt-BR')}</td>
                     <td class="p-8 text-center"><span class="px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${sC}">${sL}</span></td>
                     <td class="p-8 text-center">
@@ -746,6 +977,7 @@
                             ${showM ? `<a href="${wLink}" target="_blank" class="magic-button-animation bg-amber-500 text-black px-4 py-2.5 rounded-xl text-[10px] font-black uppercase flex items-center gap-1 hover:bg-amber-400 transition-all"><i data-lucide="sparkles" class="w-3 h-3"></i> Cobrar</a>` : `<span class="text-stone-800 font-black text-[9px] mr-2">MONITORADO</span>`}
                             <button onclick="window.logPaymentAdmin(${i})" class="bg-white/5 hover:bg-white text-white hover:text-black px-4 py-2.5 rounded-xl text-[10px] font-black uppercase transition-all">Recebi</button>
                             <button onclick="window.editClientAdmin(${i})" class="bg-stone-900 hover:bg-amber-500/20 text-stone-500 hover:text-amber-500 p-2.5 rounded-xl transition-all" title="Editar Cliente"><i data-lucide="pencil" class="w-3.5 h-3.5"></i></button>
+                            ${c.payments && c.payments.length > 0 ? `<button onclick="window.undoPaymentAdmin(${i})" class="bg-stone-900 hover:bg-red-500/20 text-stone-500 hover:text-red-500 p-2.5 rounded-xl transition-all" title="Desfazer Último Pagamento"><i data-lucide="undo" class="w-3.5 h-3.5"></i></button>` : ''}
                         </div>
                     </td>
                     <td class="p-8 text-right font-black text-white">R$ ${(c.payments||[]).reduce((a,p)=>a+p.amountNet,0).toLocaleString('pt-BR')}</td>`;
@@ -754,68 +986,138 @@
             lucide.createIcons();
         }
 
+        // CARROSSEL DE POSTERS
         function renderMarquee() {
             const container = document.getElementById('landing-marquee');
             const list = window.lpAssets.length > 0 ? [...window.lpAssets, ...window.lpAssets] : getFallbackAssets();
-            container.innerHTML = list.map(url => `<div class="movie-card bg-stone-900"><img src="${url}" class="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity duration-700"></div>`).join('');
+            container.innerHTML = list.map(url => `<div class="movie-card bg-stone-900"><img src="${url}" class="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity duration-700" onerror="this.src='https://placehold.co/300x420/050505/f59e0b?text=Atmos'"></div>`).join('');
         }
 
+        // CARROSSEL DE APPS (ATUALIZADO PARA MATCH COM IMAGEM 1)
         function renderAppMarquee() {
             const container = document.getElementById('landing-app-marquee');
             const list = window.appAssets.length > 0 ? [...window.appAssets, ...window.appAssets, ...window.appAssets] : getFallbackAppAssets(); 
-            container.innerHTML = list.map(url => `<div class="app-card bg-stone-900/50"><img src="${url}" class="max-w-[80%] max-h-[80%] object-contain opacity-80" alt="App"></div>`).join('');
+            // Removido o bg-stone-900/50 daqui para usar a cor #0a0a0a pura do CSS
+            container.innerHTML = list.map(url => `<div class="app-card"><img src="${url}" class="max-w-[80%] max-h-[80%] object-contain opacity-90 transition-opacity hover:opacity-100" alt="App" onerror="this.src='https://placehold.co/200x200/0a0a0a/d4af37?text=App'"></div>`).join('');
         }
 
+        window.updatePosterUrl = function(index, value) {
+            window.lpAssets[index] = value;
+            const img = document.getElementById(`poster-preview-${index}`);
+            if(img) img.src = value;
+        };
+
+        window.updateAppUrl = function(index, value) {
+            window.appAssets[index] = value;
+            const img = document.getElementById(`app-preview-${index}`);
+            if(img) img.src = value;
+        };
+
+        window.removePoster = function(index) {
+            if(confirm("Tem certeza que deseja remover este poster da sua vitrine?")) {
+                window.lpAssets.splice(index, 1);
+                renderPosterInputs();
+                window.showFeedback("POSTER REMOVIDO");
+            }
+        };
+
+        window.removeApp = function(index) {
+            if(confirm("Tem certeza que deseja remover este App do ecossistema?")) {
+                window.appAssets.splice(index, 1);
+                renderAppInputs();
+                window.showFeedback("APP REMOVIDO");
+            }
+        };
+
+        // MOTOR DE COMPRESSÃO DE IMAGENS 
+        window.processImageFile = function(file, maxDim, callback) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let w = img.width, h = img.height;
+                    if(w > maxDim || h > maxDim) {
+                        if(w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
+                        else { w = Math.round(w * maxDim / h); h = maxDim; }
+                    }
+                    canvas.width = w; canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, w, h);
+                    const mimeType = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+                    callback(canvas.toDataURL(mimeType, 0.85)); 
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        // INPUTS DE POSTERS
         function renderPosterInputs() {
             const c = document.getElementById('media-inputs'); c.innerHTML = '';
             if(window.lpAssets.length === 0) window.lpAssets.push("");
             window.lpAssets.forEach((u, i) => {
+                const isData = u.startsWith('data');
                 c.innerHTML += `
-                    <div class="glass-panel p-6 rounded-3xl space-y-4 border-white/5">
+                    <div class="glass-panel p-6 rounded-3xl space-y-4 border-white/5 relative">
                         <div class="w-full h-40 bg-black rounded-2xl overflow-hidden relative group">
-                            <img src="${u}" class="w-full h-full object-cover opacity-50" onerror="this.src='https://via.placeholder.com/300x150/050505/f59e0b?text=Slot+Livre'">
+                            <img id="poster-preview-${i}" src="${u}" class="w-full h-full object-cover opacity-50" onerror="this.src='https://placehold.co/300x150/050505/f59e0b?text=Slot+Livre'">
                             <label class="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                                <span class="bg-amber-500 text-black px-4 py-2 rounded-lg font-black uppercase text-[9px] tracking-widest">Carregar do PC</span>
+                                <span class="bg-amber-500 text-black px-4 py-2 rounded-lg font-black uppercase text-[9px] tracking-widest">Mudar Imagem</span>
                                 <input type="file" class="hidden" accept="image/*" onchange="window.handlePosterFile(event, ${i})">
                             </label>
+                            <button type="button" onclick="window.removePoster(${i})" class="absolute top-3 right-3 bg-red-500/80 text-white p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 shadow-lg z-10" title="Remover Poster">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
                         </div>
-                        <input type="text" value="${u.startsWith('data') ? '[IMAGEM LOCAL]' : u}" onchange="window.lpAssets[${i}]=this.value; renderPosterInputs();" class="w-full bg-black border border-white/10 rounded-xl p-4 text-[9px] text-stone-500 font-mono" placeholder="Ou cole o link da imagem aqui...">
+                        <input type="text" value="${isData ? '' : u}" oninput="window.updatePosterUrl(${i}, this.value)" class="w-full bg-black border border-white/10 rounded-xl p-4 text-[9px] text-stone-500 font-mono" placeholder="${isData ? '[IMAGEM CARREGADA - Colar novo link...]' : 'Colar Link do Poster...'}">
                     </div>`;
             });
             lucide.createIcons();
         }
 
+        // INPUTS DE APPS
         function renderAppInputs() {
             const c = document.getElementById('app-inputs'); c.innerHTML = '';
             if(window.appAssets.length === 0) window.appAssets.push("");
             window.appAssets.forEach((u, i) => {
+                const isData = u.startsWith('data');
                 c.innerHTML += `
-                    <div class="glass-panel p-4 rounded-3xl space-y-4 border-white/5">
+                    <div class="glass-panel p-4 rounded-3xl space-y-4 border-white/5 relative">
                         <div class="w-full h-24 bg-black rounded-2xl overflow-hidden relative group">
-                            <img src="${u}" class="w-full h-full object-contain p-2 opacity-70" onerror="this.src='https://placehold.co/200x200/050505/f59e0b?text=App'">
+                            <img id="app-preview-${i}" src="${u}" class="w-full h-full object-contain p-2 opacity-70" onerror="this.src='https://placehold.co/200x200/050505/f59e0b?text=App'">
                             <label class="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                                 <span class="bg-amber-500 text-black px-3 py-1 rounded-lg font-black uppercase text-[8px] tracking-widest">Trocar</span>
                                 <input type="file" class="hidden" accept="image/*" onchange="window.handleAppFile(event, ${i})">
                             </label>
+                            <button type="button" onclick="window.removeApp(${i})" class="absolute top-2 right-2 bg-red-500/80 text-white p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 shadow-lg z-10" title="Remover App">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                            </button>
                         </div>
-                        <input type="text" value="${u.startsWith('data') ? '[IMAGEM LOCAL]' : u}" onchange="window.appAssets[${i}]=this.value; renderAppInputs();" class="w-full bg-black border border-white/10 rounded-xl p-3 text-[8px] text-stone-500 font-mono" placeholder="Colar Link Logo...">
+                        <input type="text" value="${isData ? '' : u}" oninput="window.updateAppUrl(${i}, this.value)" class="w-full bg-black border border-white/10 rounded-xl p-3 text-[8px] text-stone-500 font-mono" placeholder="${isData ? '[IMAGEM CARREGADA]' : 'Colar Link Logo...'}">
                     </div>`;
             });
-        }
-
-        function renderMediaInputs() {
-            renderPosterInputs();
-            renderAppInputs();
+            lucide.createIcons();
         }
 
         window.handlePosterFile = function(e, i) {
-            const f = e.target.files[0]; const r = new FileReader();
-            r.onload = (ev) => { window.lpAssets[i] = ev.target.result; renderPosterInputs(); window.showFeedback("CARREGADA"); }; r.readAsDataURL(f);
+            const f = e.target.files[0]; 
+            if(!f) return;
+            window.processImageFile(f, 800, (compressedData) => {
+                window.lpAssets[i] = compressedData; 
+                renderPosterInputs(); 
+                window.showFeedback("POSTER CARREGADO"); 
+            });
         }
 
         window.handleAppFile = function(e, i) {
-            const f = e.target.files[0]; const r = new FileReader();
-            r.onload = (ev) => { window.appAssets[i] = ev.target.result; renderAppInputs(); window.showFeedback("CARREGADA"); }; r.readAsDataURL(f);
+            const f = e.target.files[0]; 
+            if(!f) return;
+            window.processImageFile(f, 300, (compressedData) => {
+                window.appAssets[i] = compressedData; 
+                renderAppInputs(); 
+                window.showFeedback("LOGO CARREGADO"); 
+            });
         }
 
         window.addPosterInput = function() { window.lpAssets.push(""); renderPosterInputs(); }
@@ -824,7 +1126,7 @@
         document.getElementById('media-form').addEventListener('submit', (e) => {
             e.preventDefault(); 
             window.lpAssets = window.lpAssets.filter(v=>v.trim()!=="");
-            window.appAssets = window.appAssets.filter(v=>v.trim()!=="");
+            window.appAssets = window.appAssets.filter(v=>v.trim()!==""); 
             syncData();
             window.showFeedback("VITRINE ATUALIZADA"); 
             renderMarquee(); 
@@ -838,39 +1140,40 @@
             const plan = document.getElementById('reg-plan').value;
             const screens = parseInt(document.getElementById('reg-screens').value);
             const inputDateStr = document.getElementById('reg-activation-date').value;
+            
+            const finalPriceStr = document.getElementById('reg-price').value;
+            const finalPrice = parseFloat(finalPriceStr);
 
             if (editingClientIndex >= 0) {
-                // MODO EDIÇÃO
                 let c = clients[editingClientIndex];
                 c.name = document.getElementById('reg-name').value;
                 c.phone = phone;
                 c.plan = plan;
                 c.screens = screens;
                 c.nextBillingDate = inputDateStr;
+                c.customPrice = finalPrice; 
 
                 syncData(); 
                 window.closeModal('client'); 
                 e.target.reset(); 
                 window.showFeedback("DADOS ATUALIZADOS");
             } else {
-                // MODO CRIAÇÃO (Registando a Data Exata no Histórico)
-                let months = (plan === 'trimestral') ? 3 : 1;
+                let months = getMonthsByPlan(plan);
                 
                 let baseDate = new Date(inputDateStr + 'T00:00:00');
                 let nxt = new Date(baseDate);
                 nxt.setMonth(nxt.getMonth() + months);
                 const nextBillingDate = nxt.toISOString().split('T')[0];
 
-                const pr = PRICING[plan][screens];
-                const net = pr - (COST_PER_SCREEN * screens * months);
+                const net = finalPrice - (COST_PER_SCREEN * screens * months);
 
                 const newClient = { 
                     name: document.getElementById('reg-name').value, 
                     phone: phone, 
                     plan: plan, 
                     screens: screens, 
+                    customPrice: finalPrice, 
                     nextBillingDate: nextBillingDate, 
-                    // O primeiro pagamento usa a data exata inserida no formulário (Data de Adesão) e inclui a cobertura de meses
                     payments: [{ 
                         date: baseDate.toISOString(), 
                         amountNet: net,
@@ -883,7 +1186,10 @@
                 const referralMatch = pendingReferrals.find(r => r.guestPhone === phone);
                 if(referralMatch) {
                     const affiliate = clients.find(cl => cl.phone === referralMatch.affiliatePhone);
-                    if(affiliate) { affiliate.bonusMonths = (affiliate.bonusMonths || 0) + 1; window.showFeedback("BÔNUS ATRIBUÍDO"); }
+                    if(affiliate) { 
+                        affiliate.bonusMonths = (affiliate.bonusMonths || 0) + 1; 
+                        window.showFeedback("BÔNUS ATRIBUÍDO AO EMBAIXADOR"); 
+                    }
                     pendingReferrals = pendingReferrals.filter(r => r.guestPhone !== phone);
                 }
                 
@@ -894,8 +1200,6 @@
                 window.showFeedback("ATIVO REGISTADO E FATURADO");
             }
         });
-
-        document.addEventListener('DOMContentLoaded', refreshAllUI);
 
     </script>
 </body>
