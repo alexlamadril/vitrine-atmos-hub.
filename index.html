@@ -24,19 +24,13 @@
         .premium-btn { background: var(--gold-gradient); color: #000; transition: all 0.3s ease; }
         .premium-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
 
-        /* Showcase Marquee - Posters */
+        /* Showcase Marquee */
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-marquee { display: flex; width: max-content; animation: marquee 60s linear infinite; }
         .animate-marquee:hover { animation-play-state: paused; }
         .movie-card { width: 300px; height: 420px; border-radius: 24px; overflow: hidden; position: relative; flex-shrink: 0; margin-right: 24px; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.5s ease; }
         .movie-card:hover { transform: scale(1.02); border-color: rgba(212, 175, 55, 0.4); }
         .movie-overlay { background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, rgba(0,0,0,0.4) 50%, transparent 100%); }
-
-        /* App Marquee - Logos */
-        .animate-marquee-reverse { display: flex; width: max-content; animation: marquee 50s linear infinite reverse; }
-        .animate-marquee-reverse:hover { animation-play-state: paused; }
-        .app-card { width: 120px; height: 120px; border-radius: 20px; flex-shrink: 0; margin-right: 24px; border: 1px solid rgba(255,255,255,0.05); display:flex; align-items:center; justify-content:center; padding: 15px; transition: all 0.3s ease; }
-        .app-card:hover { transform: scale(1.05); border-color: rgba(212, 175, 55, 0.4); background: rgba(212, 175, 55, 0.05); }
 
         /* Status Styles */
         .status-due { color: #ef4444; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); }
@@ -87,7 +81,7 @@
             <p class="max-w-2xl mx-auto text-stone-400 text-lg md:text-xl font-light mb-12 italic">Estabilidade absoluta em 4K HDR. A Vitrine Atmos é a sua melhor escolha.</p>
         </header>
 
-        <!-- Showcase Marquee (Posters) -->
+        <!-- Showcase Marquee -->
         <section class="relative z-10 py-10 overflow-hidden">
             <div class="relative overflow-hidden group">
                 <div class="animate-marquee" id="landing-marquee"></div>
@@ -96,20 +90,8 @@
             </div>
         </section>
 
-        <!-- App Marquee (Ecossistema de Aplicativos) -->
-        <section class="relative z-10 py-8 overflow-hidden border-y border-white/5 bg-white/[0.01]">
-            <div class="container mx-auto px-8 mb-6 text-center">
-                <span class="text-[9px] uppercase tracking-[0.4em] font-bold text-stone-500">Ecossistema de Conexão</span>
-            </div>
-            <div class="relative overflow-hidden group">
-                <div class="animate-marquee-reverse flex items-center" id="landing-app-marquee"></div>
-                <div class="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#020202] to-transparent pointer-events-none"></div>
-                <div class="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#020202] to-transparent pointer-events-none"></div>
-            </div>
-        </section>
-
         <!-- Prova Social & Indicação -->
-        <section class="relative z-10 container mx-auto px-8 py-24">
+        <section class="relative z-10 container mx-auto px-8 py-24 border-t border-white/5">
             <div class="grid lg:grid-cols-2 gap-16 items-start">
                 <div>
                     <h2 class="text-white text-3xl font-black italic tracking-tighter mb-8 uppercase">Aprovações <span class="text-amber-500">Premium</span></h2>
@@ -181,8 +163,8 @@
             </div>
         </section>
 
-        <!-- RODAPÉ COM AVISO DE DESEMPENHO -->
-        <footer class="relative z-10 py-16 px-8 text-center flex flex-col items-center gap-5 bg-[#020202] border-t border-white/5">
+        <!-- NOVO RODAPÉ COM AVISO DE DESEMPENHO -->
+        <footer class="relative z-10 py-16 px-8 text-center flex flex-col items-center gap-5 bg-[#020202]">
             <div class="text-stone-800 text-[9px] font-bold uppercase tracking-[0.5em]">
                 © 2024 Atmos TV | Strategic Management by Alex Sander
             </div>
@@ -242,6 +224,7 @@
                         <option value="mensal">Mensal Regular</option>
                         <option value="trimestral">Trimestral (Combo)</option>
                         <option value="anual">Anual (Premium)</option>
+                        <!-- OPÇÕES DETALHADAS PARA ESTUDANTES -->
                         <option value="estudante - tv online">Estudante (Apenas TV Online)</option>
                         <option value="estudante - filmes">Estudante (Apenas Filmes)</option>
                         <option value="estudante - séries">Estudante (Apenas Séries)</option>
@@ -292,34 +275,17 @@
                 </div>
             </div>
 
-            <!-- NOVA ÁREA DE GESTÃO VISUAL (POSTERS + APPS) -->
             <div id="admin-media" class="hidden h-full flex flex-col">
                 <header class="h-24 border-b border-stone-900 flex items-center px-10 bg-black/40"><h1 class="text-white text-2xl font-black italic uppercase tracking-tighter">Gestão <span class="text-amber-500">Visual</span></h1></header>
                 <div class="p-10 overflow-y-auto flex-1 bg-neutral-950">
                     <div class="max-w-5xl glass-panel p-12 rounded-[3.5rem] border-amber-500/10">
-                        <form id="media-form" class="space-y-12">
-                            
-                            <!-- SEÇÃO DE POSTERS -->
-                            <div>
-                                <div class="flex justify-between items-center mb-8">
-                                    <div><h3 class="text-white font-black text-xl italic mb-1 uppercase tracking-tighter">Curadoria Marquee</h3><p class="text-[10px] text-stone-600 uppercase tracking-widest font-bold">Posters do Carrossel de Filmes/Séries</p></div>
-                                    <button type="button" onclick="window.addPosterInput()" class="bg-amber-500/10 border border-amber-500/20 text-amber-500 px-6 py-3 rounded-xl text-[10px] font-black uppercase hover:bg-amber-500 hover:text-black transition-all">+ Novo Poster</button>
-                                </div>
-                                <div id="media-inputs" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-                            </div>
-
-                            <hr class="border-white/5">
-
-                            <!-- SEÇÃO DE APPS (NOVO) -->
-                            <div>
-                                <div class="flex justify-between items-center mb-8">
-                                    <div><h3 class="text-white font-black text-xl italic mb-1 uppercase tracking-tighter">Ecossistema Atmos</h3><p class="text-[10px] text-stone-600 uppercase tracking-widest font-bold">Logos dos Apps (AssistPlus, PlaySim, Roku, etc)</p></div>
-                                    <button type="button" onclick="window.addAppInput()" class="bg-amber-500/10 border border-amber-500/20 text-amber-500 px-6 py-3 rounded-xl text-[10px] font-black uppercase hover:bg-amber-500 hover:text-black transition-all">+ Novo App</button>
-                                </div>
-                                <div id="app-inputs" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
-                            </div>
-
-                            <button type="submit" class="w-full bg-amber-500 text-black py-6 rounded-2xl font-black uppercase mt-10 tracking-[0.3em] shadow-xl hover:bg-amber-400 transition-colors">Sincronizar Toda a Vitrine</button>
+                        <div class="flex justify-between items-center mb-12">
+                            <div><h3 class="text-white font-black text-xl italic mb-1 uppercase tracking-tighter">Curadoria Marquee</h3><p class="text-[10px] text-stone-600 uppercase tracking-widest font-bold">Posters do Carrossel</p></div>
+                            <button onclick="window.addImageInput()" class="bg-amber-500/10 border border-amber-500/20 text-amber-500 px-6 py-3 rounded-xl text-[10px] font-black uppercase hover:bg-amber-500 hover:text-black transition-all">+ Novo Slot</button>
+                        </div>
+                        <form id="media-form" class="space-y-6">
+                            <div id="media-inputs" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+                            <button type="submit" class="w-full bg-amber-500 text-black py-6 rounded-2xl font-black uppercase mt-10 tracking-[0.3em] shadow-xl hover:bg-amber-400 transition-colors">Sincronizar Vitrine</button>
                         </form>
                     </div>
                 </div>
@@ -360,6 +326,7 @@
                             <option value="mensal">Mensal</option>
                             <option value="trimestral">Trimestral</option>
                             <option value="anual">Anual</option>
+                            <!-- OPÇÕES ESTUDANTE DETALHADAS NO HQ -->
                             <option value="estudante - tv online">Estudante - TV Online</option>
                             <option value="estudante - filmes">Estudante - Filmes</option>
                             <option value="estudante - séries">Estudante - Séries</option>
@@ -418,11 +385,12 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { initializeFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // MATRIZ DE PREÇOS BASE
         const PRICING = { 
             "mensal": { 1: 35, 2: 40, 3: 50, 4: 60, 5: 70 }, 
             "trimestral": { 1: 95, 2: 110, 3: 140, 4: 170, 5: 200 }, 
             "anual": { 1: 238.80, 2: 288, 3: 350, 4: 400, 5: 450 },
-            "estudante": { 1: 14.90, 2: 14.90, 3: 14.90, 4: 14.90, 5: 14.90 },
+            "estudante": { 1: 14.90, 2: 14.90, 3: 14.90, 4: 14.90, 5: 14.90 }, // Mantido por retrocompatibilidade
             "estudante - tv online": { 1: 14.90, 2: 14.90, 3: 14.90, 4: 14.90, 5: 14.90 },
             "estudante - filmes": { 1: 14.90, 2: 14.90, 3: 14.90, 4: 14.90, 5: 14.90 },
             "estudante - séries": { 1: 14.90, 2: 14.90, 3: 14.90, 4: 14.90, 5: 14.90 }
@@ -430,8 +398,7 @@
         const COST_PER_SCREEN = 3.50;
         
         let clients = [];
-        let lpAssets = [];    // Array para os Posters
-        let appAssets = [];   // Array para os Logos dos Apps
+        let lpAssets = [];
         let pendingReferrals = []; 
         let activeClient = null;
         let editingClientIndex = -1;
@@ -482,18 +449,15 @@
                             const data = snapshot.data();
                             clients = data.clients || [];
                             lpAssets = data.lpAssets || getFallbackAssets();
-                            appAssets = data.appAssets || getFallbackAppAssets(); // NOVO DADO DA NUVEM
                             pendingReferrals = data.pendingReferrals || [];
                         } else {
                             const localBackup = JSON.parse(localStorage.getItem('atmos_cash_clients'));
                             if (localBackup && localBackup.length > 0) {
                                 clients = localBackup;
                                 lpAssets = JSON.parse(localStorage.getItem('atmos_showcase_assets')) || getFallbackAssets();
-                                appAssets = JSON.parse(localStorage.getItem('atmos_app_assets')) || getFallbackAppAssets();
                                 pendingReferrals = JSON.parse(localStorage.getItem('atmos_pending_referrals')) || [];
                             } else {
                                 if(lpAssets.length === 0) lpAssets = getFallbackAssets();
-                                if(appAssets.length === 0) appAssets = getFallbackAppAssets();
                             }
                             syncData(); 
                         }
@@ -508,7 +472,6 @@
         function initLocal() {
             clients = JSON.parse(localStorage.getItem('atmos_cash_clients')) || [];
             lpAssets = JSON.parse(localStorage.getItem('atmos_showcase_assets')) || getFallbackAssets();
-            appAssets = JSON.parse(localStorage.getItem('atmos_app_assets')) || getFallbackAppAssets();
             pendingReferrals = JSON.parse(localStorage.getItem('atmos_pending_referrals')) || [];
             refreshAllUI();
         }
@@ -516,11 +479,10 @@
         function syncData() {
             localStorage.setItem('atmos_cash_clients', JSON.stringify(clients));
             localStorage.setItem('atmos_showcase_assets', JSON.stringify(lpAssets));
-            localStorage.setItem('atmos_app_assets', JSON.stringify(appAssets)); // BACKUP LOCAL DOS APPS
             localStorage.setItem('atmos_pending_referrals', JSON.stringify(pendingReferrals));
 
             if (isCloudActive && docRef && auth.currentUser) {
-                setDoc(docRef, { clients, lpAssets, appAssets, pendingReferrals }, { merge: true }).catch(e => console.error(e));
+                setDoc(docRef, { clients, lpAssets, pendingReferrals }, { merge: true }).catch(e => console.error(e));
             }
         }
 
@@ -533,25 +495,12 @@
             ];
         }
 
-        function getFallbackAppAssets() {
-            // Imagens genéricas para os Apps caso ainda não tenham carregado
-            return [
-                "https://placehold.co/200x200/0a0a0a/d4af37?text=Assist+Plus",
-                "https://placehold.co/200x200/0a0a0a/d4af37?text=Play+Sim",
-                "https://placehold.co/200x200/0a0a0a/d4af37?text=Xcloud",
-                "https://placehold.co/200x200/0a0a0a/d4af37?text=IPTV",
-                "https://placehold.co/200x200/0a0a0a/d4af37?text=Plex"
-            ];
-        }
-
         function refreshAllUI() {
             lucide.createIcons();
             updateHQStats();
             renderHQTable();
-            renderMarquee(); // Posters
-            renderAppMarquee(); // Apps
-            renderPosterInputs(); // Form Posters
-            renderAppInputs(); // Form Apps
+            renderMarquee();
+            renderMediaInputs();
             if(activeClient) {
                 const refreshedClient = clients.find(c => c.phone === activeClient.phone);
                 if(refreshedClient) {
@@ -564,7 +513,7 @@
         function getMonthsByPlan(plan) {
             if(plan === 'trimestral') return 3;
             if(plan === 'anual') return 12;
-            return 1; 
+            return 1; // mensal, estudante...
         }
 
         window.updatePriceField = function() {
@@ -852,22 +801,13 @@
             lucide.createIcons();
         }
 
-        // CARROSSEL DE POSTERS
         function renderMarquee() {
             const container = document.getElementById('landing-marquee');
             const list = lpAssets.length > 0 ? [...lpAssets, ...lpAssets] : getFallbackAssets();
             container.innerHTML = list.map(url => `<div class="movie-card bg-stone-900"><img src="${url}" class="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity duration-700"></div>`).join('');
         }
 
-        // CARROSSEL DE APPS (NOVO)
-        function renderAppMarquee() {
-            const container = document.getElementById('landing-app-marquee');
-            const list = appAssets.length > 0 ? [...appAssets, ...appAssets, ...appAssets] : getFallbackAppAssets(); 
-            container.innerHTML = list.map(url => `<div class="app-card bg-stone-900/50"><img src="${url}" class="max-w-[80%] max-h-[80%] object-contain opacity-80" alt="App"></div>`).join('');
-        }
-
-        // INPUTS DE POSTERS
-        function renderPosterInputs() {
+        function renderMediaInputs() {
             const c = document.getElementById('media-inputs'); c.innerHTML = '';
             if(lpAssets.length === 0) lpAssets.push("");
             lpAssets.forEach((u, i) => {
@@ -876,56 +816,29 @@
                         <div class="w-full h-40 bg-black rounded-2xl overflow-hidden relative group">
                             <img src="${u}" class="w-full h-full object-cover opacity-50" onerror="this.src='https://via.placeholder.com/300x150/050505/f59e0b?text=Slot+Livre'">
                             <label class="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                                <span class="bg-amber-500 text-black px-4 py-2 rounded-lg font-black uppercase text-[9px] tracking-widest">Mudar Imagem</span>
-                                <input type="file" class="hidden" accept="image/*" onchange="window.handlePosterFile(event, ${i})">
+                                <span class="bg-amber-500 text-black px-4 py-2 rounded-lg font-black uppercase text-[9px] tracking-widest">Carregar do PC</span>
+                                <input type="file" class="hidden" accept="image/*" onchange="window.handleHQFile(event, ${i})">
                             </label>
                         </div>
-                        <input type="text" value="${u.startsWith('data') ? '[IMAGEM LOCAL]' : u}" onchange="lpAssets[${i}]=this.value" class="w-full bg-black border border-white/10 rounded-xl p-4 text-[9px] text-stone-500 font-mono" placeholder="Colar Link do Poster...">
+                        <input type="text" value="${u.startsWith('data') ? '[IMAGEM LOCAL]' : u}" onchange="lpAssets[${i}]=this.value" class="w-full bg-black border border-white/10 rounded-xl p-4 text-[9px] text-stone-500 font-mono" placeholder="Ou cole o link da imagem aqui...">
                     </div>`;
             });
             lucide.createIcons();
         }
 
-        // INPUTS DE APPS (NOVO)
-        function renderAppInputs() {
-            const c = document.getElementById('app-inputs'); c.innerHTML = '';
-            if(appAssets.length === 0) appAssets.push("");
-            appAssets.forEach((u, i) => {
-                c.innerHTML += `
-                    <div class="glass-panel p-4 rounded-3xl space-y-4 border-white/5">
-                        <div class="w-full h-24 bg-black rounded-2xl overflow-hidden relative group">
-                            <img src="${u}" class="w-full h-full object-contain p-2 opacity-70" onerror="this.src='https://placehold.co/200x200/050505/f59e0b?text=App'">
-                            <label class="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                                <span class="bg-amber-500 text-black px-3 py-1 rounded-lg font-black uppercase text-[8px] tracking-widest">Trocar</span>
-                                <input type="file" class="hidden" accept="image/*" onchange="window.handleAppFile(event, ${i})">
-                            </label>
-                        </div>
-                        <input type="text" value="${u.startsWith('data') ? '[IMAGEM LOCAL]' : u}" onchange="appAssets[${i}]=this.value" class="w-full bg-black border border-white/10 rounded-xl p-3 text-[8px] text-stone-500 font-mono" placeholder="Colar Link Logo...">
-                    </div>`;
-            });
-        }
-
-        window.handlePosterFile = function(e, i) {
+        window.handleHQFile = function(e, i) {
             const f = e.target.files[0]; const r = new FileReader();
-            r.onload = (ev) => { lpAssets[i] = ev.target.result; renderPosterInputs(); window.showFeedback("POSTER CARREGADO"); }; r.readAsDataURL(f);
+            r.onload = (ev) => { lpAssets[i] = ev.target.result; renderMediaInputs(); window.showFeedback("CARREGADA"); }; r.readAsDataURL(f);
         }
 
-        window.handleAppFile = function(e, i) {
-            const f = e.target.files[0]; const r = new FileReader();
-            r.onload = (ev) => { appAssets[i] = ev.target.result; renderAppInputs(); window.showFeedback("LOGO CARREGADO"); }; r.readAsDataURL(f);
-        }
-
-        window.addPosterInput = function() { lpAssets.push(""); renderPosterInputs(); }
-        window.addAppInput = function() { appAssets.push(""); renderAppInputs(); }
+        window.addImageInput = function() { lpAssets.push(""); renderMediaInputs(); }
 
         document.getElementById('media-form').addEventListener('submit', (e) => {
             e.preventDefault(); 
             lpAssets = lpAssets.filter(v=>v.trim()!=="");
-            appAssets = appAssets.filter(v=>v.trim()!==""); // Limpa logos vazios
             syncData();
             window.showFeedback("VITRINE ATUALIZADA"); 
             renderMarquee(); 
-            renderAppMarquee();
             window.showLanding();
         });
 
