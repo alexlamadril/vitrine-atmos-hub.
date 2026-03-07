@@ -865,7 +865,7 @@
             container.innerHTML = list.map(url => `<div class="app-card bg-stone-900/50"><img src="${url}" class="max-w-[80%] max-h-[80%] object-contain opacity-80" alt="App" onerror="this.src='https://placehold.co/200x200/050505/f59e0b?text=App'"></div>`).join('');
         }
 
-        // FUNÇÕES GLOBAIS PARA ATUALIZAÇÃO VIA TEXTO (Resolve o Bug de Perda de Foco/Atraso de Sincronia)
+        // FUNÇÕES GLOBAIS PARA ATUALIZAÇÃO VIA TEXTO
         window.updatePosterUrl = function(index, value) {
             window.lpAssets[index] = value;
             const img = document.getElementById(`poster-preview-${index}`);
@@ -894,7 +894,7 @@
             }
         };
 
-        // MOTOR DE COMPRESSÃO DE IMAGENS (Evita sobrecarga e limite de tamanho do banco de dados Nuvem)
+        // MOTOR DE COMPRESSÃO DE IMAGENS 
         window.processImageFile = function(file, maxDim, callback) {
             const reader = new FileReader();
             reader.onload = (ev) => {
@@ -910,7 +910,7 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, w, h);
                     const mimeType = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
-                    callback(canvas.toDataURL(mimeType, 0.85)); // Qualidade 85% para leveza extrema
+                    callback(canvas.toDataURL(mimeType, 0.85)); 
                 };
                 img.src = ev.target.result;
             };
