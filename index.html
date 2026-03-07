@@ -292,7 +292,7 @@
                 </div>
             </div>
 
-            <!-- NOVA ÁREA DE GESTÃO VISUAL (POSTERS + APPS) -->
+            <!-- ÁREA DE GESTÃO VISUAL (POSTERS + APPS) -->
             <div id="admin-media" class="hidden h-full flex flex-col">
                 <header class="h-24 border-b border-stone-900 flex items-center px-10 bg-black/40"><h1 class="text-white text-2xl font-black italic uppercase tracking-tighter">Gestão <span class="text-amber-500">Visual</span></h1></header>
                 <div class="p-10 overflow-y-auto flex-1 bg-neutral-950">
@@ -310,7 +310,7 @@
 
                             <hr class="border-white/5">
 
-                            <!-- SEÇÃO DE APPS (NOVO) -->
+                            <!-- SEÇÃO DE APPS -->
                             <div>
                                 <div class="flex justify-between items-center mb-8">
                                     <div><h3 class="text-white font-black text-xl italic mb-1 uppercase tracking-tighter">Ecossistema Atmos</h3><p class="text-[10px] text-stone-600 uppercase tracking-widest font-bold">Logos dos Apps (AssistPlus, PlaySim, Roku, etc)</p></div>
@@ -430,8 +430,8 @@
         const COST_PER_SCREEN = 3.50;
         
         let clients = [];
-        let lpAssets = [];    // Array para os Posters
-        let appAssets = [];   // Array para os Logos dos Apps
+        window.lpAssets = [];    // Agora é acessível globalmente
+        window.appAssets = [];   // Agora é acessível globalmente
         let pendingReferrals = []; 
         let activeClient = null;
         let editingClientIndex = -1;
@@ -481,19 +481,19 @@
                         if (snapshot.exists()) {
                             const data = snapshot.data();
                             clients = data.clients || [];
-                            lpAssets = data.lpAssets || getFallbackAssets();
-                            appAssets = data.appAssets || getFallbackAppAssets(); // NOVO DADO DA NUVEM
+                            window.lpAssets = data.lpAssets || getFallbackAssets();
+                            window.appAssets = data.appAssets || getFallbackAppAssets();
                             pendingReferrals = data.pendingReferrals || [];
                         } else {
                             const localBackup = JSON.parse(localStorage.getItem('atmos_cash_clients'));
                             if (localBackup && localBackup.length > 0) {
                                 clients = localBackup;
-                                lpAssets = JSON.parse(localStorage.getItem('atmos_showcase_assets')) || getFallbackAssets();
-                                appAssets = JSON.parse(localStorage.getItem('atmos_app_assets')) || getFallbackAppAssets();
+                                window.lpAssets = JSON.parse(localStorage.getItem('atmos_showcase_assets')) || getFallbackAssets();
+                                window.appAssets = JSON.parse(localStorage.getItem('atmos_app_assets')) || getFallbackAppAssets();
                                 pendingReferrals = JSON.parse(localStorage.getItem('atmos_pending_referrals')) || [];
                             } else {
-                                if(lpAssets.length === 0) lpAssets = getFallbackAssets();
-                                if(appAssets.length === 0) appAssets = getFallbackAppAssets();
+                                if(window.lpAssets.length === 0) window.lpAssets = getFallbackAssets();
+                                if(window.appAssets.length === 0) window.appAssets = getFallbackAppAssets();
                             }
                             syncData(); 
                         }
@@ -507,20 +507,20 @@
 
         function initLocal() {
             clients = JSON.parse(localStorage.getItem('atmos_cash_clients')) || [];
-            lpAssets = JSON.parse(localStorage.getItem('atmos_showcase_assets')) || getFallbackAssets();
-            appAssets = JSON.parse(localStorage.getItem('atmos_app_assets')) || getFallbackAppAssets();
+            window.lpAssets = JSON.parse(localStorage.getItem('atmos_showcase_assets')) || getFallbackAssets();
+            window.appAssets = JSON.parse(localStorage.getItem('atmos_app_assets')) || getFallbackAppAssets();
             pendingReferrals = JSON.parse(localStorage.getItem('atmos_pending_referrals')) || [];
             refreshAllUI();
         }
 
         function syncData() {
             localStorage.setItem('atmos_cash_clients', JSON.stringify(clients));
-            localStorage.setItem('atmos_showcase_assets', JSON.stringify(lpAssets));
-            localStorage.setItem('atmos_app_assets', JSON.stringify(appAssets)); // BACKUP LOCAL DOS APPS
+            localStorage.setItem('atmos_showcase_assets', JSON.stringify(window.lpAssets));
+            localStorage.setItem('atmos_app_assets', JSON.stringify(window.appAssets));
             localStorage.setItem('atmos_pending_referrals', JSON.stringify(pendingReferrals));
 
             if (isCloudActive && docRef && auth.currentUser) {
-                setDoc(docRef, { clients, lpAssets, appAssets, pendingReferrals }, { merge: true }).catch(e => console.error(e));
+                setDoc(docRef, { clients, lpAssets: window.lpAssets, appAssets: window.appAssets, pendingReferrals }, { merge: true }).catch(e => console.error(e));
             }
         }
 
@@ -534,7 +534,6 @@
         }
 
         function getFallbackAppAssets() {
-            // Imagens genéricas para os Apps caso ainda não tenham carregado
             return [
                 "https://placehold.co/200x200/0a0a0a/d4af37?text=Assist+Plus",
                 "https://placehold.co/200x200/0a0a0a/d4af37?text=Play+Sim",
@@ -548,10 +547,10 @@
             lucide.createIcons();
             updateHQStats();
             renderHQTable();
-            renderMarquee(); // Posters
-            renderAppMarquee(); // Apps
-            renderPosterInputs(); // Form Posters
-            renderAppInputs(); // Form Apps
+            renderMarquee(); 
+            renderAppMarquee(); 
+            renderPosterInputs(); 
+            renderAppInputs(); 
             if(activeClient) {
                 const refreshedClient = clients.find(c => c.phone === activeClient.phone);
                 if(refreshedClient) {
@@ -855,22 +854,33 @@
         // CARROSSEL DE POSTERS
         function renderMarquee() {
             const container = document.getElementById('landing-marquee');
-            const list = lpAssets.length > 0 ? [...lpAssets, ...lpAssets] : getFallbackAssets();
+            const list = window.lpAssets.length > 0 ? [...window.lpAssets, ...window.lpAssets] : getFallbackAssets();
             container.innerHTML = list.map(url => `<div class="movie-card bg-stone-900"><img src="${url}" class="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity duration-700"></div>`).join('');
         }
 
-        // CARROSSEL DE APPS (NOVO)
+        // CARROSSEL DE APPS
         function renderAppMarquee() {
             const container = document.getElementById('landing-app-marquee');
-            const list = appAssets.length > 0 ? [...appAssets, ...appAssets, ...appAssets] : getFallbackAppAssets(); 
+            const list = window.appAssets.length > 0 ? [...window.appAssets, ...window.appAssets, ...window.appAssets] : getFallbackAppAssets(); 
             container.innerHTML = list.map(url => `<div class="app-card bg-stone-900/50"><img src="${url}" class="max-w-[80%] max-h-[80%] object-contain opacity-80" alt="App"></div>`).join('');
         }
+
+        // FUNÇÕES GLOBAIS PARA ATUALIZAÇÃO VIA TEXTO
+        window.updatePosterUrl = function(index, value) {
+            window.lpAssets[index] = value;
+            renderPosterInputs();
+        };
+
+        window.updateAppUrl = function(index, value) {
+            window.appAssets[index] = value;
+            renderAppInputs();
+        };
 
         // INPUTS DE POSTERS
         function renderPosterInputs() {
             const c = document.getElementById('media-inputs'); c.innerHTML = '';
-            if(lpAssets.length === 0) lpAssets.push("");
-            lpAssets.forEach((u, i) => {
+            if(window.lpAssets.length === 0) window.lpAssets.push("");
+            window.lpAssets.forEach((u, i) => {
                 c.innerHTML += `
                     <div class="glass-panel p-6 rounded-3xl space-y-4 border-white/5">
                         <div class="w-full h-40 bg-black rounded-2xl overflow-hidden relative group">
@@ -880,17 +890,17 @@
                                 <input type="file" class="hidden" accept="image/*" onchange="window.handlePosterFile(event, ${i})">
                             </label>
                         </div>
-                        <input type="text" value="${u.startsWith('data') ? '[IMAGEM LOCAL]' : u}" onchange="lpAssets[${i}]=this.value" class="w-full bg-black border border-white/10 rounded-xl p-4 text-[9px] text-stone-500 font-mono" placeholder="Colar Link do Poster...">
+                        <input type="text" value="${u.startsWith('data') ? '[IMAGEM LOCAL]' : u}" onchange="window.updatePosterUrl(${i}, this.value)" class="w-full bg-black border border-white/10 rounded-xl p-4 text-[9px] text-stone-500 font-mono" placeholder="Colar Link do Poster...">
                     </div>`;
             });
             lucide.createIcons();
         }
 
-        // INPUTS DE APPS (NOVO)
+        // INPUTS DE APPS
         function renderAppInputs() {
             const c = document.getElementById('app-inputs'); c.innerHTML = '';
-            if(appAssets.length === 0) appAssets.push("");
-            appAssets.forEach((u, i) => {
+            if(window.appAssets.length === 0) window.appAssets.push("");
+            window.appAssets.forEach((u, i) => {
                 c.innerHTML += `
                     <div class="glass-panel p-4 rounded-3xl space-y-4 border-white/5">
                         <div class="w-full h-24 bg-black rounded-2xl overflow-hidden relative group">
@@ -900,28 +910,29 @@
                                 <input type="file" class="hidden" accept="image/*" onchange="window.handleAppFile(event, ${i})">
                             </label>
                         </div>
-                        <input type="text" value="${u.startsWith('data') ? '[IMAGEM LOCAL]' : u}" onchange="appAssets[${i}]=this.value" class="w-full bg-black border border-white/10 rounded-xl p-3 text-[8px] text-stone-500 font-mono" placeholder="Colar Link Logo...">
+                        <input type="text" value="${u.startsWith('data') ? '[IMAGEM LOCAL]' : u}" onchange="window.updateAppUrl(${i}, this.value)" class="w-full bg-black border border-white/10 rounded-xl p-3 text-[8px] text-stone-500 font-mono" placeholder="Colar Link Logo...">
                     </div>`;
             });
+            lucide.createIcons();
         }
 
         window.handlePosterFile = function(e, i) {
             const f = e.target.files[0]; const r = new FileReader();
-            r.onload = (ev) => { lpAssets[i] = ev.target.result; renderPosterInputs(); window.showFeedback("POSTER CARREGADO"); }; r.readAsDataURL(f);
+            r.onload = (ev) => { window.lpAssets[i] = ev.target.result; renderPosterInputs(); window.showFeedback("POSTER CARREGADO"); }; r.readAsDataURL(f);
         }
 
         window.handleAppFile = function(e, i) {
             const f = e.target.files[0]; const r = new FileReader();
-            r.onload = (ev) => { appAssets[i] = ev.target.result; renderAppInputs(); window.showFeedback("LOGO CARREGADO"); }; r.readAsDataURL(f);
+            r.onload = (ev) => { window.appAssets[i] = ev.target.result; renderAppInputs(); window.showFeedback("LOGO CARREGADO"); }; r.readAsDataURL(f);
         }
 
-        window.addPosterInput = function() { lpAssets.push(""); renderPosterInputs(); }
-        window.addAppInput = function() { appAssets.push(""); renderAppInputs(); }
+        window.addPosterInput = function() { window.lpAssets.push(""); renderPosterInputs(); }
+        window.addAppInput = function() { window.appAssets.push(""); renderAppInputs(); }
 
         document.getElementById('media-form').addEventListener('submit', (e) => {
             e.preventDefault(); 
-            lpAssets = lpAssets.filter(v=>v.trim()!=="");
-            appAssets = appAssets.filter(v=>v.trim()!==""); // Limpa logos vazios
+            window.lpAssets = window.lpAssets.filter(v=>v.trim()!=="");
+            window.appAssets = window.appAssets.filter(v=>v.trim()!==""); 
             syncData();
             window.showFeedback("VITRINE ATUALIZADA"); 
             renderMarquee(); 
