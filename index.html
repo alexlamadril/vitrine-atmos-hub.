@@ -191,9 +191,9 @@
                     <!-- NOVO: FORMULÁRIO DE LEADS E INDICAÇÃO PERFEITO -->
                     <div class="space-y-3 border-t border-white/5 pt-6">
                         <p class="text-[9px] text-stone-500 uppercase font-black tracking-widest text-left ml-2">Indique e Ganhe (Dados do Amigo):</p>
-                        <input type="text" id="referralFriendName" placeholder="Nome do amigo" autocomplete="off" class="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
+                        <input type="text" id="referralFriendName" placeholder="Nome do amigo" autocomplete="new-password" class="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
                         <div class="flex gap-2">
-                            <input type="tel" id="referralFriendPhone" placeholder="WhatsApp do amigo" autocomplete="off" class="flex-1 bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
+                            <input type="text" inputmode="numeric" id="wpp_amigo_ref" placeholder="WhatsApp do amigo" autocomplete="new-password" class="flex-1 bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
                             <button onclick="window.sendReferral()" class="bg-amber-500 text-black px-6 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-amber-400 transition-all shadow-lg">Indicar</button>
                         </div>
                     </div>
@@ -532,7 +532,7 @@
             if(!activeClient) return;
             
             const friendName = document.getElementById('referralFriendName').value.trim();
-            const friendPhone = document.getElementById('referralFriendPhone').value.replace(/\D/g, '');
+            const friendPhone = document.getElementById('wpp_amigo_ref').value.replace(/\D/g, '');
             
             if(!friendName) { window.showFeedback("DIGITE O NOME DO AMIGO"); return; }
             if(friendPhone.length < 10) { window.showFeedback("WHATSAPP INVÁLIDO"); return; }
@@ -552,7 +552,7 @@
             window.open(`https://api.whatsapp.com/send?phone=${friendPhone}&text=${encodeURIComponent(msg)}`, '_blank');
             
             document.getElementById('referralFriendName').value = "";
-            document.getElementById('referralFriendPhone').value = "";
+            document.getElementById('wpp_amigo_ref').value = "";
             window.showFeedback("LEAD CAPTADO E CONVITE ENVIADO");
         }
 
