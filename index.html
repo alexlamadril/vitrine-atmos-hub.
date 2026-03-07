@@ -855,29 +855,28 @@
         function renderMarquee() {
             const container = document.getElementById('landing-marquee');
             const list = window.lpAssets.length > 0 ? [...window.lpAssets, ...window.lpAssets] : getFallbackAssets();
-            container.innerHTML = list.map(url => `<div class="movie-card bg-stone-900"><img src="${url}" class="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity duration-700" onerror="this.src='https://placehold.co/300x420/050505/f59e0b?text=Atmos'"></div>`).join('');
+            container.innerHTML = list.map(url => `<div class="movie-card bg-stone-900"><img src="${url}" class="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity duration-700"></div>`).join('');
         }
 
         // CARROSSEL DE APPS
         function renderAppMarquee() {
             const container = document.getElementById('landing-app-marquee');
             const list = window.appAssets.length > 0 ? [...window.appAssets, ...window.appAssets, ...window.appAssets] : getFallbackAppAssets(); 
-            container.innerHTML = list.map(url => `<div class="app-card bg-stone-900/50"><img src="${url}" class="max-w-[80%] max-h-[80%] object-contain opacity-80" alt="App" onerror="this.src='https://placehold.co/200x200/050505/f59e0b?text=App'"></div>`).join('');
+            container.innerHTML = list.map(url => `<div class="app-card bg-stone-900/50"><img src="${url}" class="max-w-[80%] max-h-[80%] object-contain opacity-80" alt="App"></div>`).join('');
         }
 
-        // FUNÇÕES GLOBAIS PARA ATUALIZAÇÃO VIA TEXTO (Resolve o Bug de Perda de Foco/Atraso de Sincronia)
+        // FUNÇÕES GLOBAIS PARA ATUALIZAÇÃO VIA TEXTO (Resolvendo o bug da falta de atualização por link)
         window.updatePosterUrl = function(index, value) {
             window.lpAssets[index] = value;
-            const img = document.getElementById(`poster-preview-${index}`);
-            if(img) img.src = value;
+            renderPosterInputs();
         };
 
         window.updateAppUrl = function(index, value) {
             window.appAssets[index] = value;
-            const img = document.getElementById(`app-preview-${index}`);
-            if(img) img.src = value;
+            renderAppInputs();
         };
 
+        // FUNÇÕES DE REMOÇÃO (O poder da Lixeira)
         window.removePoster = function(index) {
             if(confirm("Tem certeza que deseja remover este poster da sua vitrine?")) {
                 window.lpAssets.splice(index, 1);
@@ -894,39 +893,15 @@
             }
         };
 
-        // MOTOR DE COMPRESSÃO DE IMAGENS (Evita sobrecarga e limite de tamanho do banco de dados Nuvem)
-        window.processImageFile = function(file, maxDim, callback) {
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                const img = new Image();
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    let w = img.width, h = img.height;
-                    if(w > maxDim || h > maxDim) {
-                        if(w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
-                        else { w = Math.round(w * maxDim / h); h = maxDim; }
-                    }
-                    canvas.width = w; canvas.height = h;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, w, h);
-                    const mimeType = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
-                    callback(canvas.toDataURL(mimeType, 0.85)); // Qualidade 85% para leveza extrema
-                };
-                img.src = ev.target.result;
-            };
-            reader.readAsDataURL(file);
-        };
-
-        // INPUTS DE POSTERS
+        // INPUTS DE POSTERS COM BOTÃO DE REMOÇÃO
         function renderPosterInputs() {
             const c = document.getElementById('media-inputs'); c.innerHTML = '';
             if(window.lpAssets.length === 0) window.lpAssets.push("");
             window.lpAssets.forEach((u, i) => {
-                const isData = u.startsWith('data');
                 c.innerHTML += `
                     <div class="glass-panel p-6 rounded-3xl space-y-4 border-white/5 relative">
                         <div class="w-full h-40 bg-black rounded-2xl overflow-hidden relative group">
-                            <img id="poster-preview-${i}" src="${u}" class="w-full h-full object-cover opacity-50" onerror="this.src='https://placehold.co/300x150/050505/f59e0b?text=Slot+Livre'">
+                            <img src="${u}" class="w-full h-full object-cover opacity-50" onerror="this.src='https://via.placeholder.com/300x150/050505/f59e0b?text=Slot+Livre'">
                             <label class="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                                 <span class="bg-amber-500 text-black px-4 py-2 rounded-lg font-black uppercase text-[9px] tracking-widest">Mudar Imagem</span>
                                 <input type="file" class="hidden" accept="image/*" onchange="window.handlePosterFile(event, ${i})">
@@ -935,22 +910,21 @@
                                 <i data-lucide="trash-2" class="w-4 h-4"></i>
                             </button>
                         </div>
-                        <input type="text" value="${isData ? '' : u}" oninput="window.updatePosterUrl(${i}, this.value)" class="w-full bg-black border border-white/10 rounded-xl p-4 text-[9px] text-stone-500 font-mono" placeholder="${isData ? '[IMAGEM CARREGADA - Colar novo link...]' : 'Colar Link do Poster...'}">
+                        <input type="text" value="${u.startsWith('data') ? '[IMAGEM LOCAL]' : u}" onchange="window.updatePosterUrl(${i}, this.value)" class="w-full bg-black border border-white/10 rounded-xl p-4 text-[9px] text-stone-500 font-mono" placeholder="Colar Link do Poster...">
                     </div>`;
             });
             lucide.createIcons();
         }
 
-        // INPUTS DE APPS
+        // INPUTS DE APPS COM BOTÃO DE REMOÇÃO
         function renderAppInputs() {
             const c = document.getElementById('app-inputs'); c.innerHTML = '';
             if(window.appAssets.length === 0) window.appAssets.push("");
             window.appAssets.forEach((u, i) => {
-                const isData = u.startsWith('data');
                 c.innerHTML += `
                     <div class="glass-panel p-4 rounded-3xl space-y-4 border-white/5 relative">
                         <div class="w-full h-24 bg-black rounded-2xl overflow-hidden relative group">
-                            <img id="app-preview-${i}" src="${u}" class="w-full h-full object-contain p-2 opacity-70" onerror="this.src='https://placehold.co/200x200/050505/f59e0b?text=App'">
+                            <img src="${u}" class="w-full h-full object-contain p-2 opacity-70" onerror="this.src='https://placehold.co/200x200/050505/f59e0b?text=App'">
                             <label class="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                                 <span class="bg-amber-500 text-black px-3 py-1 rounded-lg font-black uppercase text-[8px] tracking-widest">Trocar</span>
                                 <input type="file" class="hidden" accept="image/*" onchange="window.handleAppFile(event, ${i})">
@@ -959,30 +933,20 @@
                                 <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                             </button>
                         </div>
-                        <input type="text" value="${isData ? '' : u}" oninput="window.updateAppUrl(${i}, this.value)" class="w-full bg-black border border-white/10 rounded-xl p-3 text-[8px] text-stone-500 font-mono" placeholder="${isData ? '[IMAGEM CARREGADA]' : 'Colar Link Logo...'}">
+                        <input type="text" value="${u.startsWith('data') ? '[IMAGEM LOCAL]' : u}" onchange="window.updateAppUrl(${i}, this.value)" class="w-full bg-black border border-white/10 rounded-xl p-3 text-[8px] text-stone-500 font-mono" placeholder="Colar Link Logo...">
                     </div>`;
             });
             lucide.createIcons();
         }
 
         window.handlePosterFile = function(e, i) {
-            const f = e.target.files[0]; 
-            if(!f) return;
-            window.processImageFile(f, 800, (compressedData) => {
-                window.lpAssets[i] = compressedData; 
-                renderPosterInputs(); 
-                window.showFeedback("POSTER CARREGADO"); 
-            });
+            const f = e.target.files[0]; const r = new FileReader();
+            r.onload = (ev) => { window.lpAssets[i] = ev.target.result; renderPosterInputs(); window.showFeedback("POSTER CARREGADO"); }; r.readAsDataURL(f);
         }
 
         window.handleAppFile = function(e, i) {
-            const f = e.target.files[0]; 
-            if(!f) return;
-            window.processImageFile(f, 300, (compressedData) => {
-                window.appAssets[i] = compressedData; 
-                renderAppInputs(); 
-                window.showFeedback("LOGO CARREGADO"); 
-            });
+            const f = e.target.files[0]; const r = new FileReader();
+            r.onload = (ev) => { window.appAssets[i] = ev.target.result; renderAppInputs(); window.showFeedback("LOGO CARREGADO"); }; r.readAsDataURL(f);
         }
 
         window.addPosterInput = function() { window.lpAssets.push(""); renderPosterInputs(); }
