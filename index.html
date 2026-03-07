@@ -188,12 +188,13 @@
                         <span id="p-affiliate-code" class="text-xl font-black text-amber-500 tracking-[0.3em]">ATMOS-CODE</span>
                     </div>
                     
-                    <!-- NOVO: FORMULÁRIO DE LEADS E INDICAÇÃO PERFEITO -->
+                    <!-- NOVO: FORMULÁRIO DE LEADS E INDICAÇÃO PERFEITO COM BLINDAGEM ANTI-AUTOFILL -->
                     <div class="space-y-3 border-t border-white/5 pt-6">
                         <p class="text-[9px] text-stone-500 uppercase font-black tracking-widest text-left ml-2">Indique e Ganhe (Dados do Amigo):</p>
-                        <input type="text" id="referralFriendName" placeholder="Nome do amigo" autocomplete="new-password" class="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
+                        <input type="text" id="referralFriendName" name="dummy_name_field_prevent_autofill" autocomplete="nope" data-lpignore="true" data-form-type="other" placeholder="Nome do amigo" class="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
                         <div class="flex gap-2">
-                            <input type="text" inputmode="numeric" id="wpp_amigo_ref" placeholder="WhatsApp do amigo" autocomplete="new-password" class="flex-1 bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
+                            <!-- Mantido type="text" rigorosamente conforme o pedido, mas blindado para o navegador não reconhecer como email -->
+                            <input type="text" inputmode="numeric" id="wpp_amigo_ref" name="dummy_phone_field_prevent_autofill" autocomplete="nope" data-lpignore="true" data-form-type="other" placeholder="WhatsApp do amigo" class="flex-1 bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
                             <button onclick="window.sendReferral()" class="bg-amber-500 text-black px-6 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-amber-400 transition-all shadow-lg">Indicar</button>
                         </div>
                     </div>
