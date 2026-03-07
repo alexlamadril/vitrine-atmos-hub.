@@ -436,6 +436,29 @@
         let activeClient = null;
         let editingClientIndex = -1;
 
+        // --- SISTEMA DE PROTEÇÃO OFFLINE-FIRST ---
+        // Suga os dados da memória local instantaneamente para evitar tela branca ou congelamentos
+        function bootOfflineFirst() {
+            const localClients = localStorage.getItem('atmos_cash_clients');
+            if (localClients) clients = JSON.parse(localClients);
+            
+            const localPosters = localStorage.getItem('atmos_showcase_assets');
+            window.lpAssets = localPosters ? JSON.parse(localPosters) : [];
+            if(window.lpAssets.length === 0) window.lpAssets = getFallbackAssets();
+
+            const localApps = localStorage.getItem('atmos_app_assets');
+            window.appAssets = localApps ? JSON.parse(localApps) : [];
+            if(window.appAssets.length === 0) window.appAssets = getFallbackAppAssets();
+
+            const localRefs = localStorage.getItem('atmos_pending_referrals');
+            if (localRefs) pendingReferrals = JSON.parse(localRefs);
+
+            refreshAllUI(); // Monta a Vitrine e o HQ instantaneamente!
+        }
+
+        // Roda a proteção IMEDIATAMENTE
+        bootOfflineFirst();
+
         let app, auth, db, docRef;
         let isCloudActive = false;
 
@@ -458,8 +481,7 @@
             
             initCloud();
         } catch(e) {
-            console.error("Falha ao iniciar nuvem:", e);
-            initLocal();
+            console.error("Falha ao iniciar nuvem. O sistema continuará offline perfeitamente.", e);
         }
 
         async function initCloud() {
@@ -467,7 +489,6 @@
                 await signInAnonymously(auth);
             } catch (e) {
                 console.error("Erro ao autenticar na nuvem", e);
-                initLocal();
                 return;
             }
 
@@ -481,36 +502,18 @@
                         if (snapshot.exists()) {
                             const data = snapshot.data();
                             clients = data.clients || [];
-                            window.lpAssets = data.lpAssets || getFallbackAssets();
-                            window.appAssets = data.appAssets || getFallbackAppAssets();
+                            window.lpAssets = (data.lpAssets && data.lpAssets.length > 0) ? data.lpAssets : getFallbackAssets();
+                            window.appAssets = (data.appAssets && data.appAssets.length > 0) ? data.appAssets : getFallbackAppAssets();
                             pendingReferrals = data.pendingReferrals || [];
                         } else {
-                            const localBackup = JSON.parse(localStorage.getItem('atmos_cash_clients'));
-                            if (localBackup && localBackup.length > 0) {
-                                clients = localBackup;
-                                window.lpAssets = JSON.parse(localStorage.getItem('atmos_showcase_assets')) || getFallbackAssets();
-                                window.appAssets = JSON.parse(localStorage.getItem('atmos_app_assets')) || getFallbackAppAssets();
-                                pendingReferrals = JSON.parse(localStorage.getItem('atmos_pending_referrals')) || [];
-                            } else {
-                                if(window.lpAssets.length === 0) window.lpAssets = getFallbackAssets();
-                                if(window.appAssets.length === 0) window.appAssets = getFallbackAppAssets();
-                            }
-                            syncData(); 
+                            syncData(); // Sobe a cópia de segurança se a nuvem for nova
                         }
                         refreshAllUI();
                     }, (error) => {
-                        console.error("Erro na sincronização:", error);
+                        console.error("A Nuvem está lenta ou bloqueada. A Vitrine continuará a usar a memória local.", error);
                     });
                 }
             });
-        }
-
-        function initLocal() {
-            clients = JSON.parse(localStorage.getItem('atmos_cash_clients')) || [];
-            window.lpAssets = JSON.parse(localStorage.getItem('atmos_showcase_assets')) || getFallbackAssets();
-            window.appAssets = JSON.parse(localStorage.getItem('atmos_app_assets')) || getFallbackAppAssets();
-            pendingReferrals = JSON.parse(localStorage.getItem('atmos_pending_referrals')) || [];
-            refreshAllUI();
         }
 
         function syncData() {
@@ -1066,7 +1069,8 @@
             }
         });
 
-        document.addEventListener('DOMContentLoaded', refreshAllUI);
+        // Removido o DOMContentLoaded que deixava a tela esperando. 
+        // Agora o bootOfflineFirst cuida de tudo no exato segundo em que a tela abre!
 
     </script>
 </body>
