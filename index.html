@@ -430,8 +430,8 @@
         const COST_PER_SCREEN = 3.50;
         
         let clients = [];
-        window.lpAssets = [];    // Agora é acessível globalmente
-        window.appAssets = [];   // Agora é acessível globalmente
+        window.lpAssets = [];    
+        window.appAssets = [];   
         let pendingReferrals = []; 
         let activeClient = null;
         let editingClientIndex = -1;
@@ -865,7 +865,7 @@
             container.innerHTML = list.map(url => `<div class="app-card bg-stone-900/50"><img src="${url}" class="max-w-[80%] max-h-[80%] object-contain opacity-80" alt="App"></div>`).join('');
         }
 
-        // FUNÇÕES GLOBAIS PARA ATUALIZAÇÃO VIA TEXTO
+        // FUNÇÕES GLOBAIS PARA ATUALIZAÇÃO VIA TEXTO (Resolvendo o bug da falta de atualização por link)
         window.updatePosterUrl = function(index, value) {
             window.lpAssets[index] = value;
             renderPosterInputs();
@@ -876,19 +876,39 @@
             renderAppInputs();
         };
 
-        // INPUTS DE POSTERS
+        // FUNÇÕES DE REMOÇÃO (O poder da Lixeira)
+        window.removePoster = function(index) {
+            if(confirm("Tem certeza que deseja remover este poster da sua vitrine?")) {
+                window.lpAssets.splice(index, 1);
+                renderPosterInputs();
+                window.showFeedback("POSTER REMOVIDO");
+            }
+        };
+
+        window.removeApp = function(index) {
+            if(confirm("Tem certeza que deseja remover este App do ecossistema?")) {
+                window.appAssets.splice(index, 1);
+                renderAppInputs();
+                window.showFeedback("APP REMOVIDO");
+            }
+        };
+
+        // INPUTS DE POSTERS COM BOTÃO DE REMOÇÃO
         function renderPosterInputs() {
             const c = document.getElementById('media-inputs'); c.innerHTML = '';
             if(window.lpAssets.length === 0) window.lpAssets.push("");
             window.lpAssets.forEach((u, i) => {
                 c.innerHTML += `
-                    <div class="glass-panel p-6 rounded-3xl space-y-4 border-white/5">
+                    <div class="glass-panel p-6 rounded-3xl space-y-4 border-white/5 relative">
                         <div class="w-full h-40 bg-black rounded-2xl overflow-hidden relative group">
                             <img src="${u}" class="w-full h-full object-cover opacity-50" onerror="this.src='https://via.placeholder.com/300x150/050505/f59e0b?text=Slot+Livre'">
                             <label class="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                                 <span class="bg-amber-500 text-black px-4 py-2 rounded-lg font-black uppercase text-[9px] tracking-widest">Mudar Imagem</span>
                                 <input type="file" class="hidden" accept="image/*" onchange="window.handlePosterFile(event, ${i})">
                             </label>
+                            <button type="button" onclick="window.removePoster(${i})" class="absolute top-3 right-3 bg-red-500/80 text-white p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 shadow-lg z-10" title="Remover Poster">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
                         </div>
                         <input type="text" value="${u.startsWith('data') ? '[IMAGEM LOCAL]' : u}" onchange="window.updatePosterUrl(${i}, this.value)" class="w-full bg-black border border-white/10 rounded-xl p-4 text-[9px] text-stone-500 font-mono" placeholder="Colar Link do Poster...">
                     </div>`;
@@ -896,19 +916,22 @@
             lucide.createIcons();
         }
 
-        // INPUTS DE APPS
+        // INPUTS DE APPS COM BOTÃO DE REMOÇÃO
         function renderAppInputs() {
             const c = document.getElementById('app-inputs'); c.innerHTML = '';
             if(window.appAssets.length === 0) window.appAssets.push("");
             window.appAssets.forEach((u, i) => {
                 c.innerHTML += `
-                    <div class="glass-panel p-4 rounded-3xl space-y-4 border-white/5">
+                    <div class="glass-panel p-4 rounded-3xl space-y-4 border-white/5 relative">
                         <div class="w-full h-24 bg-black rounded-2xl overflow-hidden relative group">
                             <img src="${u}" class="w-full h-full object-contain p-2 opacity-70" onerror="this.src='https://placehold.co/200x200/050505/f59e0b?text=App'">
                             <label class="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                                 <span class="bg-amber-500 text-black px-3 py-1 rounded-lg font-black uppercase text-[8px] tracking-widest">Trocar</span>
                                 <input type="file" class="hidden" accept="image/*" onchange="window.handleAppFile(event, ${i})">
                             </label>
+                            <button type="button" onclick="window.removeApp(${i})" class="absolute top-2 right-2 bg-red-500/80 text-white p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 shadow-lg z-10" title="Remover App">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                            </button>
                         </div>
                         <input type="text" value="${u.startsWith('data') ? '[IMAGEM LOCAL]' : u}" onchange="window.updateAppUrl(${i}, this.value)" class="w-full bg-black border border-white/10 rounded-xl p-3 text-[8px] text-stone-500 font-mono" placeholder="Colar Link Logo...">
                     </div>`;
