@@ -130,23 +130,20 @@
                 <div class="glass-panel p-10 rounded-[2.5rem] flex flex-col">
                     <span class="text-amber-500 text-[10px] font-bold uppercase mb-4 italic">Plano Modular</span>
                     <h3 class="text-2xl font-bold text-white mb-2 uppercase tracking-tighter">Estudante</h3>
-                    <div class="mb-6 flex items-baseline gap-1"><span class="text-5xl font-black text-white tracking-tighter">14,90</span><span class="text-stone-600 text-[10px] font-bold uppercase">/mês</span></div>
-                    <p class="text-stone-400 text-xs leading-relaxed mb-8 flex-1">Plano flexível sob medida. Você escolhe a sua preferência de acesso: <b class="text-white">TV ao Vivo</b>, <b class="text-white">Filmes</b> OU <b class="text-white">Séries</b>.</p>
-                    <button onclick="window.showPortal()" class="premium-btn w-full py-4 rounded-2xl font-bold uppercase text-[10px] tracking-widest mt-auto">Renovar Agora</button>
+                    <div class="mb-8 flex items-baseline gap-1"><span class="text-5xl font-black text-white tracking-tighter">14,90</span><span class="text-stone-600 text-[10px] font-bold uppercase">/mês</span></div>
+                    <button onclick="window.showPortal()" class="premium-btn w-full py-4 rounded-2xl font-bold uppercase text-[10px] tracking-widest">Renovar Agora</button>
                 </div>
-                <div class="glass-panel p-10 rounded-[3rem] border-amber-500/40 bg-amber-500/[0.03] scale-105 shadow-2xl relative overflow-hidden text-center flex flex-col">
+                <div class="glass-panel p-10 rounded-[3rem] border-amber-500/40 bg-amber-500/[0.03] scale-105 shadow-2xl relative overflow-hidden text-center">
                     <div class="absolute -top-4 -right-12 bg-amber-500 text-black px-12 py-6 rotate-45 font-black text-[9px] uppercase tracking-widest shadow-xl">Best-Seller</div>
-                    <h3 class="text-2xl font-bold text-white mb-2 italic font-serif mt-2">Combo Full Atmos</h3>
-                    <div class="mb-6 flex justify-center items-baseline gap-1"><span class="text-6xl font-black text-white tracking-tighter">35,00</span><span class="text-stone-600 text-[10px] font-bold uppercase">/mês</span></div>
-                    <p class="text-stone-300 text-xs leading-relaxed mb-8 flex-1 px-2">Acesso <b class="text-amber-500">total e ilimitado</b>. Tenha tudo num só lugar: TV ao Vivo, Lançamentos, Filmes e as Séries mais badaladas do momento.</p>
-                    <button onclick="window.showPortal()" class="premium-btn w-full py-5 rounded-2xl font-bold uppercase text-xs tracking-widest mt-auto">Garantir VIP</button>
+                    <h3 class="text-2xl font-bold text-white mb-2 italic font-serif">Combo Full Atmos</h3>
+                    <div class="mb-8 flex justify-center items-baseline gap-1"><span class="text-6xl font-black text-white tracking-tighter">35,00</span><span class="text-stone-600 text-[10px] font-bold uppercase">/mês</span></div>
+                    <button onclick="window.showPortal()" class="premium-btn w-full py-5 rounded-2xl font-bold uppercase text-xs tracking-widest">Garantir VIP</button>
                 </div>
                 <div class="glass-panel p-10 rounded-[2.5rem] flex flex-col">
                     <span class="text-stone-500 text-[10px] font-bold uppercase mb-4 italic text-amber-500">Conforto Atmos</span>
                     <h3 class="text-2xl font-bold text-white mb-2 uppercase tracking-tighter">Ciclo Trimestral</h3>
-                    <div class="mb-6 flex items-baseline gap-1"><span class="text-5xl font-black text-white tracking-tighter">95,00</span><span class="text-stone-600 text-[10px] font-bold uppercase">/90 dias</span></div>
-                    <p class="text-stone-400 text-xs leading-relaxed mb-8 flex-1">Pacote com <b class="text-white">acesso total</b> a tudo (TV, Filmes e Séries) aliado à paz de espírito e estabilidade de um ciclo de 90 dias ininterruptos.</p>
-                    <button onclick="window.showPortal()" class="bg-white/5 hover:bg-white hover:text-black text-white w-full py-4 rounded-2xl font-bold uppercase text-[10px] transition-all mt-auto">Escolher Estabilidade</button>
+                    <div class="mb-8 flex items-baseline gap-1"><span class="text-5xl font-black text-white tracking-tighter">95,00</span><span class="text-stone-600 text-[10px] font-bold uppercase">/90 dias</span></div>
+                    <button onclick="window.showPortal()" class="bg-white/5 hover:bg-white hover:text-black text-white w-full py-4 rounded-2xl font-bold uppercase text-[10px] transition-all">Escolher Estabilidade</button>
                 </div>
             </div>
         </section>
@@ -175,7 +172,6 @@
                     <p class="text-stone-500 text-[10px] uppercase font-bold tracking-widest italic">Vencimento Atual: <b class="text-white not-italic" id="p-client-date">00/00/0000</b></p>
                 </div>
                 
-                <!-- Histórico de Pagamentos (Baseado no Ciclo Correto) -->
                 <div class="glass-panel p-8 rounded-[2.5rem] border-white/5 space-y-4">
                     <h3 class="text-white text-sm font-black italic uppercase tracking-widest flex items-center gap-2"><i data-lucide="history" class="w-4 h-4 text-amber-500"></i> Histórico de Ciclos</h3>
                     <div id="p-payment-history" class="space-y-3 max-h-40 overflow-y-auto pr-2">
@@ -191,12 +187,10 @@
                         <span id="p-affiliate-code" class="text-xl font-black text-amber-500 tracking-[0.3em]">ATMOS-CODE</span>
                     </div>
                     
-                    <!-- NOVO: FORMULÁRIO DE LEADS E INDICAÇÃO PERFEITO COM BLINDAGEM ANTI-AUTOFILL -->
                     <div class="space-y-3 border-t border-white/5 pt-6">
                         <p class="text-[9px] text-stone-500 uppercase font-black tracking-widest text-left ml-2">Indique e Ganhe (Dados do Amigo):</p>
                         <input type="text" id="referralFriendName" name="dummy_name_field_prevent_autofill" autocomplete="nope" data-lpignore="true" data-form-type="other" placeholder="Nome do amigo" class="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
                         <div class="flex gap-2">
-                            <!-- Mantido type="text" rigorosamente conforme o pedido, mas blindado para o navegador não reconhecer como email -->
                             <input type="text" inputmode="numeric" id="wpp_amigo_ref" name="dummy_phone_field_prevent_autofill" autocomplete="nope" data-lpignore="true" data-form-type="other" placeholder="WhatsApp do amigo" class="flex-1 bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
                             <button onclick="window.sendReferral()" class="bg-amber-500 text-black px-6 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-amber-400 transition-all shadow-lg">Indicar</button>
                         </div>
@@ -205,7 +199,11 @@
 
                 <div class="glass-panel p-10 rounded-[3rem] space-y-6">
                     <label class="text-[10px] text-stone-600 uppercase font-black tracking-widest block text-center">Renovar Plano:</label>
-                    <select id="p-plan-select" class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-5 text-white font-bold appearance-none text-center focus:border-amber-500 outline-none"><option value="mensal">Mensal Regular</option><option value="trimestral">Trimestral (Combo)</option></select>
+                    <select id="p-plan-select" class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-5 text-white font-bold appearance-none text-center focus:border-amber-500 outline-none">
+                        <option value="mensal">Mensal Regular</option>
+                        <option value="trimestral">Trimestral (Combo)</option>
+                        <option value="anual">Anual (Premium)</option>
+                    </select>
                     <div class="grid grid-cols-2 gap-4">
                         <button onclick="window.initPay('PIX')" class="p-6 rounded-3xl border border-stone-800 hover:bg-amber-500/10 hover:border-amber-500/30 transition-all text-center group"><i data-lucide="qr-code" class="mx-auto mb-2 text-amber-500 group-hover:scale-110 transition-transform"></i><span class="text-[10px] font-black uppercase text-white">Via PIX</span></button>
                         <button onclick="window.initPay('InfinitePay')" class="p-6 rounded-3xl border border-stone-800 hover:bg-blue-500/10 hover:border-blue-500/30 transition-all text-center group"><i data-lucide="credit-card" class="mx-auto mb-2 text-blue-400 group-hover:scale-110 transition-transform"></i><span class="text-[10px] font-black uppercase text-white">Cartão</span></button>
@@ -284,48 +282,66 @@
 
     <!-- MODAL: REGISTO NOVO ATIVO / EDIÇÃO -->
     <div id="clientModal" class="fixed inset-0 bg-black/95 backdrop-blur-xl z-[700] hidden items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-md rounded-[3rem] p-12 border-amber-500/20 shadow-2xl">
-            <h3 id="client-modal-title" class="text-2xl font-black text-white mb-10 italic uppercase text-center tracking-tighter">Registo de <span class="text-amber-500">Fluxo</span></h3>
+        <div class="glass-panel w-full max-w-md rounded-[3rem] p-12 border-amber-500/20 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <h3 id="client-modal-title" class="text-2xl font-black text-white mb-8 italic uppercase text-center tracking-tighter">Registo de <span class="text-amber-500">Fluxo</span></h3>
             <form id="client-form" class="space-y-6">
                 <div class="space-y-1">
                     <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Nome do Assinante:</label>
-                    <input type="text" id="reg-name" placeholder="Ex: Alex Sander" required class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-6 text-white focus:border-amber-500 focus:outline-none transition-all">
+                    <input type="text" id="reg-name" placeholder="Ex: Alex Sander" required class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-5 text-white focus:border-amber-500 focus:outline-none transition-all">
                 </div>
                 <div class="space-y-1">
                     <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">WhatsApp Atmos:</label>
-                    <input type="text" id="reg-phone" placeholder="5553999999999" required class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-6 text-white focus:border-amber-500 focus:outline-none transition-all">
+                    <input type="text" id="reg-phone" placeholder="5553999999999" required class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-5 text-white focus:border-amber-500 focus:outline-none transition-all">
                 </div>
-                <div class="grid grid-cols-2 gap-5">
+                
+                <!-- BLOCO INTELIGENTE DE PRECIFICAÇÃO -->
+                <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-1">
                         <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Plano:</label>
-                        <select id="reg-plan" class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-6 text-white appearance-none cursor-pointer focus:border-amber-500 italic"><option value="mensal">Mensal</option><option value="trimestral">Trimestral</option><option value="estudante">Estudante</option></select>
+                        <select id="reg-plan" onchange="window.updatePriceField()" class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-5 text-white appearance-none cursor-pointer focus:border-amber-500 italic">
+                            <option value="mensal">Mensal</option>
+                            <option value="trimestral">Trimestral</option>
+                            <option value="anual">Anual</option>
+                            <option value="estudante">Estudante</option>
+                        </select>
                     </div>
                     <div class="space-y-1">
                         <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Telas:</label>
-                        <select id="reg-screens" class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-6 text-white appearance-none cursor-pointer focus:border-amber-500 italic"><option value="1">1 Tela</option><option value="2">2 Telas</option></select>
+                        <select id="reg-screens" onchange="window.updatePriceField()" class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-5 text-white appearance-none cursor-pointer focus:border-amber-500 italic">
+                            <option value="1">1 Tela</option>
+                            <option value="2">2 Telas</option>
+                            <option value="3">3 Telas</option>
+                            <option value="4">4 Telas</option>
+                            <option value="5">5 Telas</option>
+                        </select>
                     </div>
                 </div>
+                <div class="space-y-1 bg-amber-500/5 p-4 rounded-2xl border border-amber-500/20">
+                    <label class="text-[9px] text-amber-500 uppercase font-black ml-2 tracking-widest italic flex items-center justify-between">
+                        <span>Valor Final Cobrado (R$):</span>
+                        <span class="text-stone-500 text-[8px]">(Editável)</span>
+                    </label>
+                    <input type="number" step="0.01" id="reg-price" required class="w-full bg-black border border-stone-800 rounded-xl p-4 text-white focus:border-amber-500 focus:outline-none transition-all font-black text-xl text-center">
+                </div>
                 
-                <div class="grid grid-cols-2 gap-5" id="reg-date-ref-grid">
+                <div class="grid grid-cols-2 gap-4" id="reg-date-ref-grid">
                     <div class="space-y-1">
                         <label id="client-date-label" class="text-[9px] text-amber-500 uppercase font-black ml-4 tracking-widest flex items-center gap-2 italic"><i data-lucide="calendar" class="w-3 h-3"></i> Data de Ativação:</label>
                         <div class="relative group">
-                            <input type="date" id="reg-activation-date" required class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-6 text-white focus:border-amber-500 focus:outline-none transition-all cursor-pointer font-black tracking-widest uppercase text-xs">
-                            <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none opacity-20 group-hover:opacity-100 transition-opacity"><i data-lucide="calendar" class="w-4 h-4 text-amber-500"></i></div>
+                            <input type="date" id="reg-activation-date" required class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-5 text-white focus:border-amber-500 focus:outline-none transition-all cursor-pointer font-black tracking-widest uppercase text-xs">
                         </div>
                     </div>
-                    <!-- Campo de Código de Indicação -->
                     <div class="space-y-1" id="reg-ref-container">
-                        <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Cód. Indicação (Se houver):</label>
-                        <input type="text" id="reg-referral-code" placeholder="Ex: ATMOS-XXXX" class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-6 text-white focus:border-amber-500 focus:outline-none transition-all font-mono uppercase text-xs">
+                        <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Cód. Indicação:</label>
+                        <input type="text" id="reg-referral-code" placeholder="Ex: ATMOS-XXXX" class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-5 text-white focus:border-amber-500 focus:outline-none transition-all font-mono uppercase text-xs">
                     </div>
                 </div>
 
-                <button type="submit" id="client-submit-btn" class="w-full bg-amber-500 text-black py-6 rounded-2xl font-black uppercase mt-4 shadow-xl hover:bg-amber-400 transition-all tracking-widest text-xs">Ativar Ativo no Sistema</button>
+                <button type="submit" id="client-submit-btn" class="w-full bg-amber-500 text-black py-5 rounded-2xl font-black uppercase mt-4 shadow-xl hover:bg-amber-400 transition-all tracking-widest text-xs">Ativar Ativo no Sistema</button>
                 
                 <div class="flex gap-2 mt-2">
-                    <button type="button" onclick="window.closeModal('client')" class="flex-1 text-stone-500 text-[10px] uppercase font-black tracking-widest hover:text-white transition-colors text-center p-3">Cancelar Janela</button>
-                    <button type="button" id="client-delete-btn" onclick="window.deleteClientAdmin()" class="hidden flex-1 text-red-500 text-[10px] uppercase font-black tracking-widest hover:text-red-400 transition-colors text-center p-3 bg-red-500/10 rounded-xl border border-red-500/20">Excluir Ativo</button>
+                    <button type="button" onclick="window.closeModal('client')" class="flex-1 text-stone-500 text-[10px] uppercase font-black tracking-widest hover:text-white transition-colors text-center p-3">Cancelar</button>
+                    <button type="button" id="client-delete-btn" onclick="window.deleteClientAdmin()" class="hidden flex-1 text-red-500 text-[10px] uppercase font-black tracking-widest hover:text-red-400 transition-colors text-center p-3 bg-red-500/10 rounded-xl border border-red-500/20">Excluir</button>
                 </div>
             </form>
         </div>
@@ -342,8 +358,13 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { initializeFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // CONFIGURAÇÃO DOS PREÇOS
-        const PRICING = { mensal: { 1: 35, 2: 40 }, trimestral: { 1: 95, 2: 110 }, estudante: { 1: 14.90, 2: 14.90 } };
+        // MATRIZ DE PREÇOS BASE (Serve apenas como sugestão inicial ao preencher o formulário)
+        const PRICING = { 
+            mensal: { 1: 35, 2: 40, 3: 50, 4: 60, 5: 70 }, 
+            trimestral: { 1: 95, 2: 110, 3: 140, 4: 170, 5: 200 }, 
+            anual: { 1: 238.80, 2: 288, 3: 350, 4: 400, 5: 450 },
+            estudante: { 1: 14.90, 2: 14.90, 3: 14.90, 4: 14.90, 5: 14.90 } 
+        };
         const COST_PER_SCREEN = 3.50;
         
         let clients = [];
@@ -459,6 +480,21 @@
             }
         }
 
+        function getMonthsByPlan(plan) {
+            if(plan === 'trimestral') return 3;
+            if(plan === 'anual') return 12;
+            return 1; // mensal, estudante, etc.
+        }
+
+        // Inteligência para preencher o preço sugerido na criação
+        window.updatePriceField = function() {
+            if(editingClientIndex >= 0) return; // Não substitui se a Amanda estiver a editar um cliente antigo
+            const plan = document.getElementById('reg-plan').value;
+            const screens = parseInt(document.getElementById('reg-screens').value);
+            const suggestedPrice = PRICING[plan][screens] || 0;
+            document.getElementById('reg-price').value = suggestedPrice.toFixed(2);
+        }
+
         window.showLanding = function() { document.getElementById('view-landing').classList.remove('hidden'); document.getElementById('view-portal').classList.add('hidden'); document.getElementById('view-admin').classList.add('hidden'); window.scrollTo(0,0); }
         window.showPortal = function() { document.getElementById('view-landing').classList.add('hidden'); document.getElementById('view-portal').classList.remove('hidden'); window.scrollTo(0,0); }
         window.requestAdminAccess = function() { document.getElementById('thoraika-modal').classList.remove('hidden'); document.getElementById('thoraika-modal').classList.add('flex'); }
@@ -486,33 +522,25 @@
                 document.getElementById('p-affiliate-code').innerText = c.affiliateCode;
                 document.getElementById('p-bonus-badge').innerText = (c.bonusMonths || 0) + " BÔNUS DISPONÍVEL";
                 
-                // NOVO: Gerar o Histórico de Pagamentos de forma baseada no CICLO que foi pago
                 const historyContainer = document.getElementById('p-payment-history');
                 historyContainer.innerHTML = '';
                 if (c.payments && c.payments.length > 0) {
                     let allHistoryItems = [];
-                    
                     c.payments.forEach((p, pIndex) => {
                         let mCovered = p.monthsCovered || 1;
-                        // Usa o cycleDate (ciclo que foi pago) se existir, senao fallback para date antigo
                         let pBaseDate = new Date(p.cycleDate || p.date); 
-                        
                         for(let i = 0; i < mCovered; i++) {
                             let mDate = new Date(pBaseDate);
                             mDate.setMonth(mDate.getMonth() + i);
-                            
                             let isAdesao = (pIndex === 0 && i === 0);
-                            let label = isAdesao ? "Data de Adesão" : "Ciclo Mensal";
-                            
-                            if(mCovered > 1 && !isAdesao) label = `Mês ${i+1} (Trimestral)`;
+                            let label = isAdesao ? "Data de Adesão" : "Ciclo Pago";
+                            if(mCovered > 1 && !isAdesao) label = `Mês ${i+1} (${mCovered === 12 ? 'Anual' : 'Trimestral'})`;
                             if(mCovered > 1 && isAdesao) label = `Adesão (Mês 1)`;
-
                             allHistoryItems.push({ dateObj: mDate, label: label });
                         }
                     });
                     
                     allHistoryItems.sort((a, b) => b.dateObj - a.dateObj);
-                    
                     allHistoryItems.forEach(item => {
                         const dateStr = item.dateObj.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
                         historyContainer.innerHTML += `
@@ -526,31 +554,21 @@
                     historyContainer.innerHTML = `<p class="text-stone-600 text-[10px] uppercase tracking-widest italic text-center py-2">Nenhum histórico registado.</p>`;
                 }
                 lucide.createIcons();
-
                 window.showFeedback("BEM-VINDO EMBAIXADOR");
             } else { window.showFeedback("CLIENTE NÃO LOCALIZADO"); }
         }
 
-        // FUNÇÃO DE INDICAÇÃO COM CAPTAÇÃO DE LEADS (Nome + WhatsApp)
         window.sendReferral = function() {
             if(!activeClient) return;
-            
             const friendName = document.getElementById('referralFriendName').value.trim();
             const friendPhone = document.getElementById('wpp_amigo_ref').value.replace(/\D/g, '');
             
             if(!friendName) { window.showFeedback("DIGITE O NOME DO AMIGO"); return; }
             if(friendPhone.length < 10) { window.showFeedback("WHATSAPP INVÁLIDO"); return; }
             
-            // 1. GUARDA O LEAD NO BANCO DE DADOS (Firebase)
-            pendingReferrals.push({ 
-                affiliatePhone: activeClient.phone, 
-                guestName: friendName,
-                guestPhone: friendPhone,
-                captureDate: new Date().toISOString()
-            });
+            pendingReferrals.push({ affiliatePhone: activeClient.phone, guestName: friendName, guestPhone: friendPhone, captureDate: new Date().toISOString() });
             syncData(); 
             
-            // 2. ABRE O WHATSAPP COM MENSAGEM PERSONALIZADA
             const urlAtmos = window.location.href.split('?')[0];
             const msg = `🎬 *ATMOS EXPERIENCE* | O Próximo Nível\n\nOlá ${friendName}! Eu sou assinante da Atmos e quero te convidar para ter acesso ao melhor sinal 4K HDR do mercado, sem travamentos.\n\n🎁 Apresenta o meu código promocional *${activeClient.affiliateCode}* no atendimento para garantir as tuas vantagens na ativação!\n\nConfere a nossa vitrine aqui: ${urlAtmos}`;
             window.open(`https://api.whatsapp.com/send?phone=${friendPhone}&text=${encodeURIComponent(msg)}`, '_blank');
@@ -594,6 +612,8 @@
                 document.getElementById('reg-ref-container').classList.remove('hidden');
                 document.getElementById('reg-date-ref-grid').classList.add('grid-cols-2');
                 document.getElementById('reg-date-ref-grid').classList.remove('grid-cols-1');
+                
+                window.updatePriceField(); // Força o preenchimento sugerido ao abrir para criar novo
             }
             document.getElementById(id + 'Modal').classList.remove('hidden'); 
             document.getElementById(id + 'Modal').classList.add('flex'); 
@@ -612,6 +632,10 @@
             document.getElementById('reg-plan').value = c.plan;
             document.getElementById('reg-screens').value = c.screens || 1;
             document.getElementById('reg-activation-date').value = c.nextBillingDate;
+            
+            // Carrega o Preço Customizado (se existir) ou calcula o padrão da tabela
+            let defaultPrice = PRICING[c.plan][c.screens] || 0;
+            document.getElementById('reg-price').value = (c.customPrice !== undefined ? c.customPrice : defaultPrice).toFixed(2);
 
             document.getElementById('client-modal-title').innerHTML = `Editar <span class="text-amber-500">Ativo</span>`;
             document.getElementById('client-submit-btn').innerText = "Salvar Alterações";
@@ -652,7 +676,6 @@
             
             clients.forEach(c => {
                 (c.payments || []).forEach(p => {
-                    // Para o cálculo financeiro, usamos a data em que o dinheiro REALMENTE ENTROU (p.date)
                     const pd = new Date(p.date);
                     if (pd.toLocaleDateString('pt-BR') === todayStr) d += p.amountNet;
                     if (pd.getMonth() === currentMonth && pd.getFullYear() === currentYear) m += p.amountNet;
@@ -666,17 +689,22 @@
         }
 
         window.logPaymentAdmin = function(index) {
-            const c = clients[index]; const pr = PRICING[c.plan][c.screens]; let months = (c.plan === 'trimestral') ? 3 : 1;
+            const c = clients[index]; 
+            
+            // INTELIGÊNCIA: Se ele tem um Preço Customizado guardado, usa-o. Senão, vai pela tabela.
+            const pr = c.customPrice !== undefined ? parseFloat(c.customPrice) : (PRICING[c.plan][c.screens] || 0);
+            
+            let months = getMonthsByPlan(c.plan);
             let net = pr - (COST_PER_SCREEN * c.screens * months);
+            
             if(c.bonusMonths > 0) { c.bonusMonths--; net = 0; window.showFeedback("BÔNUS APLICADO"); }
             if(!c.payments) c.payments = [];
             
-            // NOVO: Separar a Data da Transação da Data do Ciclo Pago
-            let cycleToPay = c.nextBillingDate; // O mês que ele está efetivamente a pagar
+            let cycleToPay = c.nextBillingDate; 
             
             c.payments.push({ 
-                date: new Date().toISOString(), // Dinheiro entra hoje no painel (Transação)
-                cycleDate: cycleToPay + 'T00:00:00', // Mas no histórico do cliente aparece o ciclo que ele quitou
+                date: new Date().toISOString(), 
+                cycleDate: cycleToPay + 'T00:00:00', 
                 amountNet: net,
                 monthsCovered: months 
             });
@@ -687,23 +715,19 @@
             syncData();
         }
 
-        // NOVO: Máquina do Tempo - Função para desfazer um clique acidental em "Recebi"
         window.undoPaymentAdmin = function(index) {
             const c = clients[index];
             if (!c.payments || c.payments.length === 0) return;
             
             if (confirm(`ATENÇÃO: Tem certeza que deseja DESFAZER o último pagamento de ${c.name}? O valor sairá do caixa e o vencimento voltará para trás.`)) {
-                // 1. Remove o último pagamento do histórico
                 let lastPayment = c.payments.pop();
                 let monthsToRevert = lastPayment.monthsCovered || 1;
                 
-                // 2. Devolve o vencimento para a data anterior
                 let nxt = new Date(c.nextBillingDate + 'T00:00:00');
                 nxt.setMonth(nxt.getMonth() - monthsToRevert);
                 c.nextBillingDate = nxt.toISOString().split('T')[0];
                 
-                // 3. Devolve o bónus se ele foi consumido num clique acidental
-                const pr = PRICING[c.plan][c.screens];
+                const pr = c.customPrice !== undefined ? parseFloat(c.customPrice) : (PRICING[c.plan][c.screens] || 0);
                 const expectedNet = pr - (COST_PER_SCREEN * c.screens * monthsToRevert);
                 if (lastPayment.amountNet === 0 && expectedNet > 0) {
                     c.bonusMonths = (c.bonusMonths || 0) + 1;
@@ -728,10 +752,13 @@
                 const msg = `Olá ${c.name}! ✨ Aqui é a Amanda da Atmos TV. Vim te avisar que o seu sinal renova em ${diff < 0 ? 'alguns dias (vencido)' : diff + ' dias'}! Garanta sua diversão 4K sem travas no nosso portal. 🎬`;
                 const wLink = `https://api.whatsapp.com/send?phone=${c.phone.replace(/\D/g,'')}&text=${encodeURIComponent(msg)}`;
 
+                // Etiqueta visual se o cliente tiver Preço Customizado
+                const planTag = c.customPrice !== undefined ? `${c.plan} (Especial)` : c.plan;
+
                 tr.className = 'hover:bg-white/[0.03] transition-all group';
                 tr.innerHTML = `
                     <td class="p-8"><div class="font-black text-white text-base uppercase">${c.name}</div><div class="text-[9px] text-stone-600 font-mono tracking-widest">${c.phone}</div></td>
-                    <td class="p-8"><div class="text-stone-300 font-black uppercase text-[9px] italic">${c.plan}</div><div class="text-green-500 font-black text-[9px] mt-1 uppercase">${c.bonusMonths || 0} BÔNUS</div></td>
+                    <td class="p-8"><div class="text-stone-300 font-black uppercase text-[9px] italic">${planTag}</div><div class="text-green-500 font-black text-[9px] mt-1 uppercase">${c.bonusMonths || 0} BÔNUS</div></td>
                     <td class="p-8 text-center font-bold text-stone-200">${nxt.toLocaleDateString('pt-BR')}</td>
                     <td class="p-8 text-center"><span class="px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${sC}">${sL}</span></td>
                     <td class="p-8 text-center">
@@ -795,41 +822,46 @@
             const plan = document.getElementById('reg-plan').value;
             const screens = parseInt(document.getElementById('reg-screens').value);
             const inputDateStr = document.getElementById('reg-activation-date').value;
+            
+            // Capta o valor que a Amanda digitou no campo de preço
+            const finalPriceStr = document.getElementById('reg-price').value;
+            const finalPrice = parseFloat(finalPriceStr);
 
             if (editingClientIndex >= 0) {
-                // MODO EDIÇÃO
+                // EDIÇÃO
                 let c = clients[editingClientIndex];
                 c.name = document.getElementById('reg-name').value;
                 c.phone = phone;
                 c.plan = plan;
                 c.screens = screens;
                 c.nextBillingDate = inputDateStr;
+                c.customPrice = finalPrice; // Atualiza o preço customizado
 
                 syncData(); 
                 window.closeModal('client'); 
                 e.target.reset(); 
                 window.showFeedback("DADOS ATUALIZADOS");
             } else {
-                // MODO CRIAÇÃO 
-                let months = (plan === 'trimestral') ? 3 : 1;
+                // CRIAÇÃO
+                let months = getMonthsByPlan(plan);
                 
                 let baseDate = new Date(inputDateStr + 'T00:00:00');
                 let nxt = new Date(baseDate);
                 nxt.setMonth(nxt.getMonth() + months);
                 const nextBillingDate = nxt.toISOString().split('T')[0];
 
-                const pr = PRICING[plan][screens];
-                const net = pr - (COST_PER_SCREEN * screens * months);
+                const net = finalPrice - (COST_PER_SCREEN * screens * months);
 
                 const newClient = { 
                     name: document.getElementById('reg-name').value, 
                     phone: phone, 
                     plan: plan, 
                     screens: screens, 
+                    customPrice: finalPrice, // Guarda a memória do preço especial
                     nextBillingDate: nextBillingDate, 
                     payments: [{ 
-                        date: new Date().toISOString(), // Dinheiro entra hoje
-                        cycleDate: baseDate.toISOString(), // Mas paga o ciclo selecionado no calendário
+                        date: new Date().toISOString(),
+                        cycleDate: baseDate.toISOString(),
                         amountNet: net,
                         monthsCovered: months
                     }], 
