@@ -24,13 +24,19 @@
         .premium-btn { background: var(--gold-gradient); color: #000; transition: all 0.3s ease; }
         .premium-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
 
-        /* Showcase Marquee */
+        /* Showcase Marquee - Posters */
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-marquee { display: flex; width: max-content; animation: marquee 60s linear infinite; }
         .animate-marquee:hover { animation-play-state: paused; }
         .movie-card { width: 300px; height: 420px; border-radius: 24px; overflow: hidden; position: relative; flex-shrink: 0; margin-right: 24px; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.5s ease; }
         .movie-card:hover { transform: scale(1.02); border-color: rgba(212, 175, 55, 0.4); }
         .movie-overlay { background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, rgba(0,0,0,0.4) 50%, transparent 100%); }
+
+        /* App Marquee - Logos */
+        .animate-marquee-reverse { display: flex; width: max-content; animation: marquee 50s linear infinite reverse; }
+        .animate-marquee-reverse:hover { animation-play-state: paused; }
+        .app-card { width: 120px; height: 120px; border-radius: 20px; flex-shrink: 0; margin-right: 24px; border: 1px solid rgba(255,255,255,0.05); display:flex; align-items:center; justify-content:center; padding: 15px; transition: all 0.3s ease; }
+        .app-card:hover { transform: scale(1.05); border-color: rgba(212, 175, 55, 0.4); background: rgba(212, 175, 55, 0.05); }
 
         /* Status Styles */
         .status-due { color: #ef4444; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); }
@@ -57,6 +63,17 @@
 </head>
 <body class="min-h-screen">
 
+    <!-- NOVO: TELA DE CARREGAMENTO GLOBAL -->
+    <div id="global-loader" class="fixed inset-0 z-[9999] bg-[#020202] flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="relative w-24 h-24 flex items-center justify-center mb-6">
+            <div class="absolute inset-0 rounded-full border-t-2 border-b-2 border-amber-500 animate-spin"></div>
+            <div class="absolute inset-2 rounded-full border-r-2 border-l-2 border-amber-300 animate-spin" style="animation-direction: reverse; animation-duration: 1.5s;"></div>
+            <i data-lucide="crown" class="w-8 h-8 text-amber-500 animate-pulse"></i>
+        </div>
+        <span class="text-[10px] uppercase tracking-[0.4em] font-bold text-amber-500 animate-pulse">Sincronizando Atmos</span>
+        <span class="text-[8px] uppercase tracking-widest text-stone-600 mt-2" id="loader-text">Estabelecendo conexão segura...</span>
+    </div>
+
     <!-- VIEW 1: LANDING PAGE -->
     <div id="view-landing" class="relative">
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none" style="background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 70%);"></div>
@@ -81,7 +98,7 @@
             <p class="max-w-2xl mx-auto text-stone-400 text-lg md:text-xl font-light mb-12 italic">Estabilidade absoluta em 4K HDR. A Vitrine Atmos é a sua melhor escolha.</p>
         </header>
 
-        <!-- Showcase Marquee -->
+        <!-- Showcase Marquee (Posters) -->
         <section class="relative z-10 py-10 overflow-hidden">
             <div class="relative overflow-hidden group">
                 <div class="animate-marquee" id="landing-marquee"></div>
@@ -90,8 +107,20 @@
             </div>
         </section>
 
+        <!-- App Marquee (Ecossistema de Aplicativos) -->
+        <section class="relative z-10 py-8 overflow-hidden border-y border-white/5 bg-white/[0.01]">
+            <div class="container mx-auto px-8 mb-6 text-center">
+                <span class="text-[9px] uppercase tracking-[0.4em] font-bold text-stone-500">Ecossistema de Conexão</span>
+            </div>
+            <div class="relative overflow-hidden group">
+                <div class="animate-marquee-reverse flex items-center" id="landing-app-marquee"></div>
+                <div class="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#020202] to-transparent pointer-events-none"></div>
+                <div class="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#020202] to-transparent pointer-events-none"></div>
+            </div>
+        </section>
+
         <!-- Prova Social & Indicação -->
-        <section class="relative z-10 container mx-auto px-8 py-24 border-t border-white/5">
+        <section class="relative z-10 container mx-auto px-8 py-24">
             <div class="grid lg:grid-cols-2 gap-16 items-start">
                 <div>
                     <h2 class="text-white text-3xl font-black italic tracking-tighter mb-8 uppercase">Aprovações <span class="text-amber-500">Premium</span></h2>
@@ -127,44 +156,29 @@
         <!-- Planos -->
         <section class="relative z-10 container mx-auto px-8 pb-32 pt-10">
             <div class="grid md:grid-cols-3 gap-10 items-stretch">
-                <!-- CARD ESTUDANTE MELHORADO -->
                 <div class="glass-panel p-10 rounded-[2.5rem] flex flex-col">
                     <span class="text-amber-500 text-[10px] font-bold uppercase mb-4 italic">Plano Modular</span>
                     <h3 class="text-2xl font-bold text-white mb-2 uppercase tracking-tighter">Estudante</h3>
-                    <div class="mb-4 flex items-baseline gap-1"><span class="text-5xl font-black text-white tracking-tighter">14,90</span><span class="text-stone-600 text-[10px] font-bold uppercase">/mês</span></div>
-                    
-                    <div class="flex-1 flex flex-col justify-center">
-                        <p class="text-stone-400 text-xs leading-relaxed mb-4">Escolha a sua preferência de acesso:</p>
-                        <select class="w-full bg-black/50 border border-white/10 rounded-xl p-3 text-stone-300 text-xs mb-6 focus:border-amber-500 outline-none font-bold">
-                            <option>📺 TV Online (Canais)</option>
-                            <option>🎬 Streaming de Filmes</option>
-                            <option>🍿 Streaming de Séries</option>
-                        </select>
-                    </div>
-
-                    <button onclick="window.showPortal()" class="premium-btn w-full py-4 rounded-2xl font-bold uppercase text-[10px] tracking-widest mt-auto">Ativar Plano</button>
+                    <div class="mb-8 flex items-baseline gap-1"><span class="text-5xl font-black text-white tracking-tighter">14,90</span><span class="text-stone-600 text-[10px] font-bold uppercase">/mês</span></div>
+                    <button onclick="window.showPortal()" class="premium-btn w-full py-4 rounded-2xl font-bold uppercase text-[10px] tracking-widest">Renovar Agora</button>
                 </div>
-
-                <div class="glass-panel p-10 rounded-[3rem] border-amber-500/40 bg-amber-500/[0.03] scale-105 shadow-2xl relative overflow-hidden text-center flex flex-col">
+                <div class="glass-panel p-10 rounded-[3rem] border-amber-500/40 bg-amber-500/[0.03] scale-105 shadow-2xl relative overflow-hidden text-center">
                     <div class="absolute -top-4 -right-12 bg-amber-500 text-black px-12 py-6 rotate-45 font-black text-[9px] uppercase tracking-widest shadow-xl">Best-Seller</div>
-                    <h3 class="text-2xl font-bold text-white mb-2 italic font-serif mt-2">Combo Full Atmos</h3>
-                    <div class="mb-6 flex justify-center items-baseline gap-1"><span class="text-6xl font-black text-white tracking-tighter">35,00</span><span class="text-stone-600 text-[10px] font-bold uppercase">/mês</span></div>
-                    <p class="text-stone-300 text-xs leading-relaxed mb-8 flex-1 px-2">Acesso <b class="text-amber-500">total e ilimitado</b>. Tenha tudo num só lugar: TV ao Vivo, Lançamentos, Filmes e as Séries mais badaladas do momento.</p>
-                    <button onclick="window.showPortal()" class="premium-btn w-full py-5 rounded-2xl font-bold uppercase text-xs tracking-widest mt-auto">Garantir VIP</button>
+                    <h3 class="text-2xl font-bold text-white mb-2 italic font-serif">Combo Full Atmos</h3>
+                    <div class="mb-8 flex justify-center items-baseline gap-1"><span class="text-6xl font-black text-white tracking-tighter">35,00</span><span class="text-stone-600 text-[10px] font-bold uppercase">/mês</span></div>
+                    <button onclick="window.showPortal()" class="premium-btn w-full py-5 rounded-2xl font-bold uppercase text-xs tracking-widest">Garantir VIP</button>
                 </div>
-
                 <div class="glass-panel p-10 rounded-[2.5rem] flex flex-col">
                     <span class="text-stone-500 text-[10px] font-bold uppercase mb-4 italic text-amber-500">Conforto Atmos</span>
                     <h3 class="text-2xl font-bold text-white mb-2 uppercase tracking-tighter">Ciclo Trimestral</h3>
-                    <div class="mb-6 flex items-baseline gap-1"><span class="text-5xl font-black text-white tracking-tighter">95,00</span><span class="text-stone-600 text-[10px] font-bold uppercase">/90 dias</span></div>
-                    <p class="text-stone-400 text-xs leading-relaxed mb-8 flex-1">Pacote com <b class="text-white">acesso total</b> a tudo (TV, Filmes e Séries) aliado à paz de espírito e estabilidade de um ciclo de 90 dias ininterruptos.</p>
-                    <button onclick="window.showPortal()" class="bg-white/5 hover:bg-white hover:text-black text-white w-full py-4 rounded-2xl font-bold uppercase text-[10px] transition-all mt-auto">Escolher Estabilidade</button>
+                    <div class="mb-8 flex items-baseline gap-1"><span class="text-5xl font-black text-white tracking-tighter">95,00</span><span class="text-stone-600 text-[10px] font-bold uppercase">/90 dias</span></div>
+                    <button onclick="window.showPortal()" class="bg-white/5 hover:bg-white hover:text-black text-white w-full py-4 rounded-2xl font-bold uppercase text-[10px] transition-all">Escolher Estabilidade</button>
                 </div>
             </div>
         </section>
 
-        <!-- NOVO RODAPÉ COM AVISO DE DESEMPENHO -->
-        <footer class="relative z-10 py-16 px-8 text-center flex flex-col items-center gap-5 bg-[#020202]">
+        <!-- RODAPÉ COM AVISO DE DESEMPENHO -->
+        <footer class="relative z-10 py-16 px-8 text-center flex flex-col items-center gap-5 bg-[#020202] border-t border-white/5">
             <div class="text-stone-800 text-[9px] font-bold uppercase tracking-[0.5em]">
                 © 2024 Atmos TV | Strategic Management by Alex Sander
             </div>
@@ -193,6 +207,7 @@
                     <p class="text-stone-500 text-[10px] uppercase font-bold tracking-widest italic">Vencimento Atual: <b class="text-white not-italic" id="p-client-date">00/00/0000</b></p>
                 </div>
                 
+                <!-- Histórico de Pagamentos -->
                 <div class="glass-panel p-8 rounded-[2.5rem] border-white/5 space-y-4">
                     <h3 class="text-white text-sm font-black italic uppercase tracking-widest flex items-center gap-2"><i data-lucide="history" class="w-4 h-4 text-amber-500"></i> Histórico de Ciclos</h3>
                     <div id="p-payment-history" class="space-y-3 max-h-40 overflow-y-auto pr-2">
@@ -201,34 +216,20 @@
                 </div>
                 
                 <div class="glass-panel p-10 rounded-[3rem] space-y-6 text-center border-white/5">
-                    <button onclick="window.claimBonus()" id="p-bonus-badge" class="bg-green-500/10 hover:bg-green-500/20 text-green-500 hover:text-green-400 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest inline-block border border-green-500/20 transition-all cursor-pointer shadow-lg shadow-green-500/5 mb-6">0 BÔNUS DISPONÍVEL</button>
-                    
-                    <div class="bg-black/40 p-6 rounded-2xl border border-white/5 mb-6">
+                    <div id="p-bonus-badge" class="bg-green-500/10 text-green-500 px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest inline-block border border-green-500/20">0 BÔNUS DISPONÍVEL</div>
+                    <div class="bg-black/40 p-6 rounded-2xl border border-white/5">
                         <p class="text-[9px] text-stone-600 uppercase font-black mb-2 tracking-widest">Seu Código de Embaixador:</p>
                         <span id="p-affiliate-code" class="text-xl font-black text-amber-500 tracking-[0.3em]">ATMOS-CODE</span>
                     </div>
-                    
-                    <div class="space-y-3 border-t border-white/5 pt-6">
-                        <p class="text-[9px] text-stone-500 uppercase font-black tracking-widest text-left ml-2">Indique e Ganhe (Dados do Amigo):</p>
-                        <input type="text" id="referralFriendName" name="dummy_name_field_prevent_autofill" autocomplete="nope" data-lpignore="true" data-form-type="other" placeholder="Nome do amigo" class="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
-                        <div class="flex gap-2">
-                            <input type="text" inputmode="numeric" id="wpp_amigo_ref" name="dummy_phone_field_prevent_autofill" autocomplete="nope" data-lpignore="true" data-form-type="other" placeholder="WhatsApp do amigo" class="flex-1 bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
-                            <button onclick="window.sendReferral()" class="bg-amber-500 text-black px-6 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-amber-400 transition-all shadow-lg">Indicar</button>
-                        </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="referralFriendPhone" placeholder="WhatsApp do Amigo (Apenas Nrs)" class="flex-1 bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
+                        <button onclick="window.sendReferral()" class="bg-amber-500 text-black px-6 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-amber-400 transition-all">Indicar</button>
                     </div>
                 </div>
 
                 <div class="glass-panel p-10 rounded-[3rem] space-y-6">
                     <label class="text-[10px] text-stone-600 uppercase font-black tracking-widest block text-center">Renovar Plano:</label>
-                    <select id="p-plan-select" class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-5 text-white font-bold appearance-none text-center focus:border-amber-500 outline-none">
-                        <option value="mensal">Mensal Regular</option>
-                        <option value="trimestral">Trimestral (Combo)</option>
-                        <option value="anual">Anual (Premium)</option>
-                        <!-- OPÇÕES DETALHADAS PARA ESTUDANTES -->
-                        <option value="estudante - tv online">Estudante (Apenas TV Online)</option>
-                        <option value="estudante - filmes">Estudante (Apenas Filmes)</option>
-                        <option value="estudante - séries">Estudante (Apenas Séries)</option>
-                    </select>
+                    <select id="p-plan-select" class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-5 text-white font-bold appearance-none text-center focus:border-amber-500 outline-none"><option value="mensal">Mensal Regular</option><option value="trimestral">Trimestral (Combo)</option></select>
                     <div class="grid grid-cols-2 gap-4">
                         <button onclick="window.initPay('PIX')" class="p-6 rounded-3xl border border-stone-800 hover:bg-amber-500/10 hover:border-amber-500/30 transition-all text-center group"><i data-lucide="qr-code" class="mx-auto mb-2 text-amber-500 group-hover:scale-110 transition-transform"></i><span class="text-[10px] font-black uppercase text-white">Via PIX</span></button>
                         <button onclick="window.initPay('InfinitePay')" class="p-6 rounded-3xl border border-stone-800 hover:bg-blue-500/10 hover:border-blue-500/30 transition-all text-center group"><i data-lucide="credit-card" class="mx-auto mb-2 text-blue-400 group-hover:scale-110 transition-transform"></i><span class="text-[10px] font-black uppercase text-white">Cartão</span></button>
@@ -275,17 +276,34 @@
                 </div>
             </div>
 
+            <!-- ÁREA DE GESTÃO VISUAL (POSTERS + APPS) -->
             <div id="admin-media" class="hidden h-full flex flex-col">
                 <header class="h-24 border-b border-stone-900 flex items-center px-10 bg-black/40"><h1 class="text-white text-2xl font-black italic uppercase tracking-tighter">Gestão <span class="text-amber-500">Visual</span></h1></header>
                 <div class="p-10 overflow-y-auto flex-1 bg-neutral-950">
                     <div class="max-w-5xl glass-panel p-12 rounded-[3.5rem] border-amber-500/10">
-                        <div class="flex justify-between items-center mb-12">
-                            <div><h3 class="text-white font-black text-xl italic mb-1 uppercase tracking-tighter">Curadoria Marquee</h3><p class="text-[10px] text-stone-600 uppercase tracking-widest font-bold">Posters do Carrossel</p></div>
-                            <button onclick="window.addImageInput()" class="bg-amber-500/10 border border-amber-500/20 text-amber-500 px-6 py-3 rounded-xl text-[10px] font-black uppercase hover:bg-amber-500 hover:text-black transition-all">+ Novo Slot</button>
-                        </div>
-                        <form id="media-form" class="space-y-6">
-                            <div id="media-inputs" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-                            <button type="submit" class="w-full bg-amber-500 text-black py-6 rounded-2xl font-black uppercase mt-10 tracking-[0.3em] shadow-xl hover:bg-amber-400 transition-colors">Sincronizar Vitrine</button>
+                        <form id="media-form" class="space-y-12">
+                            
+                            <!-- SEÇÃO DE POSTERS -->
+                            <div>
+                                <div class="flex justify-between items-center mb-8">
+                                    <div><h3 class="text-white font-black text-xl italic mb-1 uppercase tracking-tighter">Curadoria Marquee</h3><p class="text-[10px] text-stone-600 uppercase tracking-widest font-bold">Posters do Carrossel de Filmes/Séries</p></div>
+                                    <button type="button" onclick="window.addPosterInput()" class="bg-amber-500/10 border border-amber-500/20 text-amber-500 px-6 py-3 rounded-xl text-[10px] font-black uppercase hover:bg-amber-500 hover:text-black transition-all">+ Novo Poster</button>
+                                </div>
+                                <div id="media-inputs" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+                            </div>
+
+                            <hr class="border-white/5">
+
+                            <!-- SEÇÃO DE APPS -->
+                            <div>
+                                <div class="flex justify-between items-center mb-8">
+                                    <div><h3 class="text-white font-black text-xl italic mb-1 uppercase tracking-tighter">Ecossistema Atmos</h3><p class="text-[10px] text-stone-600 uppercase tracking-widest font-bold">Logos dos Apps (AssistPlus, PlaySim, Roku, etc)</p></div>
+                                    <button type="button" onclick="window.addAppInput()" class="bg-amber-500/10 border border-amber-500/20 text-amber-500 px-6 py-3 rounded-xl text-[10px] font-black uppercase hover:bg-amber-500 hover:text-black transition-all">+ Novo App</button>
+                                </div>
+                                <div id="app-inputs" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
+                            </div>
+
+                            <button type="submit" class="w-full bg-amber-500 text-black py-6 rounded-2xl font-black uppercase mt-10 tracking-[0.3em] shadow-xl hover:bg-amber-400 transition-colors">Sincronizar Toda a Vitrine</button>
                         </form>
                     </div>
                 </div>
@@ -307,68 +325,39 @@
 
     <!-- MODAL: REGISTO NOVO ATIVO / EDIÇÃO -->
     <div id="clientModal" class="fixed inset-0 bg-black/95 backdrop-blur-xl z-[700] hidden items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-md rounded-[3rem] p-12 border-amber-500/20 shadow-2xl overflow-y-auto max-h-[90vh]">
-            <h3 id="client-modal-title" class="text-2xl font-black text-white mb-8 italic uppercase text-center tracking-tighter">Registo de <span class="text-amber-500">Fluxo</span></h3>
+        <div class="glass-panel w-full max-w-md rounded-[3rem] p-12 border-amber-500/20 shadow-2xl">
+            <h3 id="client-modal-title" class="text-2xl font-black text-white mb-10 italic uppercase text-center tracking-tighter">Registo de <span class="text-amber-500">Fluxo</span></h3>
             <form id="client-form" class="space-y-6">
                 <div class="space-y-1">
                     <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Nome do Assinante:</label>
-                    <input type="text" id="reg-name" placeholder="Ex: Alex Sander" required class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-5 text-white focus:border-amber-500 focus:outline-none transition-all">
+                    <input type="text" id="reg-name" placeholder="Ex: Alex Sander" required class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-6 text-white focus:border-amber-500 focus:outline-none transition-all">
                 </div>
                 <div class="space-y-1">
                     <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">WhatsApp Atmos:</label>
-                    <input type="text" id="reg-phone" placeholder="5553999999999" required class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-5 text-white focus:border-amber-500 focus:outline-none transition-all">
+                    <input type="text" id="reg-phone" placeholder="5553999999999" required class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-6 text-white focus:border-amber-500 focus:outline-none transition-all">
                 </div>
-                
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 gap-5">
                     <div class="space-y-1">
                         <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Plano:</label>
-                        <select id="reg-plan" onchange="window.updatePriceField()" class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-5 text-white appearance-none cursor-pointer focus:border-amber-500 italic">
-                            <option value="mensal">Mensal</option>
-                            <option value="trimestral">Trimestral</option>
-                            <option value="anual">Anual</option>
-                            <!-- OPÇÕES ESTUDANTE DETALHADAS NO HQ -->
-                            <option value="estudante - tv online">Estudante - TV Online</option>
-                            <option value="estudante - filmes">Estudante - Filmes</option>
-                            <option value="estudante - séries">Estudante - Séries</option>
-                        </select>
+                        <select id="reg-plan" class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-6 text-white appearance-none cursor-pointer focus:border-amber-500 italic"><option value="mensal">Mensal</option><option value="trimestral">Trimestral</option><option value="estudante">Estudante</option></select>
                     </div>
                     <div class="space-y-1">
                         <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Telas:</label>
-                        <select id="reg-screens" onchange="window.updatePriceField()" class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-5 text-white appearance-none cursor-pointer focus:border-amber-500 italic">
-                            <option value="1">1 Tela</option>
-                            <option value="2">2 Telas</option>
-                            <option value="3">3 Telas</option>
-                            <option value="4">4 Telas</option>
-                            <option value="5">5 Telas</option>
-                        </select>
+                        <select id="reg-screens" class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-6 text-white appearance-none cursor-pointer focus:border-amber-500 italic"><option value="1">1 Tela</option><option value="2">2 Telas</option></select>
                     </div>
                 </div>
-                <div class="space-y-1 bg-amber-500/5 p-4 rounded-2xl border border-amber-500/20">
-                    <label class="text-[9px] text-amber-500 uppercase font-black ml-2 tracking-widest italic flex items-center justify-between">
-                        <span>Valor Final Cobrado (R$):</span>
-                        <span class="text-stone-500 text-[8px]">(Editável)</span>
-                    </label>
-                    <input type="number" step="0.01" id="reg-price" required class="w-full bg-black border border-stone-800 rounded-xl p-4 text-white focus:border-amber-500 focus:outline-none transition-all font-black text-xl text-center">
-                </div>
-                
-                <div class="grid grid-cols-2 gap-4" id="reg-date-ref-grid">
-                    <div class="space-y-1">
-                        <label id="client-date-label" class="text-[9px] text-amber-500 uppercase font-black ml-4 tracking-widest flex items-center gap-2 italic"><i data-lucide="calendar" class="w-3 h-3"></i> Data de Ativação:</label>
-                        <div class="relative group">
-                            <input type="date" id="reg-activation-date" required class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-5 text-white focus:border-amber-500 focus:outline-none transition-all cursor-pointer font-black tracking-widest uppercase text-xs">
-                        </div>
-                    </div>
-                    <div class="space-y-1" id="reg-ref-container">
-                        <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Cód. Indicação:</label>
-                        <input type="text" id="reg-referral-code" placeholder="Ex: ATMOS-XXXX" class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-5 text-white focus:border-amber-500 focus:outline-none transition-all font-mono uppercase text-xs">
+                <div class="space-y-1">
+                    <label id="client-date-label" class="text-[9px] text-amber-500 uppercase font-black ml-4 tracking-widest flex items-center gap-2 italic"><i data-lucide="calendar" class="w-3 h-3"></i> Data de Ativação:</label>
+                    <div class="relative group">
+                        <input type="date" id="reg-activation-date" required class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-6 text-white focus:border-amber-500 focus:outline-none transition-all cursor-pointer font-black tracking-widest uppercase text-xs">
+                        <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none opacity-20 group-hover:opacity-100 transition-opacity"><i data-lucide="calendar" class="w-4 h-4 text-amber-500"></i></div>
                     </div>
                 </div>
-
-                <button type="submit" id="client-submit-btn" class="w-full bg-amber-500 text-black py-5 rounded-2xl font-black uppercase mt-4 shadow-xl hover:bg-amber-400 transition-all tracking-widest text-xs">Ativar Ativo no Sistema</button>
+                <button type="submit" id="client-submit-btn" class="w-full bg-amber-500 text-black py-6 rounded-2xl font-black uppercase mt-4 shadow-xl hover:bg-amber-400 transition-all tracking-widest text-xs">Ativar Ativo no Sistema</button>
                 
                 <div class="flex gap-2 mt-2">
-                    <button type="button" onclick="window.closeModal('client')" class="flex-1 text-stone-500 text-[10px] uppercase font-black tracking-widest hover:text-white transition-colors text-center p-3">Cancelar</button>
-                    <button type="button" id="client-delete-btn" onclick="window.deleteClientAdmin()" class="hidden flex-1 text-red-500 text-[10px] uppercase font-black tracking-widest hover:text-red-400 transition-colors text-center p-3 bg-red-500/10 rounded-xl border border-red-500/20">Excluir</button>
+                    <button type="button" onclick="window.closeModal('client')" class="flex-1 text-stone-500 text-[10px] uppercase font-black tracking-widest hover:text-white transition-colors text-center p-3">Cancelar Janela</button>
+                    <button type="button" id="client-delete-btn" onclick="window.deleteClientAdmin()" class="hidden flex-1 text-red-500 text-[10px] uppercase font-black tracking-widest hover:text-red-400 transition-colors text-center p-3 bg-red-500/10 rounded-xl border border-red-500/20">Excluir Ativo</button>
                 </div>
             </form>
         </div>
@@ -385,23 +374,36 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { initializeFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // MATRIZ DE PREÇOS BASE
-        const PRICING = { 
-            "mensal": { 1: 35, 2: 40, 3: 50, 4: 60, 5: 70 }, 
-            "trimestral": { 1: 95, 2: 110, 3: 140, 4: 170, 5: 200 }, 
-            "anual": { 1: 238.80, 2: 288, 3: 350, 4: 400, 5: 450 },
-            "estudante": { 1: 14.90, 2: 14.90, 3: 14.90, 4: 14.90, 5: 14.90 }, // Mantido por retrocompatibilidade
-            "estudante - tv online": { 1: 14.90, 2: 14.90, 3: 14.90, 4: 14.90, 5: 14.90 },
-            "estudante - filmes": { 1: 14.90, 2: 14.90, 3: 14.90, 4: 14.90, 5: 14.90 },
-            "estudante - séries": { 1: 14.90, 2: 14.90, 3: 14.90, 4: 14.90, 5: 14.90 }
-        };
+        // CONFIGURAÇÃO DOS PREÇOS
+        const PRICING = { mensal: { 1: 35, 2: 40 }, trimestral: { 1: 95, 2: 110 }, estudante: { 1: 14.90, 2: 14.90 } };
         const COST_PER_SCREEN = 3.50;
         
         let clients = [];
-        let lpAssets = [];
-        let pendingReferrals = []; 
+        window.lpAssets = [];
+        window.appAssets = [];
+        let pendingReferrals = [];
         let activeClient = null;
         let editingClientIndex = -1;
+
+        // --- NOVO: SISTEMA DE ANIMAÇÃO E PROTEÇÃO DE TEMPO ---
+        const globalLoader = document.getElementById('global-loader');
+        const loaderText = document.getElementById('loader-text');
+        let isAppReady = false;
+
+        function hideLoader() {
+            if(isAppReady) return;
+            isAppReady = true;
+            globalLoader.style.opacity = '0';
+            setTimeout(() => globalLoader.classList.add('hidden'), 500); // Remove do DOM após o fade
+        }
+
+        // Relógio de segurança: Se a Nuvem falhar e demorar mais de 3 segundos, força a abertura
+        setTimeout(() => {
+            if(!isAppReady) {
+                loaderText.innerText = "Modo Offline Ativado";
+                setTimeout(hideLoader, 800);
+            }
+        }, 3000);
 
         let app, auth, db, docRef;
         let isCloudActive = false;
@@ -427,6 +429,7 @@
         } catch(e) {
             console.error("Falha ao iniciar nuvem:", e);
             initLocal();
+            hideLoader(); // Liberta a tela se falhar de imediato
         }
 
         async function initCloud() {
@@ -448,22 +451,27 @@
                         if (snapshot.exists()) {
                             const data = snapshot.data();
                             clients = data.clients || [];
-                            lpAssets = data.lpAssets || getFallbackAssets();
+                            window.lpAssets = data.lpAssets || getFallbackAssets();
+                            window.appAssets = data.appAssets || getFallbackAppAssets();
                             pendingReferrals = data.pendingReferrals || [];
                         } else {
                             const localBackup = JSON.parse(localStorage.getItem('atmos_cash_clients'));
                             if (localBackup && localBackup.length > 0) {
                                 clients = localBackup;
-                                lpAssets = JSON.parse(localStorage.getItem('atmos_showcase_assets')) || getFallbackAssets();
+                                window.lpAssets = JSON.parse(localStorage.getItem('atmos_showcase_assets')) || getFallbackAssets();
+                                window.appAssets = JSON.parse(localStorage.getItem('atmos_app_assets')) || getFallbackAppAssets();
                                 pendingReferrals = JSON.parse(localStorage.getItem('atmos_pending_referrals')) || [];
                             } else {
-                                if(lpAssets.length === 0) lpAssets = getFallbackAssets();
+                                if(window.lpAssets.length === 0) window.lpAssets = getFallbackAssets();
+                                if(window.appAssets.length === 0) window.appAssets = getFallbackAppAssets();
                             }
                             syncData(); 
                         }
                         refreshAllUI();
+                        hideLoader(); // A Nuvem conectou com sucesso, liberta a tela!
                     }, (error) => {
                         console.error("Erro na sincronização:", error);
+                        hideLoader(); // Falha de conexão, liberta a tela!
                     });
                 }
             });
@@ -471,18 +479,20 @@
 
         function initLocal() {
             clients = JSON.parse(localStorage.getItem('atmos_cash_clients')) || [];
-            lpAssets = JSON.parse(localStorage.getItem('atmos_showcase_assets')) || getFallbackAssets();
+            window.lpAssets = JSON.parse(localStorage.getItem('atmos_showcase_assets')) || getFallbackAssets();
+            window.appAssets = JSON.parse(localStorage.getItem('atmos_app_assets')) || getFallbackAppAssets();
             pendingReferrals = JSON.parse(localStorage.getItem('atmos_pending_referrals')) || [];
             refreshAllUI();
         }
 
         function syncData() {
             localStorage.setItem('atmos_cash_clients', JSON.stringify(clients));
-            localStorage.setItem('atmos_showcase_assets', JSON.stringify(lpAssets));
+            localStorage.setItem('atmos_showcase_assets', JSON.stringify(window.lpAssets));
+            localStorage.setItem('atmos_app_assets', JSON.stringify(window.appAssets));
             localStorage.setItem('atmos_pending_referrals', JSON.stringify(pendingReferrals));
 
             if (isCloudActive && docRef && auth.currentUser) {
-                setDoc(docRef, { clients, lpAssets, pendingReferrals }, { merge: true }).catch(e => console.error(e));
+                setDoc(docRef, { clients, lpAssets: window.lpAssets, appAssets: window.appAssets, pendingReferrals }, { merge: true }).catch(e => console.error(e));
             }
         }
 
@@ -495,12 +505,24 @@
             ];
         }
 
+        function getFallbackAppAssets() {
+            return [
+                "https://placehold.co/200x200/0a0a0a/d4af37?text=Assist+Plus",
+                "https://placehold.co/200x200/0a0a0a/d4af37?text=Play+Sim",
+                "https://placehold.co/200x200/0a0a0a/d4af37?text=Xcloud",
+                "https://placehold.co/200x200/0a0a0a/d4af37?text=IPTV",
+                "https://placehold.co/200x200/0a0a0a/d4af37?text=Plex"
+            ];
+        }
+
         function refreshAllUI() {
             lucide.createIcons();
             updateHQStats();
             renderHQTable();
             renderMarquee();
-            renderMediaInputs();
+            renderAppMarquee();
+            renderPosterInputs();
+            renderAppInputs();
             if(activeClient) {
                 const refreshedClient = clients.find(c => c.phone === activeClient.phone);
                 if(refreshedClient) {
@@ -508,20 +530,6 @@
                     document.getElementById('p-bonus-badge').innerText = (activeClient.bonusMonths || 0) + " BÔNUS DISPONÍVEL";
                 }
             }
-        }
-
-        function getMonthsByPlan(plan) {
-            if(plan === 'trimestral') return 3;
-            if(plan === 'anual') return 12;
-            return 1; // mensal, estudante...
-        }
-
-        window.updatePriceField = function() {
-            if(editingClientIndex >= 0) return; 
-            const plan = document.getElementById('reg-plan').value;
-            const screens = parseInt(document.getElementById('reg-screens').value);
-            const suggestedPrice = PRICING[plan] ? (PRICING[plan][screens] || 0) : 0;
-            document.getElementById('reg-price').value = suggestedPrice.toFixed(2);
         }
 
         window.showLanding = function() { document.getElementById('view-landing').classList.remove('hidden'); document.getElementById('view-portal').classList.add('hidden'); document.getElementById('view-admin').classList.add('hidden'); window.scrollTo(0,0); }
@@ -555,21 +563,27 @@
                 historyContainer.innerHTML = '';
                 if (c.payments && c.payments.length > 0) {
                     let allHistoryItems = [];
+                    
                     c.payments.forEach((p, pIndex) => {
                         let mCovered = p.monthsCovered || 1;
-                        let pBaseDate = new Date(p.cycleDate || p.date); 
+                        let pBaseDate = new Date(p.date);
+                        
                         for(let i = 0; i < mCovered; i++) {
                             let mDate = new Date(pBaseDate);
                             mDate.setMonth(mDate.getMonth() + i);
+                            
                             let isAdesao = (pIndex === 0 && i === 0);
-                            let label = isAdesao ? "Data de Adesão" : "Ciclo Pago";
-                            if(mCovered > 1 && !isAdesao) label = `Mês ${i+1} (${mCovered === 12 ? 'Anual' : 'Trimestral'})`;
+                            let label = isAdesao ? "Data de Adesão" : "Ciclo Mensal";
+                            
+                            if(mCovered > 1 && !isAdesao) label = `Mês ${i+1} (Trimestral)`;
                             if(mCovered > 1 && isAdesao) label = `Adesão (Mês 1)`;
+
                             allHistoryItems.push({ dateObj: mDate, label: label });
                         }
                     });
                     
                     allHistoryItems.sort((a, b) => b.dateObj - a.dateObj);
+                    
                     allHistoryItems.forEach(item => {
                         const dateStr = item.dateObj.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
                         historyContainer.innerHTML += `
@@ -583,46 +597,29 @@
                     historyContainer.innerHTML = `<p class="text-stone-600 text-[10px] uppercase tracking-widest italic text-center py-2">Nenhum histórico registado.</p>`;
                 }
                 lucide.createIcons();
+
                 window.showFeedback("BEM-VINDO EMBAIXADOR");
             } else { window.showFeedback("CLIENTE NÃO LOCALIZADO"); }
         }
 
         window.sendReferral = function() {
-            if(!activeClient) return;
-            const friendName = document.getElementById('referralFriendName').value.trim();
-            const friendPhone = document.getElementById('wpp_amigo_ref').value.replace(/\D/g, '');
-            
-            if(!friendName) { window.showFeedback("DIGITE O NOME DO AMIGO"); return; }
+            const friendPhone = document.getElementById('referralFriendPhone').value.replace(/\D/g, '');
             if(friendPhone.length < 10) { window.showFeedback("WHATSAPP INVÁLIDO"); return; }
+            pendingReferrals.push({ affiliatePhone: activeClient.phone, guestPhone: friendPhone });
+            syncData();
             
-            pendingReferrals.push({ affiliatePhone: activeClient.phone, guestName: friendName, guestPhone: friendPhone, captureDate: new Date().toISOString() });
-            syncData(); 
-            
-            const urlAtmos = window.location.href.split('?')[0];
-            const msg = `🎬 *ATMOS EXPERIENCE* | O Próximo Nível\n\nOlá ${friendName}! Eu sou assinante da Atmos e quero te convidar para ter acesso ao melhor sinal 4K HDR do mercado, sem travamentos.\n\n🎁 Apresenta o meu código promocional *${activeClient.affiliateCode}* no atendimento para garantir as tuas vantagens na ativação!\n\nConfere a nossa vitrine aqui: ${urlAtmos}`;
+            const urlAtmos = window.location.href;
+            const msg = `Olá! ✨ O seu amigo ${activeClient.name} convidou-te para conhecer a Atmos Experience! 🎬 Tenha acesso ao melhor sinal 4K HDR. Confira aqui: ${urlAtmos}`;
             window.open(`https://api.whatsapp.com/send?phone=${friendPhone}&text=${encodeURIComponent(msg)}`, '_blank');
-            
-            document.getElementById('referralFriendName').value = "";
-            document.getElementById('wpp_amigo_ref').value = "";
-            window.showFeedback("LEAD CAPTADO E CONVITE ENVIADO");
+            document.getElementById('referralFriendPhone').value = "";
+            window.showFeedback("CONVITE ENVIADO");
         }
 
         window.initPay = function(method) {
-            const selectEl = document.getElementById('p-plan-select');
-            const planText = selectEl.options[selectEl.selectedIndex].text;
+            const plan = document.getElementById('p-plan-select').value;
             const telAlex = "5553981676662";
-            const msg = `Olá Amanda! ✨ Solicito renovação do plano ${planText.toUpperCase()} via ${method}. Sou o sócio ${activeClient.name}. Pode validar?`;
+            const msg = `Olá Amanda! ✨ Solicito renovação do plano ${plan.toUpperCase()} via ${method}. Sou o sócio ${activeClient.name}. Pode validar?`;
             setTimeout(() => window.open(`https://api.whatsapp.com/send?phone=${telAlex}&text=${encodeURIComponent(msg)}`, '_blank'), 1000);
-        }
-
-        window.claimBonus = function() {
-            if (activeClient && activeClient.bonusMonths > 0) {
-                const telAlex = "5553981676662";
-                const msg = `Olá Amanda! ✨ Vi no meu portal que tenho ${activeClient.bonusMonths} mês(es) de bônus por indicação disponível. Sou o sócio ${activeClient.name}. Gostaria de resgatar para a minha assinatura!`;
-                window.open(`https://api.whatsapp.com/send?phone=${telAlex}&text=${encodeURIComponent(msg)}`, '_blank');
-            } else {
-                window.showFeedback("NENHUM BÔNUS DISPONÍVEL");
-            }
         }
 
         window.switchAdminTab = function(t) { 
@@ -638,12 +635,6 @@
                 document.getElementById('client-submit-btn').innerText = "Ativar Ativo no Sistema";
                 document.getElementById('client-date-label').innerHTML = `<i data-lucide="calendar" class="w-3 h-3"></i> Data de Ativação:`;
                 document.getElementById('client-delete-btn').classList.add('hidden');
-                
-                document.getElementById('reg-ref-container').classList.remove('hidden');
-                document.getElementById('reg-date-ref-grid').classList.add('grid-cols-2');
-                document.getElementById('reg-date-ref-grid').classList.remove('grid-cols-1');
-                
-                window.updatePriceField(); 
             }
             document.getElementById(id + 'Modal').classList.remove('hidden'); 
             document.getElementById(id + 'Modal').classList.add('flex'); 
@@ -662,18 +653,11 @@
             document.getElementById('reg-plan').value = c.plan;
             document.getElementById('reg-screens').value = c.screens || 1;
             document.getElementById('reg-activation-date').value = c.nextBillingDate;
-            
-            let defaultPrice = PRICING[c.plan] ? (PRICING[c.plan][c.screens] || 0) : 0;
-            document.getElementById('reg-price').value = (c.customPrice !== undefined ? c.customPrice : defaultPrice).toFixed(2);
 
             document.getElementById('client-modal-title').innerHTML = `Editar <span class="text-amber-500">Ativo</span>`;
             document.getElementById('client-submit-btn').innerText = "Salvar Alterações";
             document.getElementById('client-date-label').innerHTML = `<i data-lucide="calendar" class="w-3 h-3"></i> Próximo Vencimento:`;
             document.getElementById('client-delete-btn').classList.remove('hidden');
-            
-            document.getElementById('reg-ref-container').classList.add('hidden');
-            document.getElementById('reg-date-ref-grid').classList.remove('grid-cols-2');
-            document.getElementById('reg-date-ref-grid').classList.add('grid-cols-1');
 
             document.getElementById('clientModal').classList.remove('hidden');
             document.getElementById('clientModal').classList.add('flex');
@@ -718,51 +702,23 @@
         }
 
         window.logPaymentAdmin = function(index) {
-            const c = clients[index]; 
-            const pr = c.customPrice !== undefined ? parseFloat(c.customPrice) : (PRICING[c.plan] ? (PRICING[c.plan][c.screens] || 0) : 0);
-            
-            let months = getMonthsByPlan(c.plan);
+            const c = clients[index]; const pr = PRICING[c.plan][c.screens]; let months = (c.plan === 'trimestral') ? 3 : 1;
             let net = pr - (COST_PER_SCREEN * c.screens * months);
-            
             if(c.bonusMonths > 0) { c.bonusMonths--; net = 0; window.showFeedback("BÔNUS APLICADO"); }
             if(!c.payments) c.payments = [];
             
-            let cycleToPay = c.nextBillingDate; 
-            
+            // Registo de renovação inclui a quantidade de meses cobertos para o histórico
             c.payments.push({ 
                 date: new Date().toISOString(), 
-                cycleDate: cycleToPay + 'T00:00:00', 
                 amountNet: net,
                 monthsCovered: months 
             });
             
             let nxt = new Date(c.nextBillingDate + 'T00:00:00'); 
+            // Avança meses exatos de calendário (Ex: 19 de Fev para 19 de Mai)
             nxt.setMonth(nxt.getMonth() + months);
             c.nextBillingDate = nxt.toISOString().split('T')[0];
             syncData();
-        }
-
-        window.undoPaymentAdmin = function(index) {
-            const c = clients[index];
-            if (!c.payments || c.payments.length === 0) return;
-            
-            if (confirm(`ATENÇÃO: Tem certeza que deseja DESFAZER o último pagamento de ${c.name}? O valor sairá do caixa e o vencimento voltará para trás.`)) {
-                let lastPayment = c.payments.pop();
-                let monthsToRevert = lastPayment.monthsCovered || 1;
-                
-                let nxt = new Date(c.nextBillingDate + 'T00:00:00');
-                nxt.setMonth(nxt.getMonth() - monthsToRevert);
-                c.nextBillingDate = nxt.toISOString().split('T')[0];
-                
-                const pr = c.customPrice !== undefined ? parseFloat(c.customPrice) : (PRICING[c.plan] ? (PRICING[c.plan][c.screens] || 0) : 0);
-                const expectedNet = pr - (COST_PER_SCREEN * c.screens * monthsToRevert);
-                if (lastPayment.amountNet === 0 && expectedNet > 0) {
-                    c.bonusMonths = (c.bonusMonths || 0) + 1;
-                }
-                
-                syncData();
-                window.showFeedback("PAGAMENTO DESFEITO");
-            }
         }
 
         function renderHQTable() {
@@ -779,12 +735,10 @@
                 const msg = `Olá ${c.name}! ✨ Aqui é a Amanda da Atmos TV. Vim te avisar que o seu sinal renova em ${diff < 0 ? 'alguns dias (vencido)' : diff + ' dias'}! Garanta sua diversão 4K sem travas no nosso portal. 🎬`;
                 const wLink = `https://api.whatsapp.com/send?phone=${c.phone.replace(/\D/g,'')}&text=${encodeURIComponent(msg)}`;
 
-                const planTag = c.customPrice !== undefined ? `${c.plan} (Especial)` : c.plan;
-
                 tr.className = 'hover:bg-white/[0.03] transition-all group';
                 tr.innerHTML = `
                     <td class="p-8"><div class="font-black text-white text-base uppercase">${c.name}</div><div class="text-[9px] text-stone-600 font-mono tracking-widest">${c.phone}</div></td>
-                    <td class="p-8"><div class="text-stone-300 font-black uppercase text-[9px] italic">${planTag}</div><div class="text-green-500 font-black text-[9px] mt-1 uppercase">${c.bonusMonths || 0} BÔNUS</div></td>
+                    <td class="p-8"><div class="text-stone-300 font-black uppercase text-[9px] italic">${c.plan}</div><div class="text-green-500 font-black text-[9px] mt-1 uppercase">${c.bonusMonths || 0} BÔNUS</div></td>
                     <td class="p-8 text-center font-bold text-stone-200">${nxt.toLocaleDateString('pt-BR')}</td>
                     <td class="p-8 text-center"><span class="px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${sC}">${sL}</span></td>
                     <td class="p-8 text-center">
@@ -792,7 +746,6 @@
                             ${showM ? `<a href="${wLink}" target="_blank" class="magic-button-animation bg-amber-500 text-black px-4 py-2.5 rounded-xl text-[10px] font-black uppercase flex items-center gap-1 hover:bg-amber-400 transition-all"><i data-lucide="sparkles" class="w-3 h-3"></i> Cobrar</a>` : `<span class="text-stone-800 font-black text-[9px] mr-2">MONITORADO</span>`}
                             <button onclick="window.logPaymentAdmin(${i})" class="bg-white/5 hover:bg-white text-white hover:text-black px-4 py-2.5 rounded-xl text-[10px] font-black uppercase transition-all">Recebi</button>
                             <button onclick="window.editClientAdmin(${i})" class="bg-stone-900 hover:bg-amber-500/20 text-stone-500 hover:text-amber-500 p-2.5 rounded-xl transition-all" title="Editar Cliente"><i data-lucide="pencil" class="w-3.5 h-3.5"></i></button>
-                            ${c.payments && c.payments.length > 0 ? `<button onclick="window.undoPaymentAdmin(${i})" class="bg-stone-900 hover:bg-red-500/20 text-stone-500 hover:text-red-500 p-2.5 rounded-xl transition-all" title="Desfazer Último Pagamento"><i data-lucide="undo" class="w-3.5 h-3.5"></i></button>` : ''}
                         </div>
                     </td>
                     <td class="p-8 text-right font-black text-white">R$ ${(c.payments||[]).reduce((a,p)=>a+p.amountNet,0).toLocaleString('pt-BR')}</td>`;
@@ -803,42 +756,79 @@
 
         function renderMarquee() {
             const container = document.getElementById('landing-marquee');
-            const list = lpAssets.length > 0 ? [...lpAssets, ...lpAssets] : getFallbackAssets();
+            const list = window.lpAssets.length > 0 ? [...window.lpAssets, ...window.lpAssets] : getFallbackAssets();
             container.innerHTML = list.map(url => `<div class="movie-card bg-stone-900"><img src="${url}" class="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity duration-700"></div>`).join('');
         }
 
-        function renderMediaInputs() {
+        function renderAppMarquee() {
+            const container = document.getElementById('landing-app-marquee');
+            const list = window.appAssets.length > 0 ? [...window.appAssets, ...window.appAssets, ...window.appAssets] : getFallbackAppAssets(); 
+            container.innerHTML = list.map(url => `<div class="app-card bg-stone-900/50"><img src="${url}" class="max-w-[80%] max-h-[80%] object-contain opacity-80" alt="App"></div>`).join('');
+        }
+
+        function renderPosterInputs() {
             const c = document.getElementById('media-inputs'); c.innerHTML = '';
-            if(lpAssets.length === 0) lpAssets.push("");
-            lpAssets.forEach((u, i) => {
+            if(window.lpAssets.length === 0) window.lpAssets.push("");
+            window.lpAssets.forEach((u, i) => {
                 c.innerHTML += `
                     <div class="glass-panel p-6 rounded-3xl space-y-4 border-white/5">
                         <div class="w-full h-40 bg-black rounded-2xl overflow-hidden relative group">
                             <img src="${u}" class="w-full h-full object-cover opacity-50" onerror="this.src='https://via.placeholder.com/300x150/050505/f59e0b?text=Slot+Livre'">
                             <label class="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                                 <span class="bg-amber-500 text-black px-4 py-2 rounded-lg font-black uppercase text-[9px] tracking-widest">Carregar do PC</span>
-                                <input type="file" class="hidden" accept="image/*" onchange="window.handleHQFile(event, ${i})">
+                                <input type="file" class="hidden" accept="image/*" onchange="window.handlePosterFile(event, ${i})">
                             </label>
                         </div>
-                        <input type="text" value="${u.startsWith('data') ? '[IMAGEM LOCAL]' : u}" onchange="lpAssets[${i}]=this.value" class="w-full bg-black border border-white/10 rounded-xl p-4 text-[9px] text-stone-500 font-mono" placeholder="Ou cole o link da imagem aqui...">
+                        <input type="text" value="${u.startsWith('data') ? '[IMAGEM LOCAL]' : u}" onchange="window.lpAssets[${i}]=this.value; renderPosterInputs();" class="w-full bg-black border border-white/10 rounded-xl p-4 text-[9px] text-stone-500 font-mono" placeholder="Ou cole o link da imagem aqui...">
                     </div>`;
             });
             lucide.createIcons();
         }
 
-        window.handleHQFile = function(e, i) {
-            const f = e.target.files[0]; const r = new FileReader();
-            r.onload = (ev) => { lpAssets[i] = ev.target.result; renderMediaInputs(); window.showFeedback("CARREGADA"); }; r.readAsDataURL(f);
+        function renderAppInputs() {
+            const c = document.getElementById('app-inputs'); c.innerHTML = '';
+            if(window.appAssets.length === 0) window.appAssets.push("");
+            window.appAssets.forEach((u, i) => {
+                c.innerHTML += `
+                    <div class="glass-panel p-4 rounded-3xl space-y-4 border-white/5">
+                        <div class="w-full h-24 bg-black rounded-2xl overflow-hidden relative group">
+                            <img src="${u}" class="w-full h-full object-contain p-2 opacity-70" onerror="this.src='https://placehold.co/200x200/050505/f59e0b?text=App'">
+                            <label class="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                                <span class="bg-amber-500 text-black px-3 py-1 rounded-lg font-black uppercase text-[8px] tracking-widest">Trocar</span>
+                                <input type="file" class="hidden" accept="image/*" onchange="window.handleAppFile(event, ${i})">
+                            </label>
+                        </div>
+                        <input type="text" value="${u.startsWith('data') ? '[IMAGEM LOCAL]' : u}" onchange="window.appAssets[${i}]=this.value; renderAppInputs();" class="w-full bg-black border border-white/10 rounded-xl p-3 text-[8px] text-stone-500 font-mono" placeholder="Colar Link Logo...">
+                    </div>`;
+            });
         }
 
-        window.addImageInput = function() { lpAssets.push(""); renderMediaInputs(); }
+        function renderMediaInputs() {
+            renderPosterInputs();
+            renderAppInputs();
+        }
+
+        window.handlePosterFile = function(e, i) {
+            const f = e.target.files[0]; const r = new FileReader();
+            r.onload = (ev) => { window.lpAssets[i] = ev.target.result; renderPosterInputs(); window.showFeedback("CARREGADA"); }; r.readAsDataURL(f);
+        }
+
+        window.handleAppFile = function(e, i) {
+            const f = e.target.files[0]; const r = new FileReader();
+            r.onload = (ev) => { window.appAssets[i] = ev.target.result; renderAppInputs(); window.showFeedback("CARREGADA"); }; r.readAsDataURL(f);
+        }
+
+        window.addPosterInput = function() { window.lpAssets.push(""); renderPosterInputs(); }
+        window.addAppInput = function() { window.appAssets.push(""); renderAppInputs(); }
 
         document.getElementById('media-form').addEventListener('submit', (e) => {
             e.preventDefault(); 
-            lpAssets = lpAssets.filter(v=>v.trim()!=="");
+            window.lpAssets = window.lpAssets.filter(v=>v.trim()!=="");
+            window.appAssets = window.appAssets.filter(v=>v.trim()!=="");
             syncData();
             window.showFeedback("VITRINE ATUALIZADA"); 
             renderMarquee(); 
+            renderAppMarquee();
             window.showLanding();
         });
 
@@ -848,43 +838,41 @@
             const plan = document.getElementById('reg-plan').value;
             const screens = parseInt(document.getElementById('reg-screens').value);
             const inputDateStr = document.getElementById('reg-activation-date').value;
-            
-            const finalPriceStr = document.getElementById('reg-price').value;
-            const finalPrice = parseFloat(finalPriceStr);
 
             if (editingClientIndex >= 0) {
+                // MODO EDIÇÃO
                 let c = clients[editingClientIndex];
                 c.name = document.getElementById('reg-name').value;
                 c.phone = phone;
                 c.plan = plan;
                 c.screens = screens;
                 c.nextBillingDate = inputDateStr;
-                c.customPrice = finalPrice; 
 
                 syncData(); 
                 window.closeModal('client'); 
                 e.target.reset(); 
                 window.showFeedback("DADOS ATUALIZADOS");
             } else {
-                let months = getMonthsByPlan(plan);
+                // MODO CRIAÇÃO (Registando a Data Exata no Histórico)
+                let months = (plan === 'trimestral') ? 3 : 1;
                 
                 let baseDate = new Date(inputDateStr + 'T00:00:00');
                 let nxt = new Date(baseDate);
                 nxt.setMonth(nxt.getMonth() + months);
                 const nextBillingDate = nxt.toISOString().split('T')[0];
 
-                const net = finalPrice - (COST_PER_SCREEN * screens * months);
+                const pr = PRICING[plan][screens];
+                const net = pr - (COST_PER_SCREEN * screens * months);
 
                 const newClient = { 
                     name: document.getElementById('reg-name').value, 
                     phone: phone, 
                     plan: plan, 
                     screens: screens, 
-                    customPrice: finalPrice, 
                     nextBillingDate: nextBillingDate, 
+                    // O primeiro pagamento usa a data exata inserida no formulário (Data de Adesão) e inclui a cobertura de meses
                     payments: [{ 
-                        date: new Date().toISOString(),
-                        cycleDate: baseDate.toISOString(),
+                        date: baseDate.toISOString(), 
                         amountNet: net,
                         monthsCovered: months
                     }], 
@@ -892,13 +880,11 @@
                     bonusMonths: 0 
                 };
                 
-                const refCodeInput = document.getElementById('reg-referral-code').value.trim().toUpperCase();
-                if(refCodeInput) {
-                    const affiliate = clients.find(cl => cl.affiliateCode === refCodeInput);
-                    if(affiliate) { 
-                        affiliate.bonusMonths = (affiliate.bonusMonths || 0) + 1; 
-                        window.showFeedback("BÔNUS ATRIBUÍDO AO EMBAIXADOR"); 
-                    }
+                const referralMatch = pendingReferrals.find(r => r.guestPhone === phone);
+                if(referralMatch) {
+                    const affiliate = clients.find(cl => cl.phone === referralMatch.affiliatePhone);
+                    if(affiliate) { affiliate.bonusMonths = (affiliate.bonusMonths || 0) + 1; window.showFeedback("BÔNUS ATRIBUÍDO"); }
+                    pendingReferrals = pendingReferrals.filter(r => r.guestPhone !== phone);
                 }
                 
                 clients.push(newClient); 
