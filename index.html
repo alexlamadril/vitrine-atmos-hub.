@@ -2,7 +2,6 @@
 <html lang="pt-PT" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <!-- ATUALIZADO: Previne zoom automático em campos de texto no iOS/Android -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>ATMOS EXPERIENCE | O Próximo Nível</title>
     
@@ -307,7 +306,6 @@
                         <span id="p-affiliate-code" class="text-lg md:text-xl font-black text-amber-500 tracking-[0.2em] md:tracking-[0.3em]">ATMOS-CODE</span>
                     </div>
                     
-                    <!-- Formulário Responsivo -->
                     <div class="space-y-3 border-t border-white/5 pt-4 md:pt-6 mt-4 md:mt-6">
                         <p class="text-[8px] md:text-[9px] text-stone-500 uppercase font-black tracking-widest text-left ml-1 md:ml-2">Indique e Ganhe (Dados do Amigo):</p>
                         <input type="text" id="referralFriendName" name="dummy_name_prevent_autofill" autocomplete="nope" data-lpignore="true" placeholder="Nome do amigo" class="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 md:py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
@@ -343,26 +341,41 @@
         </div>
     </div>
 
-    <!-- VIEW 3: ADMIN HQ (THORAIKA) - OTIMIZADO PARA MOBILE -->
+    <!-- VIEW 3: ADMIN HQ (THORAIKA) - OTIMIZADO -->
     <div id="view-admin" class="hidden min-h-screen flex-col lg:flex-row">
-        <!-- Sidebar de Topo Deslizante no Mobile -->
-        <aside class="w-full lg:w-72 border-b lg:border-b-0 lg:border-r border-stone-900 bg-black flex lg:flex-col p-4 lg:p-8 shrink-0 overflow-x-auto z-20 items-center lg:items-stretch">
-            <div class="flex items-center gap-3 mr-8 lg:mr-0 lg:mb-16 shrink-0">
-                <div class="bg-amber-500 p-1.5 md:p-2 rounded-xl text-black shadow-lg"><i data-lucide="shield" class="w-4 h-4 md:w-5 md:h-5"></i></div>
-                <span class="font-bold text-[10px] md:text-sm text-white uppercase tracking-widest">Atmos HQ</span>
+        <!-- Sidebar de Topo/Lateral -->
+        <aside class="w-full lg:w-72 border-b lg:border-b-0 lg:border-r border-stone-900 bg-black flex flex-col p-5 lg:p-8 shrink-0 z-20 shadow-2xl">
+            <div class="flex items-center justify-between lg:mb-16">
+                <div class="flex items-center gap-3">
+                    <div class="bg-amber-500 p-1.5 md:p-2 rounded-xl text-black shadow-lg">
+                        <i data-lucide="shield" class="w-4 h-4 md:w-5 md:h-5"></i>
+                    </div>
+                    <span class="font-bold text-xs md:text-sm text-white uppercase tracking-widest">Atmos HQ</span>
+                </div>
+                <!-- Sair no Mobile -->
+                <button onclick="window.showLanding()" class="lg:hidden flex items-center gap-1 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-xl text-[9px] font-black tracking-widest transition-colors">
+                    <i data-lucide="log-out" class="w-3 h-3"></i> Sair
+                </button>
             </div>
-            <nav class="flex lg:flex-col gap-2 flex-1 min-w-max items-center lg:items-stretch">
-                <button onclick="window.switchAdminTab('dash')" id="tab-btn-dash" class="whitespace-nowrap px-4 py-2 lg:p-4 rounded-xl bg-amber-500/10 text-amber-500 font-black text-[9px] lg:text-[10px] uppercase tracking-widest transition-colors">Financeiro Real</button>
-                <button onclick="window.switchAdminTab('leads')" id="tab-btn-leads" class="whitespace-nowrap px-4 py-2 lg:p-4 rounded-xl text-stone-500 font-black text-[9px] lg:text-[10px] uppercase tracking-widest transition-colors hover:bg-stone-900">Lista Mestra</button>
-                <button onclick="window.switchAdminTab('media')" id="tab-btn-media" class="whitespace-nowrap px-4 py-2 lg:p-4 rounded-xl text-stone-500 font-black text-[9px] lg:text-[10px] uppercase tracking-widest transition-colors hover:bg-stone-900">Gerir Vitrine</button>
+            
+            <nav class="flex flex-row lg:flex-col gap-2 mt-6 lg:mt-0 flex-1 w-full flex-wrap lg:flex-nowrap">
+                <button onclick="window.switchAdminTab('dash')" id="tab-btn-dash" class="flex-1 lg:w-full whitespace-nowrap text-center lg:text-left px-3 py-3 lg:p-4 rounded-xl bg-amber-500/10 text-amber-500 font-black text-[9px] lg:text-[10px] uppercase tracking-widest transition-colors">Caixa</button>
+                <button onclick="window.switchAdminTab('leads')" id="tab-btn-leads" class="flex-1 lg:w-full whitespace-nowrap text-center lg:text-left px-3 py-3 lg:p-4 rounded-xl bg-stone-900/30 lg:bg-transparent text-stone-500 font-black text-[9px] lg:text-[10px] uppercase tracking-widest transition-colors hover:bg-stone-900">Leads</button>
+                <button onclick="window.switchAdminTab('media')" id="tab-btn-media" class="flex-1 lg:w-full whitespace-nowrap text-center lg:text-left px-3 py-3 lg:p-4 rounded-xl bg-stone-900/30 lg:bg-transparent text-stone-500 font-black text-[9px] lg:text-[10px] uppercase tracking-widest transition-colors hover:bg-stone-900">Vitrine</button>
             </nav>
-            <button onclick="window.showLanding()" class="ml-4 lg:ml-0 lg:mt-auto shrink-0 bg-stone-900/50 px-4 py-2 lg:p-4 rounded-xl text-stone-700 hover:text-white uppercase text-[9px] font-black tracking-widest transition-colors">Sair</button>
+            
+            <!-- Sair no Desktop -->
+            <button onclick="window.showLanding()" class="hidden lg:flex items-center justify-center gap-2 lg:mt-auto shrink-0 bg-stone-900/50 p-4 rounded-xl text-stone-700 hover:text-red-500 hover:bg-red-500/10 uppercase text-[10px] font-black tracking-widest transition-colors">
+                <i data-lucide="log-out" class="w-4 h-4"></i> Sair do HQ
+            </button>
         </aside>
 
         <!-- Conteúdo Principal -->
-        <main class="flex-1 flex flex-col h-[calc(100vh-70px)] lg:h-screen overflow-hidden bg-[#020202]">
+        <main class="flex-1 flex flex-col relative lg:h-screen lg:overflow-hidden bg-[#020202]">
+            
+            <!-- ABA CAIXA -->
             <div id="admin-dash" class="h-full flex flex-col">
-                <header class="h-auto md:h-24 border-b border-stone-900 flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 md:px-10 gap-4 bg-black/40">
+                <header class="h-auto md:h-24 border-b border-stone-900 flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 md:px-10 gap-4 bg-black/40 shrink-0">
                     <div class="flex items-center gap-3 md:gap-4">
                         <h1 class="text-white text-lg md:text-2xl font-black italic uppercase tracking-widest">HQ <span class="text-amber-500 not-italic">OPERATIONS</span></h1>
                         <span id="cloud-status" class="bg-stone-900 text-stone-500 px-2 py-1 md:px-3 md:py-1 rounded-full text-[8px] md:text-[9px] font-black uppercase tracking-widest flex items-center gap-1 md:gap-2"><i data-lucide="cloud-off" class="w-3 h-3"></i> N/D</span>
@@ -381,7 +394,6 @@
                         <button onclick="window.resetCaixaMes()" class="text-stone-700 hover:text-red-500 text-[8px] md:text-[9px] uppercase font-black tracking-widest transition-colors flex items-center gap-1 group"><i data-lucide="rotate-ccw" class="w-3 h-3 group-hover:-rotate-180 transition-transform duration-500"></i> Limpar Testes (Zerar Mês)</button>
                     </div>
 
-                    <!-- Tabela de Assinantes com Scroll Horizontal no Mobile -->
                     <div class="glass-panel rounded-[1.5rem] md:rounded-[2.5rem] overflow-x-auto shadow-2xl border-white/5 relative">
                         <table class="w-full text-left text-xs min-w-[700px]">
                             <thead class="bg-stone-900/50 text-stone-600 uppercase tracking-widest">
@@ -393,9 +405,9 @@
                 </div>
             </div>
 
-            <!-- NOVA ABA: LISTA MESTRA -->
-            <div id="admin-leads" class="hidden h-full flex flex-col">
-                <header class="h-20 md:h-24 border-b border-stone-900 flex items-center px-6 md:px-10 bg-black/40"><h1 class="text-white text-lg md:text-2xl font-black italic uppercase tracking-tighter">Lista <span class="text-amber-500">Mestra</span></h1></header>
+            <!-- ABA LEADS -->
+            <div id="admin-leads" class="hidden h-full flex-col">
+                <header class="h-20 md:h-24 border-b border-stone-900 flex items-center px-6 md:px-10 bg-black/40 shrink-0"><h1 class="text-white text-lg md:text-2xl font-black italic uppercase tracking-tighter">Lista <span class="text-amber-500">Mestra</span></h1></header>
                 <div class="p-5 md:p-10 overflow-y-auto flex-1 bg-[#020202]">
                     <div class="glass-panel rounded-[1.5rem] md:rounded-[2.5rem] overflow-x-auto shadow-2xl border-amber-500/10">
                         <table class="w-full text-left text-xs min-w-[600px]">
@@ -414,9 +426,9 @@
                 </div>
             </div>
 
-            <!-- ÁREA DE GESTÃO VISUAL (POSTERS E APPS) -->
-            <div id="admin-media" class="hidden h-full flex flex-col">
-                <header class="h-20 md:h-24 border-b border-stone-900 flex items-center px-6 md:px-10 bg-black/40"><h1 class="text-white text-lg md:text-2xl font-black italic uppercase tracking-tighter">Gestão <span class="text-amber-500">Visual</span></h1></header>
+            <!-- ABA GESTÃO VISUAL -->
+            <div id="admin-media" class="hidden h-full flex-col">
+                <header class="h-20 md:h-24 border-b border-stone-900 flex items-center px-6 md:px-10 bg-black/40 shrink-0"><h1 class="text-white text-lg md:text-2xl font-black italic uppercase tracking-tighter">Gestão <span class="text-amber-500">Visual</span></h1></header>
                 <div class="p-5 md:p-10 overflow-y-auto flex-1 bg-neutral-950">
                     <div class="max-w-5xl glass-panel p-6 md:p-12 rounded-[2rem] md:rounded-[3.5rem] border-amber-500/10">
                         <form id="media-form" class="space-y-10 md:space-y-12">
@@ -451,7 +463,7 @@
     <div id="thoraika-modal" class="fixed inset-0 bg-black/98 backdrop-blur-3xl z-[600] hidden items-center justify-center p-4">
         <div class="glass-panel w-full max-w-sm rounded-[2rem] md:rounded-[3rem] p-8 md:p-12 text-center border-amber-500/20 shadow-2xl relative overflow-hidden">
             <div class="absolute inset-0 bg-gradient-to-b from-amber-500/5 to-transparent pointer-events-none"></div>
-            <div class="w-12 h-12 md:w-16 md:h-16 bg-amber-500/10 rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-6 md:mb-8 border border-amber-500/20 shadow-inner"><i data-lucide="lock" class="text-amber-500 w-5 h-5 md:w-6 md:h-6"></i></div>
+            <div class="w-12 h-12 md:w-16 h-16 bg-amber-500/10 rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-6 md:mb-8 border border-amber-500/20 shadow-inner"><i data-lucide="lock" class="text-amber-500 w-5 h-5 md:w-6 h-6"></i></div>
             <h3 class="text-white font-black text-lg md:text-xl mb-8 md:mb-10 uppercase tracking-[0.1em] md:tracking-[0.2em] italic">Chave HQ Atmos</h3>
             <input type="password" id="thoraika-input" placeholder="DIGITE A SENHA..." class="w-full bg-stone-900 border border-stone-800 rounded-xl md:rounded-2xl px-4 py-4 md:py-5 text-white text-center focus:border-amber-500 focus:outline-none mb-6 md:mb-8 tracking-[0.5em] md:tracking-[1em] text-lg md:text-xl font-bold uppercase">
             <button onclick="window.validateThoraika()" class="w-full bg-amber-500 text-black py-4 md:py-5 rounded-xl md:rounded-2xl font-black uppercase text-[10px] md:text-[11px] tracking-widest shadow-xl shadow-amber-500/10 hover:bg-amber-400 transition-all">Validar Acesso</button>
@@ -863,14 +875,26 @@
             }
         }
 
+        // LÓGICA DE ABAS BLINDADA PARA EVITAR CONFLITOS DE CSS
         window.switchAdminTab = function(t) { 
-            document.getElementById('admin-dash').classList.toggle('hidden', t !== 'dash'); 
-            document.getElementById('admin-leads').classList.toggle('hidden', t !== 'leads'); 
-            document.getElementById('admin-media').classList.toggle('hidden', t !== 'media'); 
+            // Oculta/Exibe os containers principais removendo e adicionando a classe "flex" com precisão
+            ['dash', 'leads', 'media'].forEach(tab => {
+                const el = document.getElementById('admin-' + tab);
+                if (t === tab) {
+                    el.classList.remove('hidden');
+                    el.classList.add('flex');
+                } else {
+                    el.classList.add('hidden');
+                    el.classList.remove('flex');
+                }
+            });
             
-            document.getElementById('tab-btn-dash').className = `whitespace-nowrap px-4 py-2 lg:p-4 rounded-xl font-black text-[9px] lg:text-[10px] uppercase tracking-widest transition-colors ${t === 'dash' ? 'bg-amber-500/10 text-amber-500' : 'text-stone-500 hover:bg-stone-900'}`;
-            document.getElementById('tab-btn-leads').className = `whitespace-nowrap px-4 py-2 lg:p-4 rounded-xl font-black text-[9px] lg:text-[10px] uppercase tracking-widest transition-colors ${t === 'leads' ? 'bg-amber-500/10 text-amber-500' : 'text-stone-500 hover:bg-stone-900'}`;
-            document.getElementById('tab-btn-media').className = `whitespace-nowrap px-4 py-2 lg:p-4 rounded-xl font-black text-[9px] lg:text-[10px] uppercase tracking-widest transition-colors ${t === 'media' ? 'bg-amber-500/10 text-amber-500' : 'text-stone-500 hover:bg-stone-900'}`;
+            // Atualiza o estilo visual dos botões
+            const baseTabBtnClass = "flex-1 lg:w-full whitespace-nowrap text-center lg:text-left px-3 py-3 lg:p-4 rounded-xl font-black text-[9px] lg:text-[10px] uppercase tracking-widest transition-colors";
+            
+            document.getElementById('tab-btn-dash').className = `${baseTabBtnClass} ${t === 'dash' ? 'bg-amber-500/10 text-amber-500' : 'bg-stone-900/30 lg:bg-transparent text-stone-500 hover:bg-stone-900'}`;
+            document.getElementById('tab-btn-leads').className = `${baseTabBtnClass} ${t === 'leads' ? 'bg-amber-500/10 text-amber-500' : 'bg-stone-900/30 lg:bg-transparent text-stone-500 hover:bg-stone-900'}`;
+            document.getElementById('tab-btn-media').className = `${baseTabBtnClass} ${t === 'media' ? 'bg-amber-500/10 text-amber-500' : 'bg-stone-900/30 lg:bg-transparent text-stone-500 hover:bg-stone-900'}`;
         }
         
         function renderLeadsTable() {
