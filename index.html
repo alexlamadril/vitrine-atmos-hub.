@@ -2,10 +2,10 @@
 <html lang="pt-PT" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- ATUALIZADO: Previne zoom automático em campos de texto no iOS/Android -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>ATMOS EXPERIENCE | O Próximo Nível</title>
     
-    <!-- NOVO: Favicon de Coroa Dourada -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d4af37' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14'/></svg>">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -32,14 +32,20 @@
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-marquee { display: flex; width: max-content; animation: marquee 60s linear infinite; }
         .animate-marquee:hover { animation-play-state: paused; }
-        .movie-card { width: 300px; height: 420px; border-radius: 24px; overflow: hidden; position: relative; flex-shrink: 0; margin-right: 24px; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.5s ease; }
+        .movie-card { width: 260px; height: 370px; border-radius: 20px; overflow: hidden; position: relative; flex-shrink: 0; margin-right: 16px; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.5s ease; }
+        @media (min-width: 768px) {
+            .movie-card { width: 300px; height: 420px; border-radius: 24px; margin-right: 24px; }
+        }
         .movie-card:hover { transform: scale(1.02); border-color: rgba(212, 175, 55, 0.4); }
         .movie-overlay { background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, rgba(0,0,0,0.4) 50%, transparent 100%); }
 
         /* App Marquee - Logos */
         .animate-marquee-reverse { display: flex; width: max-content; animation: marquee 50s linear infinite reverse; }
         .animate-marquee-reverse:hover { animation-play-state: paused; }
-        .app-card { width: 140px; height: 140px; border-radius: 24px; flex-shrink: 0; margin-right: 24px; border: 1px solid rgba(255,255,255,0.05); background: #0a0a0a; display:flex; align-items:center; justify-content:center; padding: 20px; transition: all 0.3s ease; }
+        .app-card { width: 100px; height: 100px; border-radius: 20px; flex-shrink: 0; margin-right: 16px; border: 1px solid rgba(255,255,255,0.05); background: #0a0a0a; display:flex; align-items:center; justify-content:center; padding: 15px; transition: all 0.3s ease; }
+        @media (min-width: 768px) {
+            .app-card { width: 140px; height: 140px; border-radius: 24px; margin-right: 24px; padding: 20px; }
+        }
         .app-card:hover { transform: scale(1.05); border-color: rgba(212, 175, 55, 0.4); background: #111; }
 
         /* Status Styles */
@@ -48,11 +54,7 @@
         .status-ok { color: #10b981; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); }
         
         /* Personalização do Calendário Nativo */
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(1) sepia(100%) saturate(1000%) hue-rotate(10deg);
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
+        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1) sepia(100%) saturate(1000%) hue-rotate(10deg); cursor: pointer; font-size: 1.2rem; }
 
         .magic-button-animation { animation: pulse-gold 2s infinite; }
         @keyframes pulse-gold {
@@ -61,8 +63,9 @@
             100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
         }
 
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 10px; }
+        /* Oculta scrollbar vertical elegante */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 10px; }
     </style>
 </head>
 <body class="min-h-screen">
@@ -74,285 +77,264 @@
             <div class="absolute inset-2 rounded-full border-r-2 border-l-2 border-amber-300 animate-spin" style="animation-direction: reverse; animation-duration: 1.5s;"></div>
             <i data-lucide="crown" class="w-8 h-8 text-amber-500 animate-pulse"></i>
         </div>
-        <span class="text-[10px] uppercase tracking-[0.4em] font-bold text-amber-500 animate-pulse">Sincronizando Atmos</span>
-        <span class="text-[8px] uppercase tracking-widest text-stone-600 mt-2" id="loader-text">Estabelecendo conexão segura...</span>
+        <span class="text-[10px] uppercase tracking-[0.4em] font-bold text-amber-500 animate-pulse text-center px-4">Sincronizando Atmos</span>
+        <span class="text-[8px] uppercase tracking-widest text-stone-600 mt-2 text-center px-4" id="loader-text">Estabelecendo conexão segura...</span>
     </div>
 
     <!-- VIEW 1: LANDING PAGE -->
     <div id="view-landing" class="relative">
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none" style="background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 70%);"></div>
 
-        <!-- Navegação -->
-        <nav class="relative z-10 container mx-auto px-8 py-10 flex justify-between items-center">
-            <div class="flex items-center gap-3">
+        <!-- Navegação Responsiva -->
+        <nav class="relative z-10 container mx-auto px-5 md:px-8 py-6 md:py-10 flex justify-between items-center">
+            <div class="flex items-center gap-2 md:gap-3">
                 <div class="bg-gradient-to-tr from-amber-600 to-amber-300 p-1.5 rounded-full shadow-lg"><i data-lucide="crown" class="w-4 h-4 text-black"></i></div>
-                <div class="flex flex-col items-center mt-1">
-                    <span class="tracking-[0.4em] text-xs font-bold uppercase text-white leading-none">Vitrine Atmos</span>
-                    <span class="text-amber-500 font-light tracking-[0.4em] text-[9px] uppercase leading-tight mt-1">Experience</span>
+                <div class="flex flex-col items-start md:items-center mt-1">
+                    <span class="tracking-[0.3em] md:tracking-[0.4em] text-[10px] md:text-xs font-bold uppercase text-white leading-none">Vitrine Atmos</span>
+                    <span class="text-amber-500 font-light tracking-[0.3em] md:tracking-[0.4em] text-[8px] md:text-[9px] uppercase leading-tight mt-1">Experience</span>
                 </div>
             </div>
-            <div class="flex items-center gap-6">
-                <button onclick="window.showPortal()" class="text-[10px] uppercase font-black tracking-widest text-stone-400 hover:text-amber-500 transition-all border-b border-transparent hover:border-amber-500/50 pb-1">Portal do Cliente</button>
-                <button onclick="window.requestAdminAccess()" class="bg-white/5 border border-white/10 px-4 py-2 rounded-lg text-[9px] uppercase font-black tracking-widest text-stone-500 hover:text-white transition-all">Acesso HQ</button>
+            <div class="flex items-center gap-4 md:gap-6">
+                <button onclick="window.showPortal()" class="text-[9px] md:text-[10px] uppercase font-black tracking-widest text-stone-400 hover:text-amber-500 transition-all border-b border-transparent hover:border-amber-500/50 pb-1">Portal</button>
+                <button onclick="window.requestAdminAccess()" class="bg-white/5 border border-white/10 px-3 py-2 md:px-4 md:py-2 rounded-lg text-[8px] md:text-[9px] uppercase font-black tracking-widest text-stone-500 hover:text-white transition-all">Acesso HQ</button>
             </div>
         </nav>
 
-        <header class="relative z-10 container mx-auto px-8 pt-12 pb-16 text-center">
-            <div class="inline-block px-4 py-1.5 rounded-full border border-amber-500/10 bg-amber-500/5 mb-8">
-                <span class="text-[9px] uppercase tracking-[0.3em] font-bold text-amber-500 italic">O Padrão Ouro do Entretenimento</span>
+        <header class="relative z-10 container mx-auto px-5 md:px-8 pt-8 md:pt-12 pb-12 md:pb-16 text-center">
+            <div class="inline-block px-4 py-1.5 rounded-full border border-amber-500/10 bg-amber-500/5 mb-6 md:mb-8">
+                <span class="text-[8px] md:text-[9px] uppercase tracking-[0.3em] font-bold text-amber-500 italic">O Padrão Ouro do Entretenimento</span>
             </div>
-            <h1 class="text-5xl md:text-8xl font-light tracking-tighter leading-none mb-10">Sua dose diária de <br /><span class="font-serif italic gold-text">Dopamina Digital.</span></h1>
-            <p class="max-w-2xl mx-auto text-stone-400 text-lg md:text-xl font-light mb-12 italic">Estabilidade absoluta em 4K HDR. A Vitrine Atmos é a sua melhor escolha.</p>
+            <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-light tracking-tighter leading-none mb-8 md:mb-10">Sua dose diária de <br /><span class="font-serif italic gold-text">Dopamina Digital.</span></h1>
+            <p class="max-w-2xl mx-auto text-stone-400 text-base md:text-xl font-light mb-12 italic px-2">Estabilidade absoluta em 4K HDR. A Vitrine Atmos é a sua melhor escolha.</p>
         </header>
 
         <!-- Showcase Marquee -->
-        <section class="relative z-10 py-10 overflow-hidden">
+        <section class="relative z-10 py-6 md:py-10 overflow-hidden">
             <div class="relative overflow-hidden group">
                 <div class="animate-marquee" id="landing-marquee"></div>
-                <div class="absolute top-0 left-0 h-full w-40 bg-gradient-to-r from-[#020202] to-transparent pointer-events-none"></div>
-                <div class="absolute top-0 right-0 h-full w-40 bg-gradient-to-l from-[#020202] to-transparent pointer-events-none"></div>
+                <div class="absolute top-0 left-0 h-full w-20 md:w-40 bg-gradient-to-r from-[#020202] to-transparent pointer-events-none"></div>
+                <div class="absolute top-0 right-0 h-full w-20 md:w-40 bg-gradient-to-l from-[#020202] to-transparent pointer-events-none"></div>
             </div>
         </section>
 
-        <!-- App Marquee (Ecossistema de Aplicativos) -->
+        <!-- App Marquee -->
         <section class="relative z-10 pt-8 pb-4 overflow-hidden border-t border-white/5 bg-white/[0.01]">
-            <div class="container mx-auto px-8 mb-6 text-center">
-                <span class="text-[9px] uppercase tracking-[0.4em] font-bold text-stone-500">Ecossistema de Conexão</span>
+            <div class="container mx-auto px-5 md:px-8 mb-6 text-center">
+                <span class="text-[8px] md:text-[9px] uppercase tracking-[0.4em] font-bold text-stone-500">Ecossistema de Conexão</span>
             </div>
             <div class="relative overflow-hidden group">
                 <div class="animate-marquee-reverse flex items-center" id="landing-app-marquee"></div>
-                <div class="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#020202] to-transparent pointer-events-none"></div>
-                <div class="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#020202] to-transparent pointer-events-none"></div>
+                <div class="absolute top-0 left-0 h-full w-16 md:w-24 bg-gradient-to-r from-[#020202] to-transparent pointer-events-none"></div>
+                <div class="absolute top-0 right-0 h-full w-16 md:w-24 bg-gradient-to-l from-[#020202] to-transparent pointer-events-none"></div>
             </div>
         </section>
 
         <!-- Informação de Apps Gratuitos & Plataformas -->
-        <section class="relative z-10 container mx-auto px-8 py-10 text-center border-b border-white/5 mb-10">
+        <section class="relative z-10 container mx-auto px-5 md:px-8 py-10 text-center border-b border-white/5 mb-10">
             <h4 class="text-white font-black text-xl md:text-2xl uppercase tracking-tighter mb-4">Aplicativos <span class="text-amber-500">Gratuitos</span></h4>
-            <p class="text-stone-400 text-xs md:text-sm max-w-3xl mx-auto leading-relaxed mb-10">
+            <p class="text-stone-400 text-xs md:text-sm max-w-3xl mx-auto leading-relaxed mb-10 px-2">
                 Para utilizadores do nosso servidor. <br>
                 <span class="text-amber-500/80 italic font-medium block mt-2">* Baixe o App de sua preferência e entre em contato para nós o tornarmos GRATUITO. Não faça nenhum procedimento além de baixar o mesmo, somente dessa forma conseguimos deixá-lo gratuito permanentemente.</span>
             </p>
             
-            <!-- Logos de Plataformas Compatíveis -->
-            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-14 opacity-60">
-                <!-- LG -->
-                <div class="text-2xl font-black tracking-widest uppercase text-white font-serif">LG</div>
-                <!-- Samsung -->
-                <div class="text-xl font-black tracking-wider uppercase text-white">SAMSUNG</div>
-                <!-- Android TV -->
-                <div class="flex items-center gap-2 text-white">
-                    <i data-lucide="tv" class="w-6 h-6"></i>
-                    <span class="text-xl font-bold tracking-tight">android<span class="font-light">tv</span></span>
+            <div class="flex flex-wrap justify-center items-center gap-6 md:gap-14 opacity-60">
+                <div class="text-xl md:text-2xl font-black tracking-widest uppercase text-white font-serif">LG</div>
+                <div class="text-lg md:text-xl font-black tracking-wider uppercase text-white">SAMSUNG</div>
+                <div class="flex items-center gap-1 md:gap-2 text-white">
+                    <i data-lucide="tv" class="w-5 h-5 md:w-6 md:h-6"></i>
+                    <span class="text-lg md:text-xl font-bold tracking-tight">android<span class="font-light">tv</span></span>
                 </div>
-                <!-- Fire TV -->
                 <div class="flex items-center gap-1 text-white">
-                    <i data-lucide="flame" class="w-6 h-6 text-orange-500"></i>
-                    <span class="text-xl font-bold italic tracking-tighter">firetv</span>
+                    <i data-lucide="flame" class="w-5 h-5 md:w-6 md:h-6 text-orange-500"></i>
+                    <span class="text-lg md:text-xl font-bold italic tracking-tighter">firetv</span>
                 </div>
-                <!-- iOS -->
                 <div class="flex items-center gap-1 text-white">
-                    <i data-lucide="smartphone" class="w-5 h-5"></i>
-                    <span class="text-xl font-bold tracking-tighter">iOS</span>
+                    <i data-lucide="smartphone" class="w-4 h-4 md:w-5 md:h-5"></i>
+                    <span class="text-lg md:text-xl font-bold tracking-tighter">iOS</span>
                 </div>
             </div>
 
-            <!-- NOVA LINHA DE COMPATIBILIDADE -->
+            <!-- NOVA LINHA DE COMPATIBILIDADE RESPONSIVA -->
             <div class="mt-10 pt-8 border-t border-white/5 max-w-3xl mx-auto">
-                <p class="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-stone-500 leading-relaxed mb-8">
-                    Compatível com: 
-                    <span class="text-white mx-1.5">SmartTv</span> <span class="text-amber-500/50">•</span> 
-                    <span class="text-white mx-1.5">Smartphones Android</span> <span class="text-amber-500/50">•</span> 
-                    <span class="text-white mx-1.5">iPhone</span> <span class="text-amber-500/50">•</span> 
-                    <span class="text-white mx-1.5">Tablet</span> <span class="text-amber-500/50">•</span> 
-                    <span class="text-white mx-1.5">FireStick</span> <span class="text-amber-500/50">•</span> 
-                    <span class="text-white mx-1.5">PC</span>
+                <p class="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] text-stone-500 leading-relaxed mb-8 px-2 flex flex-wrap justify-center items-center gap-y-2">
+                    <span class="w-full text-center mb-1">Compatível com:</span>
+                    <span class="text-white mx-1 md:mx-1.5">SmartTv</span> <span class="text-amber-500/50">•</span> 
+                    <span class="text-white mx-1 md:mx-1.5">Smartphones Android</span> <span class="text-amber-500/50 hidden md:inline">•</span> 
+                    <span class="text-white mx-1 md:mx-1.5">iPhone</span> <span class="text-amber-500/50">•</span> 
+                    <span class="text-white mx-1 md:mx-1.5">Tablet</span> <span class="text-amber-500/50 hidden sm:inline">•</span> 
+                    <span class="text-white mx-1 md:mx-1.5">FireStick</span> <span class="text-amber-500/50">•</span> 
+                    <span class="text-white mx-1 md:mx-1.5">PC</span>
                 </p>
                 
                 <!-- ÍCONES DE DISPOSITIVOS -->
-                <div class="flex justify-center items-center gap-10 md:gap-16">
-                    <div class="flex flex-col items-center gap-3 opacity-50 hover:opacity-100 transition-opacity duration-300">
-                        <i data-lucide="tv" class="w-8 h-8 text-white"></i>
-                        <span class="text-[8px] uppercase tracking-widest font-bold text-stone-400">TV</span>
+                <div class="flex justify-center items-center gap-8 sm:gap-10 md:gap-16">
+                    <div class="flex flex-col items-center gap-2 md:gap-3 opacity-50 hover:opacity-100 transition-opacity duration-300">
+                        <i data-lucide="tv" class="w-6 h-6 md:w-8 md:h-8 text-white"></i>
+                        <span class="text-[7px] md:text-[8px] uppercase tracking-widest font-bold text-stone-400">TV</span>
                     </div>
-                    <div class="flex flex-col items-center gap-3 opacity-50 hover:opacity-100 transition-opacity duration-300">
-                        <i data-lucide="monitor" class="w-8 h-8 text-white"></i>
-                        <span class="text-[8px] uppercase tracking-widest font-bold text-stone-400">PC</span>
+                    <div class="flex flex-col items-center gap-2 md:gap-3 opacity-50 hover:opacity-100 transition-opacity duration-300">
+                        <i data-lucide="monitor" class="w-6 h-6 md:w-8 md:h-8 text-white"></i>
+                        <span class="text-[7px] md:text-[8px] uppercase tracking-widest font-bold text-stone-400">PC</span>
                     </div>
-                    <div class="flex flex-col items-center gap-3 opacity-50 hover:opacity-100 transition-opacity duration-300">
-                        <i data-lucide="smartphone" class="w-8 h-8 text-white"></i>
-                        <span class="text-[8px] uppercase tracking-widest font-bold text-stone-400">Cel</span>
+                    <div class="flex flex-col items-center gap-2 md:gap-3 opacity-50 hover:opacity-100 transition-opacity duration-300">
+                        <i data-lucide="smartphone" class="w-6 h-6 md:w-8 md:h-8 text-white"></i>
+                        <span class="text-[7px] md:text-[8px] uppercase tracking-widest font-bold text-stone-400">Cel</span>
                     </div>
-                    <div class="flex flex-col items-center gap-3 opacity-50 hover:opacity-100 transition-opacity duration-300">
-                        <i data-lucide="tablet" class="w-8 h-8 text-white"></i>
-                        <span class="text-[8px] uppercase tracking-widest font-bold text-stone-400">Tablet</span>
+                    <div class="flex flex-col items-center gap-2 md:gap-3 opacity-50 hover:opacity-100 transition-opacity duration-300">
+                        <i data-lucide="tablet" class="w-6 h-6 md:w-8 md:h-8 text-white"></i>
+                        <span class="text-[7px] md:text-[8px] uppercase tracking-widest font-bold text-stone-400">Tablet</span>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Prova Social & Indicação -->
-        <section class="relative z-10 container mx-auto px-8 pb-24">
-            <div class="grid lg:grid-cols-2 gap-16 items-start">
+        <section class="relative z-10 container mx-auto px-5 md:px-8 pb-16 md:pb-24">
+            <div class="grid lg:grid-cols-2 gap-10 md:gap-16 items-start">
                 <div>
-                    <h2 class="text-white text-3xl font-black italic tracking-tighter mb-8 uppercase">Aprovações <span class="text-amber-500">Premium</span></h2>
-                    <div class="space-y-6">
-                        <div class="glass-panel p-8 rounded-[2rem] border-amber-500/20 bg-amber-500/[0.02]">
-                            <div class="flex gap-1 mb-3 text-amber-500"><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i></div>
-                            <p class="text-stone-300 text-sm italic mb-4">"Impressionado com a transparência! Quando houve o erro da Cloudflare que parou o Instagram, a Amanda explicou na hora o motivo da queda do sinal. Sempre sou muito bem atendido pela Vitrine Atmos!"</p>
-                            <span class="text-amber-500 font-black text-[10px] uppercase tracking-widest">Carlos H. - Sócio Atmos</span>
+                    <h2 class="text-white text-2xl md:text-3xl font-black italic tracking-tighter mb-6 md:mb-8 uppercase text-center md:text-left">Aprovações <span class="text-amber-500">Premium</span></h2>
+                    <div class="space-y-4 md:space-y-6">
+                        <div class="glass-panel p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] border-amber-500/20 bg-amber-500/[0.02]">
+                            <div class="flex gap-1 mb-3 text-amber-500 justify-center md:justify-start"><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i></div>
+                            <p class="text-stone-300 text-xs md:text-sm italic mb-4 text-center md:text-left">"Impressionado com a transparência! Quando houve o erro da Cloudflare que parou o Instagram, a Amanda explicou na hora o motivo da queda do sinal. Sempre sou muito bem atendido!"</p>
+                            <div class="text-center md:text-left"><span class="text-amber-500 font-black text-[9px] md:text-[10px] uppercase tracking-widest">Carlos H. - Sócio Atmos</span></div>
                         </div>
-                        <div class="glass-panel p-8 rounded-[2rem] border-white/5">
-                            <div class="flex gap-1 mb-3 text-amber-500"><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i></div>
-                            <p class="text-stone-300 text-sm italic mb-4">"O sinal é top, não trava nunca! Já testei vários sistemas, mas o suporte da Amanda é diferenciado. É entretenimento de verdade sem dor de cabeça."</p>
-                            <span class="text-amber-500 font-black text-[10px] uppercase tracking-widest">Ricardo M. - Assinante 4K</span>
-                        </div>
-                        <div class="glass-panel p-8 rounded-[2rem] border-white/5">
-                            <div class="flex gap-1 mb-3 text-amber-500"><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i></div>
-                            <p class="text-stone-300 text-sm italic mb-4">"Indiquei 3 amigos do trabalho e agora já tenho 3 meses de assinatura paga pelo sistema de bónus. O programa de embaixadores é muito justo."</p>
-                            <span class="text-amber-500 font-black text-[10px] uppercase tracking-widest">Beatriz F. - Embaixadora Atmos</span>
+                        <div class="glass-panel p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] border-white/5">
+                            <div class="flex gap-1 mb-3 text-amber-500 justify-center md:justify-start"><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i><i data-lucide="star" class="w-3 h-3 fill-current"></i></div>
+                            <p class="text-stone-300 text-xs md:text-sm italic mb-4 text-center md:text-left">"O sinal é top, não trava nunca! Já testei vários sistemas, mas o suporte da Amanda é diferenciado. É entretenimento de verdade sem dor de cabeça."</p>
+                            <div class="text-center md:text-left"><span class="text-amber-500 font-black text-[9px] md:text-[10px] uppercase tracking-widest">Ricardo M. - Assinante 4K</span></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Box de Indicação -->
-                <div class="glass-panel p-12 rounded-[3.5rem] border-amber-500/20 bg-amber-500/[0.03] text-center sticky top-10">
-                    <i data-lucide="users" class="w-8 h-8 text-amber-500 mx-auto mb-6"></i>
-                    <h3 class="text-white font-black text-2xl mb-4 italic uppercase tracking-tighter">Indique <span class="text-amber-500">&</span> Ganhe</h3>
-                    <p class="text-stone-400 text-xs leading-relaxed mb-10 font-medium italic">Cada amigo indicado que ativar uma assinatura, garante a você <b class="text-amber-500">01 mensalidade totalmente paga</b> no seu ciclo atual.</p>
-                    <button onclick="window.showPortal()" class="premium-btn px-10 py-5 rounded-2xl font-black uppercase text-xs tracking-widest shadow-2xl">Aceder ao meu Código</button>
+                <!-- Box de Indicação Responsivo -->
+                <div class="glass-panel p-8 md:p-12 rounded-[2rem] md:rounded-[3.5rem] border-amber-500/20 bg-amber-500/[0.03] text-center lg:sticky lg:top-10 mt-6 md:mt-0">
+                    <i data-lucide="users" class="w-6 h-6 md:w-8 md:h-8 text-amber-500 mx-auto mb-4 md:mb-6"></i>
+                    <h3 class="text-white font-black text-xl md:text-2xl mb-3 md:mb-4 italic uppercase tracking-tighter">Indique <span class="text-amber-500">&</span> Ganhe</h3>
+                    <p class="text-stone-400 text-[11px] md:text-xs leading-relaxed mb-8 md:mb-10 font-medium italic">Cada amigo indicado que ativar uma assinatura, garante a você <b class="text-amber-500">01 mensalidade totalmente paga</b> no seu ciclo atual.</p>
+                    <button onclick="window.showPortal()" class="premium-btn px-8 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl font-black uppercase text-[10px] md:text-xs tracking-widest shadow-2xl w-full md:w-auto">Aceder ao meu Código</button>
                 </div>
             </div>
         </section>
 
-        <!-- Planos RESTAURADOS E OTIMIZADOS PARA VENDAS DIRETA -->
-        <section class="relative z-10 container mx-auto px-8 pb-32 pt-10">
-            <div class="grid md:grid-cols-3 gap-10 items-stretch">
+        <!-- Planos -->
+        <section class="relative z-10 container mx-auto px-5 md:px-8 pb-20 md:pb-32 pt-10">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-10 items-stretch">
                 
                 <!-- CARD ESTUDANTE -->
-                <div class="bg-[#0a0a0a] border border-white/5 p-10 rounded-[2.5rem] flex flex-col">
-                    <span class="text-amber-500 text-[10px] font-black uppercase mb-2 italic tracking-wider">Plano Modular</span>
-                    <h3 class="text-3xl font-black text-white mb-4 uppercase tracking-tighter">Estudante</h3>
-                    <div class="mb-2 flex items-baseline gap-1"><span class="text-6xl font-black text-white tracking-tighter">14,90</span><span class="text-stone-500 text-[10px] font-black uppercase">/mês</span></div>
+                <div class="bg-[#0a0a0a] border border-white/5 p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] flex flex-col">
+                    <span class="text-amber-500 text-[9px] md:text-[10px] font-black uppercase mb-2 italic tracking-wider">Plano Modular</span>
+                    <h3 class="text-2xl md:text-3xl font-black text-white mb-4 uppercase tracking-tighter">Estudante</h3>
+                    <div class="mb-2 flex items-baseline gap-1"><span class="text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter">14,90</span><span class="text-stone-500 text-[9px] md:text-[10px] font-black uppercase">/mês</span></div>
                     
                     <div class="flex-1 flex flex-col justify-center border-t border-white/5 pt-6 mt-6 mb-8">
-                        <p class="text-stone-400 text-xs leading-relaxed mb-4">Escolha a sua preferência de acesso:</p>
-                        <!-- ID ADICIONADO AQUI PARA PUXAR A OPÇÃO ESCOLHIDA -->
-                        <select id="landing-estudante-select" class="w-full bg-black border border-white/10 rounded-xl p-4 text-stone-300 text-xs font-bold focus:border-amber-500 outline-none transition-colors">
+                        <p class="text-stone-400 text-[11px] md:text-xs leading-relaxed mb-4">Escolha a sua preferência de acesso:</p>
+                        <select id="landing-estudante-select" class="w-full bg-black border border-white/10 rounded-xl p-3 md:p-4 text-stone-300 text-[11px] md:text-xs font-bold focus:border-amber-500 outline-none transition-colors">
                             <option>📺 TV Online (Canais)</option>
                             <option>🎬 Streaming de Filmes</option>
                             <option>🍿 Streaming de Séries</option>
                         </select>
                     </div>
-
-                    <!-- FUNÇÃO ALTERADA PARA CONTATO DE VENDA -->
-                    <button onclick="window.buyPlan('estudante')" class="premium-btn w-full py-5 rounded-[20px] font-black uppercase text-xs tracking-widest mt-auto text-black shadow-lg shadow-amber-500/10">Ativar Plano</button>
+                    <button onclick="window.buyPlan('estudante')" class="premium-btn w-full py-4 md:py-5 rounded-[15px] md:rounded-[20px] font-black uppercase text-[10px] md:text-xs tracking-widest mt-auto text-black shadow-lg shadow-amber-500/10">Ativar Plano</button>
                 </div>
 
                 <!-- CARD FULL (BEST-SELLER) -->
-                <div class="bg-[#0a0a0a] border border-amber-500/40 p-10 rounded-[3rem] shadow-2xl relative overflow-hidden text-center flex flex-col scale-105 z-10">
-                    <div class="absolute top-6 -right-12 bg-amber-500 text-black px-14 py-2.5 rotate-45 font-black text-[10px] uppercase tracking-widest shadow-xl">Best-Seller</div>
+                <div class="bg-[#0a0a0a] border border-amber-500/40 p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] shadow-2xl relative overflow-hidden text-center flex flex-col lg:scale-105 z-10 order-first lg:order-none">
+                    <div class="absolute top-4 md:top-6 -right-12 md:-right-12 bg-amber-500 text-black px-12 md:px-14 py-2 md:py-2.5 rotate-45 font-black text-[8px] md:text-[10px] uppercase tracking-widest shadow-xl">Best-Seller</div>
                     
-                    <h3 class="text-3xl font-bold text-white mb-4 italic font-serif mt-6">Combo Full Atmos</h3>
-                    <div class="mb-2 flex justify-center items-baseline gap-1"><span class="text-7xl font-black text-white tracking-tighter">35,00</span><span class="text-stone-500 text-[10px] font-black uppercase">/mês</span></div>
+                    <h3 class="text-2xl md:text-3xl font-bold text-white mb-4 italic font-serif mt-4 md:mt-6">Combo Full Atmos</h3>
+                    <div class="mb-2 flex justify-center items-baseline gap-1"><span class="text-6xl md:text-7xl font-black text-white tracking-tighter">35,00</span><span class="text-stone-500 text-[9px] md:text-[10px] font-black uppercase">/mês</span></div>
                     
-                    <p class="text-stone-400 text-sm leading-relaxed mb-8 flex-1 px-4 border-t border-white/5 pt-6 mt-6">Acesso <b class="text-amber-500">total e ilimitado</b>. Tenha tudo num só lugar: TV ao Vivo, Lançamentos, Filmes e as Séries mais badaladas do momento.</p>
+                    <p class="text-stone-400 text-xs md:text-sm leading-relaxed mb-8 flex-1 px-2 md:px-4 border-t border-white/5 pt-6 mt-6">Acesso <b class="text-amber-500">total e ilimitado</b>. Tenha tudo num só lugar: TV ao Vivo, Lançamentos, Filmes e as Séries mais badaladas do momento.</p>
                     
-                    <!-- FUNÇÃO ALTERADA PARA CONTATO DE VENDA -->
-                    <button onclick="window.buyPlan('full')" class="premium-btn w-full py-5 rounded-[20px] font-black uppercase text-xs tracking-widest mt-auto text-black shadow-lg shadow-amber-500/20">Garantir VIP</button>
+                    <button onclick="window.buyPlan('full')" class="premium-btn w-full py-4 md:py-5 rounded-[15px] md:rounded-[20px] font-black uppercase text-[10px] md:text-xs tracking-widest mt-auto text-black shadow-lg shadow-amber-500/20">Garantir VIP</button>
                 </div>
 
                 <!-- CARD TRIMESTRAL -->
-                <div class="bg-[#0a0a0a] border border-white/5 p-10 rounded-[2.5rem] flex flex-col">
-                    <span class="text-stone-500 text-[10px] font-black uppercase mb-2 italic tracking-wider">Conforto Atmos</span>
-                    <h3 class="text-3xl font-black text-white mb-4 uppercase tracking-tighter">Ciclo Trimestral</h3>
-                    <div class="mb-2 flex items-baseline gap-1"><span class="text-6xl font-black text-white tracking-tighter">95,00</span><span class="text-stone-500 text-[10px] font-black uppercase">/90 dias</span></div>
+                <div class="bg-[#0a0a0a] border border-white/5 p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] flex flex-col">
+                    <span class="text-stone-500 text-[9px] md:text-[10px] font-black uppercase mb-2 italic tracking-wider">Conforto Atmos</span>
+                    <h3 class="text-2xl md:text-3xl font-black text-white mb-4 uppercase tracking-tighter">Ciclo Trimestral</h3>
+                    <div class="mb-2 flex items-baseline gap-1"><span class="text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter">95,00</span><span class="text-stone-500 text-[9px] md:text-[10px] font-black uppercase">/90 dias</span></div>
                     
-                    <p class="text-stone-400 text-sm leading-relaxed mb-8 flex-1 border-t border-white/5 pt-6 mt-6">Pacote com <b class="text-white">acesso total</b> a tudo (TV, Filmes e Séries) aliado à paz de espírito e estabilidade de um ciclo de 90 dias ininterruptos.</p>
+                    <p class="text-stone-400 text-[11px] md:text-sm leading-relaxed mb-8 flex-1 border-t border-white/5 pt-6 mt-6">Pacote com <b class="text-white">acesso total</b> a tudo (TV, Filmes e Séries) aliado à paz de espírito e estabilidade de um ciclo de 90 dias ininterruptos.</p>
                     
-                    <!-- FUNÇÃO ALTERADA PARA CONTATO DE VENDA -->
-                    <button onclick="window.buyPlan('trimestral')" class="bg-[#111] border border-white/5 hover:bg-white hover:text-black text-white w-full py-5 rounded-[20px] font-black uppercase text-xs tracking-widest transition-all mt-auto">Escolher Estabilidade</button>
+                    <button onclick="window.buyPlan('trimestral')" class="bg-[#111] border border-white/5 hover:bg-white hover:text-black text-white w-full py-4 md:py-5 rounded-[15px] md:rounded-[20px] font-black uppercase text-[10px] md:text-xs tracking-widest transition-all mt-auto">Escolher Estabilidade</button>
                 </div>
 
             </div>
         </section>
 
-        <!-- RODAPÉ COM AVISO DE DESEMPENHO -->
-        <footer class="relative z-10 py-16 px-8 text-center flex flex-col items-center gap-5 bg-[#020202] border-t border-white/5">
-            <div class="text-stone-800 text-[9px] font-bold uppercase tracking-[0.5em]">
+        <!-- RODAPÉ -->
+        <footer class="relative z-10 py-10 md:py-16 px-5 md:px-8 text-center flex flex-col items-center gap-4 md:gap-5 bg-[#020202] border-t border-white/5">
+            <div class="text-stone-800 text-[8px] md:text-[9px] font-bold uppercase tracking-[0.3em] md:tracking-[0.5em]">
                 © 2024 Atmos TV | Strategic Management by Alex Sander
             </div>
-            <p class="text-stone-500/60 text-[10px] max-w-3xl mx-auto leading-relaxed">
+            <p class="text-stone-500/60 text-[8px] md:text-[10px] max-w-3xl mx-auto leading-relaxed px-4">
                 * Para garantir o funcionamento 100% do sistema, a qualidade e estabilidade dependem do seu sinal de internet, do modelo da sua TV, da utilização de aparelhos TV Box atualizados e/ou dispositivos de marcas conhecidas como Amazon Fire Stick e Roku.
             </p>
         </footer>
     </div>
 
     <!-- VIEW 2: PORTAL DO CLIENTE -->
-    <div id="view-portal" class="hidden min-h-screen bg-[#050505] flex flex-col items-center p-6">
-        <div class="w-full max-w-lg py-12 space-y-8">
-            <button onclick="window.showLanding()" class="text-stone-700 hover:text-white transition-colors mb-6 uppercase text-[9px] font-black tracking-widest flex items-center justify-center gap-2 mx-auto"><i data-lucide="chevron-left" class="w-3 h-3"></i> Voltar à Vitrine</button>
-            <h1 class="text-white text-3xl font-black italic text-center uppercase tracking-tighter italic">ÁREA DO <span class="text-amber-500 not-italic font-sans">SÓCIO</span></h1>
+    <div id="view-portal" class="hidden min-h-screen bg-[#050505] flex flex-col items-center p-4 md:p-6">
+        <div class="w-full max-w-lg py-8 md:py-12 space-y-6 md:space-y-8">
+            <button onclick="window.showLanding()" class="text-stone-700 hover:text-white transition-colors mb-4 md:mb-6 uppercase text-[9px] font-black tracking-widest flex items-center justify-center gap-2 mx-auto"><i data-lucide="chevron-left" class="w-3 h-3"></i> Voltar à Vitrine</button>
+            <h1 class="text-white text-2xl md:text-3xl font-black italic text-center uppercase tracking-tighter">ÁREA DO <span class="text-amber-500 not-italic font-sans">SÓCIO</span></h1>
             
-            <div id="portal-login" class="glass-panel p-10 rounded-[3rem] text-center border-white/5 shadow-2xl">
-                <i data-lucide="phone-forwarded" class="w-10 h-10 text-amber-500 mx-auto mb-8"></i>
-                <h3 class="text-white font-bold text-xl mb-4 italic">Portal de Identificação</h3>
-                <!-- ATUALIZADO: Focado em Celular -->
-                <input type="text" id="clientPhoneInput" placeholder="Nº Celular / WhatsApp" class="w-full bg-stone-900 border border-stone-800 rounded-2xl px-6 py-5 text-white text-center focus:border-amber-500 focus:outline-none mb-6 font-mono tracking-widest uppercase">
-                <button onclick="window.handleClientLogin()" class="w-full bg-amber-500 text-black py-5 rounded-2xl font-black uppercase text-xs tracking-widest shadow-xl hover:bg-amber-400 transition-all">Aceder Perfil</button>
+            <div id="portal-login" class="glass-panel p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] text-center border-white/5 shadow-2xl">
+                <i data-lucide="phone-forwarded" class="w-8 h-8 md:w-10 md:h-10 text-amber-500 mx-auto mb-6 md:mb-8"></i>
+                <h3 class="text-white font-bold text-lg md:text-xl mb-4 italic">Portal de Identificação</h3>
+                <input type="text" id="clientPhoneInput" placeholder="Nº Celular / WhatsApp" class="w-full bg-stone-900 border border-stone-800 rounded-xl md:rounded-2xl px-4 md:px-6 py-4 md:py-5 text-white text-center focus:border-amber-500 focus:outline-none mb-6 font-mono tracking-widest uppercase text-sm">
+                <button onclick="window.handleClientLogin()" class="w-full bg-amber-500 text-black py-4 md:py-5 rounded-xl md:rounded-2xl font-black uppercase text-[10px] md:text-xs tracking-widest shadow-xl hover:bg-amber-400 transition-all">Aceder Perfil</button>
             </div>
 
-            <div id="portal-dashboard" class="hidden space-y-6">
-                <div class="glass-panel p-8 rounded-[2.5rem] border-amber-500/20 bg-amber-500/[0.02]">
-                    <h2 class="text-white text-3xl font-black mb-2 italic uppercase" id="p-client-name">NOME</h2>
-                    <p class="text-stone-500 text-[10px] uppercase font-bold tracking-widest italic">Vencimento Atual: <b class="text-white not-italic" id="p-client-date">00/00/0000</b></p>
+            <div id="portal-dashboard" class="hidden space-y-4 md:space-y-6">
+                <div class="glass-panel p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] border-amber-500/20 bg-amber-500/[0.02]">
+                    <h2 class="text-white text-2xl md:text-3xl font-black mb-1 md:mb-2 italic uppercase" id="p-client-name">NOME</h2>
+                    <p class="text-stone-500 text-[9px] md:text-[10px] uppercase font-bold tracking-widest italic">Vencimento Atual: <b class="text-white not-italic" id="p-client-date">00/00/0000</b></p>
                 </div>
                 
-                <!-- Histórico de Pagamentos -->
-                <div class="glass-panel p-8 rounded-[2.5rem] border-white/5 space-y-4">
-                    <h3 class="text-white text-sm font-black italic uppercase tracking-widest flex items-center gap-2"><i data-lucide="history" class="w-4 h-4 text-amber-500"></i> Histórico de Ciclos</h3>
-                    <div id="p-payment-history" class="space-y-3 max-h-40 overflow-y-auto pr-2">
-                        <!-- Preenchido via JS -->
-                    </div>
+                <div class="glass-panel p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] border-white/5 space-y-4">
+                    <h3 class="text-white text-xs md:text-sm font-black italic uppercase tracking-widest flex items-center gap-2"><i data-lucide="history" class="w-3 h-3 md:w-4 md:h-4 text-amber-500"></i> Histórico de Ciclos</h3>
+                    <div id="p-payment-history" class="space-y-3 max-h-32 md:max-h-40 overflow-y-auto pr-2"></div>
                 </div>
                 
-                <div class="glass-panel p-10 rounded-[3rem] space-y-6 text-center border-white/5">
-                    <div id="p-bonus-badge" class="bg-green-500/10 text-green-500 px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest inline-block border border-green-500/20 mb-6">0 BÔNUS DISPONÍVEL</div>
+                <div class="glass-panel p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] space-y-4 md:space-y-6 text-center border-white/5">
+                    <div id="p-bonus-badge" class="bg-green-500/10 text-green-500 px-4 md:px-6 py-2 rounded-xl text-[9px] md:text-[10px] font-black uppercase tracking-widest inline-block border border-green-500/20 mb-4 md:mb-6">0 BÔNUS DISPONÍVEL</div>
                     
-                    <div class="bg-black/40 p-6 rounded-2xl border border-white/5 mb-6">
-                        <p class="text-[9px] text-stone-600 uppercase font-black mb-2 tracking-widest">Seu Código de Embaixador:</p>
-                        <span id="p-affiliate-code" class="text-xl font-black text-amber-500 tracking-[0.3em]">ATMOS-CODE</span>
+                    <div class="bg-black/40 p-4 md:p-6 rounded-xl md:rounded-2xl border border-white/5 mb-4 md:mb-6">
+                        <p class="text-[8px] md:text-[9px] text-stone-600 uppercase font-black mb-1 md:mb-2 tracking-widest">Seu Código de Embaixador:</p>
+                        <span id="p-affiliate-code" class="text-lg md:text-xl font-black text-amber-500 tracking-[0.2em] md:tracking-[0.3em]">ATMOS-CODE</span>
                     </div>
                     
-                    <!-- CAPTAÇÃO DE NOME E NÚMERO BLINDADA CONTRA AUTOFILL -->
-                    <div class="space-y-3 border-t border-white/5 pt-6 mt-6">
-                        <p class="text-[9px] text-stone-500 uppercase font-black tracking-widest text-left ml-2">Indique e Ganhe (Dados do Amigo):</p>
-                        <input type="text" id="referralFriendName" name="dummy_name_prevent_autofill" autocomplete="nope" data-lpignore="true" placeholder="Nome do amigo" class="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
-                        <div class="flex gap-2 mt-2">
-                            <input type="text" inputmode="numeric" id="referralFriendPhone" name="dummy_phone_prevent_autofill" autocomplete="nope" data-lpignore="true" placeholder="Celular do Amigo" class="flex-1 bg-stone-900 border border-stone-800 rounded-xl px-4 py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
-                            <button onclick="window.sendReferral()" class="bg-amber-500 text-black px-6 rounded-xl font-black uppercase text-[10px] tracking-widest hover:bg-amber-400 transition-all shadow-lg">Indicar</button>
+                    <!-- Formulário Responsivo -->
+                    <div class="space-y-3 border-t border-white/5 pt-4 md:pt-6 mt-4 md:mt-6">
+                        <p class="text-[8px] md:text-[9px] text-stone-500 uppercase font-black tracking-widest text-left ml-1 md:ml-2">Indique e Ganhe (Dados do Amigo):</p>
+                        <input type="text" id="referralFriendName" name="dummy_name_prevent_autofill" autocomplete="nope" data-lpignore="true" placeholder="Nome do amigo" class="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 md:py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
+                        <div class="flex flex-col sm:flex-row gap-2 mt-2">
+                            <input type="text" inputmode="numeric" id="referralFriendPhone" name="dummy_phone_prevent_autofill" autocomplete="nope" data-lpignore="true" placeholder="Celular do Amigo" class="w-full sm:flex-1 bg-stone-900 border border-stone-800 rounded-xl px-4 py-3 md:py-4 text-white text-xs focus:border-amber-500 focus:outline-none">
+                            <button onclick="window.sendReferral()" class="w-full sm:w-auto bg-amber-500 text-black px-6 py-3 md:py-0 rounded-xl font-black uppercase text-[9px] md:text-[10px] tracking-widest hover:bg-amber-400 transition-all shadow-lg">Indicar</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- BLOCO RENOVAR PLANO -->
-                <div class="bg-[#0a0a0a] border border-white/5 p-10 rounded-[3rem] space-y-6 shadow-2xl mt-6">
-                    <label class="text-[10px] text-stone-500 uppercase font-black tracking-widest block text-center">Renovar Plano:</label>
-                    <select id="p-plan-select" class="w-full bg-[#111] border border-white/5 rounded-2xl p-6 text-white font-bold appearance-none text-center focus:border-amber-500 outline-none transition-colors">
+                <div class="bg-[#0a0a0a] border border-white/5 p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] space-y-4 md:space-y-6 shadow-2xl mt-4 md:mt-6">
+                    <label class="text-[9px] md:text-[10px] text-stone-500 uppercase font-black tracking-widest block text-center">Renovar Plano:</label>
+                    <select id="p-plan-select" class="w-full bg-[#111] border border-white/5 rounded-xl md:rounded-2xl p-4 md:p-6 text-white text-[11px] md:text-sm font-bold appearance-none text-center focus:border-amber-500 outline-none transition-colors">
                         <option value="mensal">Mensal Regular - R$ 35,00</option>
                         <option value="trimestral">Trimestral (Combo) - R$ 95,00</option>
                         <option value="estudante - tv online">Estudante (📺 TV Online) - R$ 14,90</option>
                         <option value="estudante - filmes">Estudante (🎬 Filmes) - R$ 14,90</option>
                         <option value="estudante - séries">Estudante (🍿 Séries) - R$ 14,90</option>
                     </select>
-                    <div class="grid grid-cols-2 gap-4">
-                        <button onclick="window.initPay('PIX')" class="p-6 rounded-3xl bg-[#111] border border-white/5 hover:border-orange-500/30 transition-all text-center group flex flex-col items-center justify-center gap-3">
-                            <i data-lucide="qr-code" class="w-8 h-8 text-orange-500 group-hover:scale-110 transition-transform"></i>
-                            <span class="text-[10px] font-black uppercase text-white">Via PIX</span>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+                        <button onclick="window.initPay('PIX')" class="p-4 md:p-6 rounded-2xl md:rounded-3xl bg-[#111] border border-white/5 hover:border-orange-500/30 transition-all text-center group flex flex-col items-center justify-center gap-2 md:gap-3">
+                            <i data-lucide="qr-code" class="w-6 h-6 md:w-8 md:h-8 text-orange-500 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-[9px] md:text-[10px] font-black uppercase text-white">Via PIX</span>
                         </button>
-                        <button onclick="window.initPay('Cartão')" class="p-6 rounded-3xl bg-[#111] border border-white/5 hover:border-blue-500/30 transition-all text-center group flex flex-col items-center justify-center gap-3">
-                            <i data-lucide="credit-card" class="w-8 h-8 text-blue-500 group-hover:scale-110 transition-transform"></i>
-                            <span class="text-[10px] font-black uppercase text-white">Cartão</span>
+                        <button onclick="window.initPay('Cartão')" class="p-4 md:p-6 rounded-2xl md:rounded-3xl bg-[#111] border border-white/5 hover:border-blue-500/30 transition-all text-center group flex flex-col items-center justify-center gap-2 md:gap-3">
+                            <i data-lucide="credit-card" class="w-6 h-6 md:w-8 md:h-8 text-blue-500 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-[9px] md:text-[10px] font-black uppercase text-white">Cartão</span>
                         </button>
                     </div>
                 </div>
@@ -361,43 +343,49 @@
         </div>
     </div>
 
-    <!-- VIEW 3: ADMIN HQ (THORAIKA) -->
-    <div id="view-admin" class="hidden min-h-screen flex">
-        <aside class="w-72 border-r border-stone-900 bg-black flex flex-col p-8 hidden lg:flex shrink-0">
-            <div class="flex items-center gap-4 mb-16"><div class="bg-amber-500 p-2 rounded-xl text-black shadow-lg"><i data-lucide="shield"></i></div><span class="font-bold tracking-widest text-white uppercase tracking-widest">Atmos HQ</span></div>
-            <nav class="space-y-4 flex-1">
-                <button onclick="window.switchAdminTab('dash')" id="tab-btn-dash" class="w-full text-left p-4 rounded-xl bg-amber-500/10 text-amber-500 font-black text-[10px] uppercase tracking-widest transition-colors">Financeiro Real</button>
-                <button onclick="window.switchAdminTab('leads')" id="tab-btn-leads" class="w-full text-left p-4 rounded-xl text-stone-500 font-black text-[10px] uppercase tracking-widest transition-colors hover:bg-stone-900">Lista Mestra</button>
-                <button onclick="window.switchAdminTab('media')" id="tab-btn-media" class="w-full text-left p-4 rounded-xl text-stone-500 font-black text-[10px] uppercase tracking-widest transition-colors hover:bg-stone-900">Gerir Vitrine</button>
+    <!-- VIEW 3: ADMIN HQ (THORAIKA) - OTIMIZADO PARA MOBILE -->
+    <div id="view-admin" class="hidden min-h-screen flex-col lg:flex-row">
+        <!-- Sidebar de Topo Deslizante no Mobile -->
+        <aside class="w-full lg:w-72 border-b lg:border-b-0 lg:border-r border-stone-900 bg-black flex lg:flex-col p-4 lg:p-8 shrink-0 overflow-x-auto z-20 items-center lg:items-stretch">
+            <div class="flex items-center gap-3 mr-8 lg:mr-0 lg:mb-16 shrink-0">
+                <div class="bg-amber-500 p-1.5 md:p-2 rounded-xl text-black shadow-lg"><i data-lucide="shield" class="w-4 h-4 md:w-5 md:h-5"></i></div>
+                <span class="font-bold text-[10px] md:text-sm text-white uppercase tracking-widest">Atmos HQ</span>
+            </div>
+            <nav class="flex lg:flex-col gap-2 flex-1 min-w-max items-center lg:items-stretch">
+                <button onclick="window.switchAdminTab('dash')" id="tab-btn-dash" class="whitespace-nowrap px-4 py-2 lg:p-4 rounded-xl bg-amber-500/10 text-amber-500 font-black text-[9px] lg:text-[10px] uppercase tracking-widest transition-colors">Financeiro Real</button>
+                <button onclick="window.switchAdminTab('leads')" id="tab-btn-leads" class="whitespace-nowrap px-4 py-2 lg:p-4 rounded-xl text-stone-500 font-black text-[9px] lg:text-[10px] uppercase tracking-widest transition-colors hover:bg-stone-900">Lista Mestra</button>
+                <button onclick="window.switchAdminTab('media')" id="tab-btn-media" class="whitespace-nowrap px-4 py-2 lg:p-4 rounded-xl text-stone-500 font-black text-[9px] lg:text-[10px] uppercase tracking-widest transition-colors hover:bg-stone-900">Gerir Vitrine</button>
             </nav>
-            <button onclick="window.showLanding()" class="bg-stone-900/50 p-4 rounded-xl text-stone-700 hover:text-white uppercase text-[9px] font-black tracking-widest mt-auto transition-colors">Sair do HQ</button>
+            <button onclick="window.showLanding()" class="ml-4 lg:ml-0 lg:mt-auto shrink-0 bg-stone-900/50 px-4 py-2 lg:p-4 rounded-xl text-stone-700 hover:text-white uppercase text-[9px] font-black tracking-widest transition-colors">Sair</button>
         </aside>
 
-        <main class="flex-1 flex flex-col h-screen overflow-hidden bg-[#020202]">
+        <!-- Conteúdo Principal -->
+        <main class="flex-1 flex flex-col h-[calc(100vh-70px)] lg:h-screen overflow-hidden bg-[#020202]">
             <div id="admin-dash" class="h-full flex flex-col">
-                <header class="h-24 border-b border-stone-900 flex items-center justify-between px-10 bg-black/40">
-                    <div class="flex items-center gap-4">
-                        <h1 class="text-white text-2xl font-black italic uppercase tracking-widest italic">HQ <span class="text-amber-500 not-italic">OPERATIONS</span></h1>
-                        <span id="cloud-status" class="bg-stone-900 text-stone-500 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest flex items-center gap-2"><i data-lucide="cloud-off" class="w-3 h-3"></i> Nuvem Inativa</span>
+                <header class="h-auto md:h-24 border-b border-stone-900 flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 md:px-10 gap-4 bg-black/40">
+                    <div class="flex items-center gap-3 md:gap-4">
+                        <h1 class="text-white text-lg md:text-2xl font-black italic uppercase tracking-widest">HQ <span class="text-amber-500 not-italic">OPERATIONS</span></h1>
+                        <span id="cloud-status" class="bg-stone-900 text-stone-500 px-2 py-1 md:px-3 md:py-1 rounded-full text-[8px] md:text-[9px] font-black uppercase tracking-widest flex items-center gap-1 md:gap-2"><i data-lucide="cloud-off" class="w-3 h-3"></i> N/D</span>
                     </div>
-                    <button onclick="window.openModal('client')" class="bg-amber-500 text-black px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl hover:bg-amber-400 transition-colors">Novo Ativo</button>
+                    <button onclick="window.openModal('client')" class="bg-amber-500 text-black px-6 md:px-8 py-2.5 md:py-3 rounded-lg md:rounded-xl text-[9px] md:text-[10px] font-black uppercase tracking-widest shadow-xl hover:bg-amber-400 transition-colors w-full sm:w-auto">Novo Ativo</button>
                 </header>
-                <div class="p-10 space-y-10 overflow-y-auto flex-1">
-                    <div class="grid grid-cols-3 gap-8">
-                        <div class="glass-panel p-8 rounded-[2rem] text-center border-white/5"><p class="text-stone-600 text-[10px] uppercase font-black mb-2 tracking-widest italic">Recebido Hoje</p><span class="text-4xl font-black text-white" id="a-statToday">R$ 0,00</span></div>
-                        <div class="glass-panel p-8 rounded-[2rem] text-center border-white/5"><p class="text-stone-600 text-[10px] uppercase font-black mb-2 tracking-widest italic">Pagantes do Mês</p><span class="text-4xl font-black text-white" id="a-statMonth">R$ 0,00</span></div>
-                        <div class="glass-panel p-8 rounded-[2rem] border-amber-500/20 text-center shadow-2xl"><p class="text-amber-500 text-[10px] uppercase font-black mb-2 tracking-widest underline underline-offset-8">Acumulado Anual</p><span class="text-5xl font-black text-white" id="a-statYear">R$ 0,00</span></div>
+                
+                <div class="p-5 md:p-10 space-y-6 md:space-y-10 overflow-y-auto flex-1">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-8">
+                        <div class="glass-panel p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] text-center border-white/5"><p class="text-stone-600 text-[9px] md:text-[10px] uppercase font-black mb-1 md:mb-2 tracking-widest italic">Recebido Hoje</p><span class="text-2xl md:text-4xl font-black text-white" id="a-statToday">R$ 0,00</span></div>
+                        <div class="glass-panel p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] text-center border-white/5"><p class="text-stone-600 text-[9px] md:text-[10px] uppercase font-black mb-1 md:mb-2 tracking-widest italic">Pagantes do Mês</p><span class="text-2xl md:text-4xl font-black text-white" id="a-statMonth">R$ 0,00</span></div>
+                        <div class="glass-panel p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] border-amber-500/20 text-center shadow-2xl"><p class="text-amber-500 text-[9px] md:text-[10px] uppercase font-black mb-1 md:mb-2 tracking-widest underline underline-offset-4 md:underline-offset-8">Acumulado Anual</p><span class="text-3xl md:text-5xl font-black text-white" id="a-statYear">R$ 0,00</span></div>
                     </div>
                     
-                    <!-- NOVO: BOTÃO DE RESET PARA LANÇAMENTO OFICIAL -->
-                    <div class="flex justify-end -mt-6 pr-4">
-                        <button onclick="window.resetCaixaMes()" class="text-stone-700 hover:text-red-500 text-[9px] uppercase font-black tracking-widest transition-colors flex items-center gap-1 group"><i data-lucide="rotate-ccw" class="w-3 h-3 group-hover:-rotate-180 transition-transform duration-500"></i> Limpar Testes (Zerar Mês)</button>
+                    <div class="flex justify-start sm:justify-end pr-0 md:pr-4 -mt-2 md:-mt-6">
+                        <button onclick="window.resetCaixaMes()" class="text-stone-700 hover:text-red-500 text-[8px] md:text-[9px] uppercase font-black tracking-widest transition-colors flex items-center gap-1 group"><i data-lucide="rotate-ccw" class="w-3 h-3 group-hover:-rotate-180 transition-transform duration-500"></i> Limpar Testes (Zerar Mês)</button>
                     </div>
 
-                    <div class="glass-panel rounded-[2.5rem] overflow-hidden shadow-2xl border-white/5">
-                        <table class="w-full text-left text-xs">
+                    <!-- Tabela de Assinantes com Scroll Horizontal no Mobile -->
+                    <div class="glass-panel rounded-[1.5rem] md:rounded-[2.5rem] overflow-x-auto shadow-2xl border-white/5 relative">
+                        <table class="w-full text-left text-xs min-w-[700px]">
                             <thead class="bg-stone-900/50 text-stone-600 uppercase tracking-widest">
-                                <tr><th class="p-8">Assinante / Contacto</th><th class="p-8">Plano / Bônus</th><th class="p-8 text-center">Vencimento</th><th class="p-8 text-center">Ação Amanda</th><th class="p-8 text-right">Lucro Líquido</th></tr>
+                                <tr><th class="p-6 md:p-8">Assinante / Contacto</th><th class="p-6 md:p-8">Plano / Bônus</th><th class="p-6 md:p-8 text-center">Vencimento</th><th class="p-6 md:p-8 text-center">Status</th><th class="p-6 md:p-8 text-center">Ação Amanda</th><th class="p-6 md:p-8 text-right">Caixa</th></tr>
                             </thead>
                             <tbody id="admin-table" class="divide-y divide-white/5"></tbody>
                         </table>
@@ -407,17 +395,17 @@
 
             <!-- NOVA ABA: LISTA MESTRA -->
             <div id="admin-leads" class="hidden h-full flex flex-col">
-                <header class="h-24 border-b border-stone-900 flex items-center px-10 bg-black/40"><h1 class="text-white text-2xl font-black italic uppercase tracking-tighter">Lista <span class="text-amber-500">Mestra</span></h1></header>
-                <div class="p-10 overflow-y-auto flex-1 bg-[#020202]">
-                    <div class="glass-panel rounded-[2.5rem] overflow-hidden shadow-2xl border-amber-500/10">
-                        <table class="w-full text-left text-xs">
+                <header class="h-20 md:h-24 border-b border-stone-900 flex items-center px-6 md:px-10 bg-black/40"><h1 class="text-white text-lg md:text-2xl font-black italic uppercase tracking-tighter">Lista <span class="text-amber-500">Mestra</span></h1></header>
+                <div class="p-5 md:p-10 overflow-y-auto flex-1 bg-[#020202]">
+                    <div class="glass-panel rounded-[1.5rem] md:rounded-[2.5rem] overflow-x-auto shadow-2xl border-amber-500/10">
+                        <table class="w-full text-left text-xs min-w-[600px]">
                             <thead class="bg-stone-900/50 text-stone-600 uppercase tracking-widest">
                                 <tr>
-                                    <th class="p-8">Lead Prospectado</th>
-                                    <th class="p-8">WhatsApp</th>
-                                    <th class="p-8">Indicado Por (Sócio)</th>
-                                    <th class="p-8 text-center">Data</th>
-                                    <th class="p-8 text-center">Ação Amanda</th>
+                                    <th class="p-6 md:p-8">Lead Prospectado</th>
+                                    <th class="p-6 md:p-8">WhatsApp</th>
+                                    <th class="p-6 md:p-8">Indicado Por (Sócio)</th>
+                                    <th class="p-6 md:p-8 text-center">Data</th>
+                                    <th class="p-6 md:p-8 text-center">Ação Amanda</th>
                                 </tr>
                             </thead>
                             <tbody id="leads-table" class="divide-y divide-white/5"></tbody>
@@ -428,32 +416,30 @@
 
             <!-- ÁREA DE GESTÃO VISUAL (POSTERS E APPS) -->
             <div id="admin-media" class="hidden h-full flex flex-col">
-                <header class="h-24 border-b border-stone-900 flex items-center px-10 bg-black/40"><h1 class="text-white text-2xl font-black italic uppercase tracking-tighter">Gestão <span class="text-amber-500">Visual</span></h1></header>
-                <div class="p-10 overflow-y-auto flex-1 bg-neutral-950">
-                    <div class="max-w-5xl glass-panel p-12 rounded-[3.5rem] border-amber-500/10">
-                        <form id="media-form" class="space-y-12">
+                <header class="h-20 md:h-24 border-b border-stone-900 flex items-center px-6 md:px-10 bg-black/40"><h1 class="text-white text-lg md:text-2xl font-black italic uppercase tracking-tighter">Gestão <span class="text-amber-500">Visual</span></h1></header>
+                <div class="p-5 md:p-10 overflow-y-auto flex-1 bg-neutral-950">
+                    <div class="max-w-5xl glass-panel p-6 md:p-12 rounded-[2rem] md:rounded-[3.5rem] border-amber-500/10">
+                        <form id="media-form" class="space-y-10 md:space-y-12">
                             
-                            <!-- SEÇÃO DE POSTERS -->
                             <div>
-                                <div class="flex justify-between items-center mb-8">
-                                    <div><h3 class="text-white font-black text-xl italic mb-1 uppercase tracking-tighter">Curadoria Marquee</h3><p class="text-[10px] text-stone-600 uppercase tracking-widest font-bold">Posters do Carrossel de Filmes/Séries</p></div>
-                                    <button type="button" onclick="window.addPosterInput()" class="bg-amber-500/10 border border-amber-500/20 text-amber-500 px-6 py-3 rounded-xl text-[10px] font-black uppercase hover:bg-amber-500 hover:text-black transition-all">+ Novo Poster</button>
+                                <div class="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-4 mb-6 md:mb-8">
+                                    <div><h3 class="text-white font-black text-lg md:text-xl italic mb-1 uppercase tracking-tighter">Curadoria Marquee</h3><p class="text-[9px] md:text-[10px] text-stone-600 uppercase tracking-widest font-bold">Posters do Carrossel de Filmes/Séries</p></div>
+                                    <button type="button" onclick="window.addPosterInput()" class="bg-amber-500/10 border border-amber-500/20 text-amber-500 px-5 md:px-6 py-2.5 md:py-3 rounded-lg md:rounded-xl text-[9px] md:text-[10px] font-black uppercase hover:bg-amber-500 hover:text-black transition-all">+ Novo Poster</button>
                                 </div>
-                                <div id="media-inputs" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+                                <div id="media-inputs" class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6"></div>
                             </div>
 
                             <hr class="border-white/5">
 
-                            <!-- SEÇÃO DE APPS -->
                             <div>
-                                <div class="flex justify-between items-center mb-8">
-                                    <div><h3 class="text-white font-black text-xl italic mb-1 uppercase tracking-tighter">Ecossistema Atmos</h3><p class="text-[10px] text-stone-600 uppercase tracking-widest font-bold">Logos dos Apps (AssistPlus, PlaySim, Roku, etc)</p></div>
-                                    <button type="button" onclick="window.addAppInput()" class="bg-amber-500/10 border border-amber-500/20 text-amber-500 px-6 py-3 rounded-xl text-[10px] font-black uppercase hover:bg-amber-500 hover:text-black transition-all">+ Novo App</button>
+                                <div class="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-4 mb-6 md:mb-8">
+                                    <div><h3 class="text-white font-black text-lg md:text-xl italic mb-1 uppercase tracking-tighter">Ecossistema Atmos</h3><p class="text-[9px] md:text-[10px] text-stone-600 uppercase tracking-widest font-bold">Logos dos Apps (AssistPlus, PlaySim, Roku, etc)</p></div>
+                                    <button type="button" onclick="window.addAppInput()" class="bg-amber-500/10 border border-amber-500/20 text-amber-500 px-5 md:px-6 py-2.5 md:py-3 rounded-lg md:rounded-xl text-[9px] md:text-[10px] font-black uppercase hover:bg-amber-500 hover:text-black transition-all">+ Novo App</button>
                                 </div>
-                                <div id="app-inputs" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
+                                <div id="app-inputs" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6"></div>
                             </div>
 
-                            <button type="submit" class="w-full bg-amber-500 text-black py-6 rounded-2xl font-black uppercase mt-10 tracking-[0.3em] shadow-xl hover:bg-amber-400 transition-colors">Sincronizar Toda a Vitrine</button>
+                            <button type="submit" class="w-full bg-amber-500 text-black py-4 md:py-6 rounded-xl md:rounded-2xl font-black uppercase mt-8 md:mt-10 tracking-[0.2em] md:tracking-[0.3em] shadow-xl hover:bg-amber-400 transition-colors text-[10px] md:text-xs">Sincronizar Toda a Vitrine</button>
                         </form>
                     </div>
                 </div>
@@ -463,34 +449,34 @@
 
     <!-- MODAL: THORAIKA ACCESS -->
     <div id="thoraika-modal" class="fixed inset-0 bg-black/98 backdrop-blur-3xl z-[600] hidden items-center justify-center p-4">
-        <div class="glass-panel w-full max-sm:w-full max-w-sm rounded-[3rem] p-12 text-center border-amber-500/20 shadow-2xl relative overflow-hidden">
+        <div class="glass-panel w-full max-w-sm rounded-[2rem] md:rounded-[3rem] p-8 md:p-12 text-center border-amber-500/20 shadow-2xl relative overflow-hidden">
             <div class="absolute inset-0 bg-gradient-to-b from-amber-500/5 to-transparent pointer-events-none"></div>
-            <div class="w-16 h-16 bg-amber-500/10 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-amber-500/20 shadow-inner"><i data-lucide="lock" class="text-amber-500"></i></div>
-            <h3 class="text-white font-black text-xl mb-10 uppercase tracking-[0.2em] italic">Chave HQ Atmos</h3>
-            <input type="password" id="thoraika-input" placeholder="DIGITE A SENHA..." class="w-full bg-stone-900 border border-stone-800 rounded-2xl px-4 py-5 text-white text-center focus:border-amber-500 focus:outline-none mb-8 tracking-[1em] text-xl font-bold uppercase">
-            <button onclick="window.validateThoraika()" class="w-full bg-amber-500 text-black py-5 rounded-2xl font-black uppercase text-[11px] tracking-widest shadow-xl shadow-amber-500/10 hover:bg-amber-400 transition-all">Validar Acesso</button>
-            <button onclick="window.closeModal('thoraika')" class="mt-6 text-stone-800 text-[10px] uppercase font-black hover:text-stone-600 transition-colors">Cancelar Operação</button>
+            <div class="w-12 h-12 md:w-16 md:h-16 bg-amber-500/10 rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-6 md:mb-8 border border-amber-500/20 shadow-inner"><i data-lucide="lock" class="text-amber-500 w-5 h-5 md:w-6 md:h-6"></i></div>
+            <h3 class="text-white font-black text-lg md:text-xl mb-8 md:mb-10 uppercase tracking-[0.1em] md:tracking-[0.2em] italic">Chave HQ Atmos</h3>
+            <input type="password" id="thoraika-input" placeholder="DIGITE A SENHA..." class="w-full bg-stone-900 border border-stone-800 rounded-xl md:rounded-2xl px-4 py-4 md:py-5 text-white text-center focus:border-amber-500 focus:outline-none mb-6 md:mb-8 tracking-[0.5em] md:tracking-[1em] text-lg md:text-xl font-bold uppercase">
+            <button onclick="window.validateThoraika()" class="w-full bg-amber-500 text-black py-4 md:py-5 rounded-xl md:rounded-2xl font-black uppercase text-[10px] md:text-[11px] tracking-widest shadow-xl shadow-amber-500/10 hover:bg-amber-400 transition-all">Validar Acesso</button>
+            <button onclick="window.closeModal('thoraika')" class="mt-4 md:mt-6 text-stone-800 text-[9px] md:text-[10px] uppercase font-black hover:text-stone-600 transition-colors">Cancelar Operação</button>
         </div>
     </div>
 
     <!-- MODAL: REGISTO NOVO ATIVO / EDIÇÃO -->
     <div id="clientModal" class="fixed inset-0 bg-black/95 backdrop-blur-xl z-[700] hidden items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-md rounded-[3rem] p-12 border-amber-500/20 shadow-2xl overflow-y-auto max-h-[90vh]">
-            <h3 id="client-modal-title" class="text-2xl font-black text-white mb-10 italic uppercase text-center tracking-tighter">Registo de <span class="text-amber-500">Fluxo</span></h3>
-            <form id="client-form" class="space-y-6">
+        <div class="glass-panel w-full max-w-md rounded-[2rem] md:rounded-[3rem] p-6 md:p-12 border-amber-500/20 shadow-2xl overflow-y-auto max-h-[95vh] md:max-h-[90vh]">
+            <h3 id="client-modal-title" class="text-xl md:text-2xl font-black text-white mb-6 md:mb-10 italic uppercase text-center tracking-tighter">Registo de <span class="text-amber-500">Fluxo</span></h3>
+            <form id="client-form" class="space-y-4 md:space-y-6">
                 <div class="space-y-1">
-                    <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Nome do Assinante:</label>
-                    <input type="text" id="reg-name" placeholder="Ex: Alex Sander" required class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-5 text-white focus:border-amber-500 focus:outline-none transition-all">
+                    <label class="text-[8px] md:text-[9px] text-stone-600 uppercase font-black ml-2 md:ml-4 tracking-widest italic">Nome do Assinante:</label>
+                    <input type="text" id="reg-name" placeholder="Ex: Alex Sander" required class="w-full bg-stone-900/50 border border-stone-800 rounded-xl md:rounded-2xl p-4 md:p-5 text-white focus:border-amber-500 focus:outline-none transition-all text-xs md:text-sm">
                 </div>
                 <div class="space-y-1">
-                    <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Nº Celular Atmos:</label>
-                    <input type="text" id="reg-phone" placeholder="Ex: 5553999999999" required class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-5 text-white focus:border-amber-500 focus:outline-none transition-all">
+                    <label class="text-[8px] md:text-[9px] text-stone-600 uppercase font-black ml-2 md:ml-4 tracking-widest italic">Nº Celular Atmos:</label>
+                    <input type="text" id="reg-phone" placeholder="Ex: 5553999999999" required class="w-full bg-stone-900/50 border border-stone-800 rounded-xl md:rounded-2xl p-4 md:p-5 text-white focus:border-amber-500 focus:outline-none transition-all text-xs md:text-sm">
                 </div>
                 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                     <div class="space-y-1">
-                        <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Plano:</label>
-                        <select id="reg-plan" onchange="window.updatePriceField()" class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-5 text-white appearance-none cursor-pointer focus:border-amber-500 italic">
+                        <label class="text-[8px] md:text-[9px] text-stone-600 uppercase font-black ml-2 md:ml-4 tracking-widest italic">Plano:</label>
+                        <select id="reg-plan" onchange="window.updatePriceField()" class="w-full bg-stone-900/50 border border-stone-800 rounded-xl md:rounded-2xl p-4 md:p-5 text-white appearance-none cursor-pointer focus:border-amber-500 italic text-xs md:text-sm">
                             <option value="mensal">Mensal</option>
                             <option value="trimestral">Trimestral</option>
                             <option value="anual">Anual</option>
@@ -500,8 +486,8 @@
                         </select>
                     </div>
                     <div class="space-y-1">
-                        <label class="text-[9px] text-stone-600 uppercase font-black ml-4 tracking-widest italic">Telas:</label>
-                        <select id="reg-screens" onchange="window.updatePriceField()" class="w-full bg-stone-900/50 border border-stone-800 rounded-2xl p-5 text-white appearance-none cursor-pointer focus:border-amber-500 italic">
+                        <label class="text-[8px] md:text-[9px] text-stone-600 uppercase font-black ml-2 md:ml-4 tracking-widest italic">Telas:</label>
+                        <select id="reg-screens" onchange="window.updatePriceField()" class="w-full bg-stone-900/50 border border-stone-800 rounded-xl md:rounded-2xl p-4 md:p-5 text-white appearance-none cursor-pointer focus:border-amber-500 italic text-xs md:text-sm">
                             <option value="1">1 Tela</option>
                             <option value="2">2 Telas</option>
                             <option value="3">3 Telas</option>
@@ -511,34 +497,40 @@
                     </div>
                 </div>
                 
-                <div class="space-y-1 bg-amber-500/5 p-4 rounded-2xl border border-amber-500/20">
-                    <label class="text-[9px] text-amber-500 uppercase font-black ml-2 tracking-widest italic flex items-center justify-between">
-                        <span>Valor Final Cobrado (R$):</span>
-                        <span class="text-stone-500 text-[8px]">(Editável)</span>
+                <div class="space-y-1 bg-amber-500/5 p-3 md:p-4 rounded-xl md:rounded-2xl border border-amber-500/20">
+                    <label class="text-[8px] md:text-[9px] text-amber-500 uppercase font-black ml-1 md:ml-2 tracking-widest italic flex items-center justify-between">
+                        <span>Valor Cobrado (R$):</span>
+                        <span class="text-stone-500 text-[7px] md:text-[8px]">(Editável)</span>
                     </label>
-                    <input type="number" step="0.01" id="reg-price" required class="w-full bg-black border border-stone-800 rounded-xl p-4 text-white focus:border-amber-500 focus:outline-none transition-all font-black text-xl text-center">
+                    <input type="number" step="0.01" id="reg-price" required class="w-full bg-black border border-stone-800 rounded-lg md:rounded-xl p-3 md:p-4 text-white focus:border-amber-500 focus:outline-none transition-all font-black text-lg md:text-xl text-center">
                 </div>
                 
-                <div class="space-y-1">
-                    <label id="client-date-label" class="text-[9px] text-amber-500 uppercase font-black ml-4 tracking-widest flex items-center gap-2 italic"><i data-lucide="calendar" class="w-3 h-3"></i> Data de Ativação:</label>
-                    <div class="relative group">
-                        <input type="date" id="reg-activation-date" required class="w-full bg-stone-900 border border-stone-800 rounded-2xl p-5 text-white focus:border-amber-500 focus:outline-none transition-all cursor-pointer font-black tracking-widest uppercase text-xs">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4" id="reg-date-ref-grid">
+                    <div class="space-y-1">
+                        <label id="client-date-label" class="text-[8px] md:text-[9px] text-amber-500 uppercase font-black ml-2 md:ml-4 tracking-widest flex items-center gap-1 md:gap-2 italic"><i data-lucide="calendar" class="w-3 h-3"></i> Data:</label>
+                        <div class="relative group">
+                            <input type="date" id="reg-activation-date" required class="w-full bg-stone-900 border border-stone-800 rounded-xl md:rounded-2xl p-4 md:p-5 text-white focus:border-amber-500 focus:outline-none transition-all cursor-pointer font-black tracking-widest uppercase text-xs">
+                        </div>
+                    </div>
+                    <div class="space-y-1" id="reg-ref-container">
+                        <label class="text-[8px] md:text-[9px] text-stone-600 uppercase font-black ml-2 md:ml-4 tracking-widest italic">Cód. Indicação:</label>
+                        <input type="text" id="reg-referral-code" placeholder="Ex: ATMOS-XXXX" class="w-full bg-stone-900 border border-stone-800 rounded-xl md:rounded-2xl p-4 md:p-5 text-white focus:border-amber-500 focus:outline-none transition-all font-mono uppercase text-xs">
                     </div>
                 </div>
 
-                <button type="submit" id="client-submit-btn" class="w-full bg-amber-500 text-black py-5 rounded-2xl font-black uppercase mt-4 shadow-xl hover:bg-amber-400 transition-all tracking-widest text-xs">Ativar Ativo no Sistema</button>
+                <button type="submit" id="client-submit-btn" class="w-full bg-amber-500 text-black py-4 md:py-5 rounded-xl md:rounded-2xl font-black uppercase mt-2 md:mt-4 shadow-xl hover:bg-amber-400 transition-all tracking-widest text-[10px] md:text-xs">Ativar Sistema</button>
                 
                 <div class="flex gap-2 mt-2">
-                    <button type="button" onclick="window.closeModal('client')" class="flex-1 text-stone-500 text-[10px] uppercase font-black tracking-widest hover:text-white transition-colors text-center p-3">Cancelar</button>
-                    <button type="button" id="client-delete-btn" onclick="window.deleteClientAdmin()" class="hidden flex-1 text-red-500 text-[10px] uppercase font-black tracking-widest hover:text-red-400 transition-colors text-center p-3 bg-red-500/10 rounded-xl border border-red-500/20">Excluir</button>
+                    <button type="button" onclick="window.closeModal('client')" class="flex-1 text-stone-500 text-[9px] md:text-[10px] uppercase font-black tracking-widest hover:text-white transition-colors text-center p-2 md:p-3">Cancelar</button>
+                    <button type="button" id="client-delete-btn" onclick="window.deleteClientAdmin()" class="hidden flex-1 text-red-500 text-[9px] md:text-[10px] uppercase font-black tracking-widest hover:text-red-400 transition-colors text-center p-2 md:p-3 bg-red-500/10 rounded-lg md:rounded-xl border border-red-500/20">Excluir</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- FEEDBACK BOX -->
-    <div id="feedbackBox" class="fixed top-10 left-1/2 -translate-x-1/2 glass-panel px-8 py-4 rounded-2xl text-amber-500 text-[10px] font-black uppercase z-[1000] hidden flex items-center gap-3 shadow-2xl text-center">
-        <i data-lucide="check-circle" class="w-4 h-4 shrink-0"></i><span id="feedbackMsg" class="leading-relaxed">Sucesso</span>
+    <div id="feedbackBox" class="fixed top-5 md:top-10 left-1/2 -translate-x-1/2 glass-panel px-6 md:px-8 py-3 md:py-4 rounded-xl md:rounded-2xl text-amber-500 text-[9px] md:text-[10px] font-black uppercase z-[1000] hidden flex items-center gap-2 md:gap-3 shadow-2xl text-center w-[90%] md:w-auto max-w-sm">
+        <i data-lucide="check-circle" class="w-3 h-3 md:w-4 md:h-4 shrink-0"></i><span id="feedbackMsg" class="leading-relaxed">Sucesso</span>
     </div>
 
     <!-- MÓDULO DE INTELIGÊNCIA EM NUVEM E LÓGICA -->
@@ -547,7 +539,6 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { initializeFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // MATRIZ DE PREÇOS ATUALIZADA
         const PRICING = { 
             "mensal": { 1: 35, 2: 40, 3: 50, 4: 60, 5: 70 }, 
             "trimestral": { 1: 95, 2: 110, 3: 140, 4: 170, 5: 200 }, 
@@ -566,7 +557,6 @@
         let activeClient = null;
         let editingClientIndex = -1;
 
-        // --- SISTEMA DE CARREGAMENTO OFFLINE-FIRST ---
         const globalLoader = document.getElementById('global-loader');
         const loaderText = document.getElementById('loader-text');
         let isAppReady = false;
@@ -608,7 +598,6 @@
         let firebaseAppInstance, firebaseAuthInstance, firestoreDbInstance, stateDocRef;
         let isCloudActive = false;
 
-        // Inicializa a UI e os Ícones Imediatamente
         document.addEventListener('DOMContentLoaded', () => {
             bootOfflineFirst();
             if(typeof lucide !== 'undefined') lucide.createIcons();
@@ -836,9 +825,8 @@
             if(typeof renderLeadsTable === 'function') renderLeadsTable();
         }
 
-        // FUNÇÃO DE COMPRA DA VITRINE DIRETAMENTE PELO WHATSAPP
         window.buyPlan = function(planType) {
-            const telAlex = "5553981676662"; // Número do WhatsApp
+            const telAlex = "5553981676662"; 
             let msg = "";
             
             if (planType === 'estudante') {
@@ -854,15 +842,13 @@
             window.open(`https://api.whatsapp.com/send?phone=${telAlex}&text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        // ATUALIZADO: SISTEMA DE PAGAMENTO COM CÓPIA DE PIX DIRETO
         window.initPay = function(method) {
             const selectEl = document.getElementById('p-plan-select');
             const planText = selectEl.options[selectEl.selectedIndex].text;
             const telAlex = "5553981676662";
-            const chavePixCelular = "53981676662"; // Chave PIX
+            const chavePixCelular = "53981676662"; 
 
             if (method === 'PIX') {
-                // Cria um input fantasma para copiar a chave para o telemóvel do cliente
                 const tempInput = document.createElement("input");
                 tempInput.value = chavePixCelular;
                 document.body.appendChild(tempInput);
@@ -870,10 +856,8 @@
                 document.execCommand("copy");
                 document.body.removeChild(tempInput);
                 
-                // Exibe o aviso prolongado (5 segundos) para o cliente ler com calma
                 window.showFeedback("PIX COPIADO PARA ÁREA DE TRANSFERÊNCIA. ACESSE SUA CONTA E COLE A CHAVE PIX CELULAR", 5000);
             } else {
-                // Se for Cartão, vai para o WhatsApp da Amanda
                 const msg = `Olá Amanda! ✨ Solicito renovação do plano ${planText} via ${method}. Sou o sócio ${activeClient.name}. Pode validar?`;
                 setTimeout(() => window.open(`https://api.whatsapp.com/send?phone=${telAlex}&text=${encodeURIComponent(msg)}`, '_blank'), 1000);
             }
@@ -884,9 +868,9 @@
             document.getElementById('admin-leads').classList.toggle('hidden', t !== 'leads'); 
             document.getElementById('admin-media').classList.toggle('hidden', t !== 'media'); 
             
-            document.getElementById('tab-btn-dash').className = `w-full text-left p-4 rounded-xl font-black text-[10px] uppercase tracking-widest transition-colors ${t === 'dash' ? 'bg-amber-500/10 text-amber-500' : 'text-stone-500 hover:bg-stone-900'}`;
-            document.getElementById('tab-btn-leads').className = `w-full text-left p-4 rounded-xl font-black text-[10px] uppercase tracking-widest transition-colors ${t === 'leads' ? 'bg-amber-500/10 text-amber-500' : 'text-stone-500 hover:bg-stone-900'}`;
-            document.getElementById('tab-btn-media').className = `w-full text-left p-4 rounded-xl font-black text-[10px] uppercase tracking-widest transition-colors ${t === 'media' ? 'bg-amber-500/10 text-amber-500' : 'text-stone-500 hover:bg-stone-900'}`;
+            document.getElementById('tab-btn-dash').className = `whitespace-nowrap px-4 py-2 lg:p-4 rounded-xl font-black text-[9px] lg:text-[10px] uppercase tracking-widest transition-colors ${t === 'dash' ? 'bg-amber-500/10 text-amber-500' : 'text-stone-500 hover:bg-stone-900'}`;
+            document.getElementById('tab-btn-leads').className = `whitespace-nowrap px-4 py-2 lg:p-4 rounded-xl font-black text-[9px] lg:text-[10px] uppercase tracking-widest transition-colors ${t === 'leads' ? 'bg-amber-500/10 text-amber-500' : 'text-stone-500 hover:bg-stone-900'}`;
+            document.getElementById('tab-btn-media').className = `whitespace-nowrap px-4 py-2 lg:p-4 rounded-xl font-black text-[9px] lg:text-[10px] uppercase tracking-widest transition-colors ${t === 'media' ? 'bg-amber-500/10 text-amber-500' : 'text-stone-500 hover:bg-stone-900'}`;
         }
         
         function renderLeadsTable() {
@@ -895,7 +879,7 @@
             const sortedLeads = [...pendingReferrals].reverse(); 
             
             if(sortedLeads.length === 0) {
-                tb.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-stone-600 font-bold italic">Nenhum Lead pendente.</td></tr>`;
+                tb.innerHTML = `<tr><td colspan="5" class="p-6 md:p-8 text-center text-stone-600 font-bold italic">Nenhum Lead pendente.</td></tr>`;
                 return;
             }
 
@@ -907,19 +891,19 @@
                 const d = lead.date ? new Date(lead.date).toLocaleDateString('pt-BR') : 'Recente';
                 const socName = lead.affiliateName || 'Sócio Atmos';
                 
-                const urlAtmos = window.location.href.split('?')[0];
+                const urlAtmos = window.location.href.split('?')[0].split('#')[0];
                 const msg = `Olá ${lead.guestName || ''}! ✨ Vi que o seu amigo(a) ${socName} indicou a Atmos Experience para você! Aqui é a Amanda. Já conseguiu resgatar o seu acesso 4K? Acesse nosso portal: ${urlAtmos} 🎬`;
                 const wLink = `https://api.whatsapp.com/send?phone=${lead.guestPhone.replace(/\D/g,'')}&text=${encodeURIComponent(msg)}`;
 
                 tr.innerHTML = `
-                    <td class="p-8 font-black text-white text-sm uppercase">${lead.guestName || 'Sem Nome'}</td>
-                    <td class="p-8 text-stone-400 font-mono tracking-widest">${lead.guestPhone}</td>
-                    <td class="p-8 text-stone-300 font-bold uppercase text-[9px]"><span class="text-amber-500">${socName}</span><br>${lead.affiliatePhone}</td>
-                    <td class="p-8 text-center text-stone-500 font-bold">${d}</td>
-                    <td class="p-8 text-center">
+                    <td class="p-6 md:p-8 font-black text-white text-xs md:text-sm uppercase">${lead.guestName || 'Sem Nome'}</td>
+                    <td class="p-6 md:p-8 text-stone-400 font-mono tracking-widest">${lead.guestPhone}</td>
+                    <td class="p-6 md:p-8 text-stone-300 font-bold uppercase text-[8px] md:text-[9px]"><span class="text-amber-500">${socName}</span><br>${lead.affiliatePhone}</td>
+                    <td class="p-6 md:p-8 text-center text-stone-500 font-bold">${d}</td>
+                    <td class="p-6 md:p-8 text-center">
                         <div class="flex items-center justify-center gap-2">
-                            <a href="${wLink}" target="_blank" class="bg-green-500/10 text-green-500 hover:bg-green-500 hover:text-black px-4 py-2.5 rounded-xl text-[10px] font-black uppercase transition-all inline-block border border-green-500/20">Chamar</a>
-                            <button onclick="window.removeLead(${realIndex})" class="bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-2.5 rounded-xl transition-all" title="Remover Lead"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+                            <a href="${wLink}" target="_blank" class="bg-green-500/10 text-green-500 hover:bg-green-500 hover:text-black px-3 py-2 md:px-4 md:py-2.5 rounded-lg md:rounded-xl text-[9px] md:text-[10px] font-black uppercase transition-all inline-block border border-green-500/20">Chamar</a>
+                            <button onclick="window.removeLead(${realIndex})" class="bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-2 md:p-2.5 rounded-lg md:rounded-xl transition-all" title="Remover Lead"><i data-lucide="trash-2" class="w-3 h-3 md:w-3.5 md:h-3.5"></i></button>
                         </div>
                     </td>
                 `;
@@ -945,6 +929,10 @@
                 document.getElementById('client-submit-btn').innerText = "Ativar Ativo no Sistema";
                 document.getElementById('client-date-label').innerHTML = `<i data-lucide="calendar" class="w-3 h-3"></i> Data de Ativação:`;
                 document.getElementById('client-delete-btn').classList.add('hidden');
+                
+                document.getElementById('reg-ref-container').classList.remove('hidden');
+                document.getElementById('reg-date-ref-grid').classList.add('sm:grid-cols-2');
+                document.getElementById('reg-date-ref-grid').classList.remove('grid-cols-1');
                 
                 window.updatePriceField(); 
             }
@@ -974,6 +962,10 @@
             document.getElementById('client-date-label').innerHTML = `<i data-lucide="calendar" class="w-3 h-3"></i> Próximo Vencimento:`;
             document.getElementById('client-delete-btn').classList.remove('hidden');
             
+            document.getElementById('reg-ref-container').classList.add('hidden');
+            document.getElementById('reg-date-ref-grid').classList.remove('sm:grid-cols-2');
+            document.getElementById('reg-date-ref-grid').classList.add('grid-cols-1');
+
             document.getElementById('clientModal').classList.remove('hidden');
             document.getElementById('clientModal').classList.add('flex');
         }
@@ -987,7 +979,6 @@
             }
         }
 
-        // Adicionado suporte a tempo variável para feedbacks mais longos
         window.showFeedback = function(m, tempo = 3000) { 
             const b = document.getElementById('feedbackBox'); 
             document.getElementById('feedbackMsg').innerText = m; 
@@ -1017,7 +1008,6 @@
             document.getElementById('a-statYear').innerText = `R$ ${y.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
         }
 
-        // NOVO: SISTEMA PARA ZERAR O CAIXA E INICIAR A OPERAÇÃO OFICIAL
         window.resetCaixaMes = function() {
             if(confirm("ATENÇÃO: Deseja zerar o caixa de 'Hoje' e do 'Mês' para iniciar a operação oficial? \n\nIsso moverá os registros de teste antigos para Janeiro, zerando os marcadores de hoje mas mantendo o seu 'Acumulado Anual' intacto.")) {
                 const now = new Date();
@@ -1030,7 +1020,6 @@
                         c.payments.forEach(p => {
                             const pd = new Date(p.date);
                             if(pd.getMonth() === currentMonth && pd.getFullYear() === currentYear) {
-                                // Move o pagamento de teste para 1º de Janeiro do ano atual para preservar o total anual
                                 p.date = new Date(currentYear, 0, 1).toISOString();
                                 modified = true;
                             }
@@ -1084,10 +1073,7 @@
                 if(diff < 0) { sL = 'Vencido'; sC = 'status-due animate-pulse'; showM = true; }
                 else if(diff <= 5) { sL = `Expira em ${diff}d`; sC = 'status-warning'; showM = true; }
                 
-                // URL Curta da Atmos (Pega apenas o domínio principal)
                 const urlAtmos = window.location.href.split('?')[0].split('#')[0];
-                
-                // MENSAGEM OTIMIZADA COM CHAVE PIX E INCENTIVO AO PORTAL
                 const msg = `Olá ${c.name}! ✨ Aqui é a Amanda da Atmos TV. Vim te lembrar que o seu ciclo renova em ${diff < 0 ? 'breve' : diff + ' dias'}!\n\nPara não ficar sem o seu sinal 4K, você já pode renovar copiando e colando a nossa Chave PIX (Celular) no seu banco:\n*53981676662*\n\n🎁 Ah, você já conhece o nosso Portal do Cliente? Acesse de forma rápida pelo link abaixo informando apenas o seu número de celular:\n${urlAtmos}\n\nLá dentro você pode gerenciar sua conta e indicar amigos para ganhar MENSALIDADES GRÁTIS! 🎬`;
                 
                 const wLink = `https://api.whatsapp.com/send?phone=${c.phone.replace(/\D/g,'')}&text=${encodeURIComponent(msg)}`;
@@ -1096,31 +1082,29 @@
 
                 tr.className = 'hover:bg-white/[0.03] transition-all group';
                 tr.innerHTML = `
-                    <td class="p-8"><div class="font-black text-white text-base uppercase">${c.name}</div><div class="text-[9px] text-stone-600 font-mono tracking-widest">${c.phone}</div></td>
-                    <td class="p-8"><div class="text-stone-300 font-black uppercase text-[9px] italic">${planTag}</div><div class="text-green-500 font-black text-[9px] mt-1 uppercase">${c.bonusMonths || 0} BÔNUS</div></td>
-                    <td class="p-8 text-center font-bold text-stone-200">${nxt.toLocaleDateString('pt-BR')}</td>
-                    <td class="p-8 text-center"><span class="px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${sC}">${sL}</span></td>
-                    <td class="p-8 text-center">
+                    <td class="p-6 md:p-8"><div class="font-black text-white text-xs md:text-base uppercase">${c.name}</div><div class="text-[8px] md:text-[9px] text-stone-600 font-mono tracking-widest">${c.phone}</div></td>
+                    <td class="p-6 md:p-8"><div class="text-stone-300 font-black uppercase text-[8px] md:text-[9px] italic">${planTag}</div><div class="text-green-500 font-black text-[8px] md:text-[9px] mt-1 uppercase">${c.bonusMonths || 0} BÔNUS</div></td>
+                    <td class="p-6 md:p-8 text-center font-bold text-stone-200">${nxt.toLocaleDateString('pt-BR')}</td>
+                    <td class="p-6 md:p-8 text-center"><span class="px-3 md:px-4 py-1 md:py-1.5 rounded-full text-[8px] md:text-[9px] font-black uppercase tracking-widest ${sC}">${sL}</span></td>
+                    <td class="p-6 md:p-8 text-center">
                         <div class="flex items-center justify-center gap-2">
-                            ${showM ? `<a href="${wLink}" target="_blank" class="magic-button-animation bg-amber-500 text-black px-4 py-2.5 rounded-xl text-[10px] font-black uppercase flex items-center gap-1 hover:bg-amber-400 transition-all"><i data-lucide="sparkles" class="w-3 h-3"></i> Cobrar</a>` : `<span class="text-stone-800 font-black text-[9px] mr-2">MONITORADO</span>`}
-                            <button onclick="window.logPaymentAdmin(${i})" class="bg-white/5 hover:bg-white text-white hover:text-black px-4 py-2.5 rounded-xl text-[10px] font-black uppercase transition-all">Recebi</button>
-                            <button onclick="window.editClientAdmin(${i})" class="bg-stone-900 hover:bg-amber-500/20 text-stone-500 hover:text-amber-500 p-2.5 rounded-xl transition-all" title="Editar Cliente"><i data-lucide="pencil" class="w-3.5 h-3.5"></i></button>
+                            ${showM ? `<a href="${wLink}" target="_blank" class="magic-button-animation bg-amber-500 text-black px-3 md:px-4 py-2 md:py-2.5 rounded-lg md:rounded-xl text-[9px] md:text-[10px] font-black uppercase flex items-center gap-1 hover:bg-amber-400 transition-all"><i data-lucide="sparkles" class="w-3 h-3"></i> Cobrar</a>` : `<span class="text-stone-800 font-black text-[8px] md:text-[9px] mr-2">MONITORADO</span>`}
+                            <button onclick="window.logPaymentAdmin(${i})" class="bg-white/5 hover:bg-white text-white hover:text-black px-3 md:px-4 py-2 md:py-2.5 rounded-lg md:rounded-xl text-[9px] md:text-[10px] font-black uppercase transition-all">Recebi</button>
+                            <button onclick="window.editClientAdmin(${i})" class="bg-stone-900 hover:bg-amber-500/20 text-stone-500 hover:text-amber-500 p-2 md:p-2.5 rounded-lg md:rounded-xl transition-all" title="Editar Cliente"><i data-lucide="pencil" class="w-3 h-3 md:w-3.5 md:h-3.5"></i></button>
                         </div>
                     </td>
-                    <td class="p-8 text-right font-black text-white">R$ ${(c.payments||[]).reduce((a,p)=>a+p.amountNet,0).toLocaleString('pt-BR')}</td>`;
+                    <td class="p-6 md:p-8 text-right font-black text-white">R$ ${(c.payments||[]).reduce((a,p)=>a+p.amountNet,0).toLocaleString('pt-BR')}</td>`;
                 tb.appendChild(tr);
             });
             if(typeof lucide !== 'undefined') lucide.createIcons();
         }
 
-        // CARROSSEL DE POSTERS
         function renderMarquee() {
             const container = document.getElementById('landing-marquee');
             const list = window.lpAssets.length > 0 ? [...window.lpAssets, ...window.lpAssets] : getFallbackAssets();
             container.innerHTML = list.map(url => `<div class="movie-card bg-stone-900"><img src="${url}" class="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity duration-700" onerror="this.src='https://placehold.co/300x420/050505/f59e0b?text=Atmos'"></div>`).join('');
         }
 
-        // CARROSSEL DE APPS
         function renderAppMarquee() {
             const container = document.getElementById('landing-app-marquee');
             const list = window.appAssets.length > 0 ? [...window.appAssets, ...window.appAssets, ...window.appAssets] : getFallbackAppAssets(); 
@@ -1155,7 +1139,6 @@
             }
         };
 
-        // MOTOR DE COMPRESSÃO DE IMAGENS 
         window.processImageFile = function(file, maxDim, callback) {
             const reader = new FileReader();
             reader.onload = (ev) => {
@@ -1178,49 +1161,47 @@
             reader.readAsDataURL(file);
         };
 
-        // INPUTS DE POSTERS
         function renderPosterInputs() {
             const c = document.getElementById('media-inputs'); c.innerHTML = '';
             if(window.lpAssets.length === 0) window.lpAssets.push("");
             window.lpAssets.forEach((u, i) => {
                 const isData = u.startsWith('data');
                 c.innerHTML += `
-                    <div class="glass-panel p-6 rounded-3xl space-y-4 border-white/5 relative">
-                        <div class="w-full h-40 bg-black rounded-2xl overflow-hidden relative group">
+                    <div class="glass-panel p-4 md:p-6 rounded-2xl md:rounded-3xl space-y-4 border-white/5 relative">
+                        <div class="w-full h-32 md:h-40 bg-black rounded-xl md:rounded-2xl overflow-hidden relative group">
                             <img id="poster-preview-${i}" src="${u}" class="w-full h-full object-cover opacity-50" onerror="this.src='https://placehold.co/300x150/050505/f59e0b?text=Slot+Livre'">
                             <label class="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                                <span class="bg-amber-500 text-black px-4 py-2 rounded-lg font-black uppercase text-[9px] tracking-widest">Mudar Imagem</span>
+                                <span class="bg-amber-500 text-black px-4 py-2 rounded-lg font-black uppercase text-[8px] md:text-[9px] tracking-widest">Mudar Imagem</span>
                                 <input type="file" class="hidden" accept="image/*" onchange="window.handlePosterFile(event, ${i})">
                             </label>
-                            <button type="button" onclick="window.removePoster(${i})" class="absolute top-3 right-3 bg-red-500/80 text-white p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 shadow-lg z-10" title="Remover Poster">
-                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            <button type="button" onclick="window.removePoster(${i})" class="absolute top-2 right-2 md:top-3 md:right-3 bg-red-500/80 text-white p-1.5 md:p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 shadow-lg z-10" title="Remover Poster">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5 md:w-4 md:h-4"></i>
                             </button>
                         </div>
-                        <input type="text" value="${isData ? '' : u}" oninput="window.updatePosterUrl(${i}, this.value)" class="w-full bg-black border border-white/10 rounded-xl p-4 text-[9px] text-stone-500 font-mono" placeholder="${isData ? '[IMAGEM CARREGADA - Colar novo link...]' : 'Colar Link do Poster...'}">
+                        <input type="text" value="${isData ? '' : u}" oninput="window.updatePosterUrl(${i}, this.value)" class="w-full bg-black border border-white/10 rounded-lg md:rounded-xl p-3 md:p-4 text-[8px] md:text-[9px] text-stone-500 font-mono" placeholder="${isData ? '[IMAGEM CARREGADA - Colar novo link...]' : 'Colar Link do Poster...'}">
                     </div>`;
             });
             if(typeof lucide !== 'undefined') lucide.createIcons();
         }
 
-        // INPUTS DE APPS
         function renderAppInputs() {
             const c = document.getElementById('app-inputs'); c.innerHTML = '';
             if(window.appAssets.length === 0) window.appAssets.push("");
             window.appAssets.forEach((u, i) => {
                 const isData = u.startsWith('data');
                 c.innerHTML += `
-                    <div class="glass-panel p-4 rounded-3xl space-y-4 border-white/5 relative">
-                        <div class="w-full h-24 bg-black rounded-2xl overflow-hidden relative group">
+                    <div class="glass-panel p-4 md:p-4 rounded-2xl md:rounded-3xl space-y-4 border-white/5 relative">
+                        <div class="w-full h-20 md:h-24 bg-black rounded-xl md:rounded-2xl overflow-hidden relative group">
                             <img id="app-preview-${i}" src="${u}" class="w-full h-full object-contain p-2 opacity-70" onerror="this.src='https://placehold.co/200x200/050505/f59e0b?text=App'">
                             <label class="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                                <span class="bg-amber-500 text-black px-3 py-1 rounded-lg font-black uppercase text-[8px] tracking-widest">Trocar</span>
+                                <span class="bg-amber-500 text-black px-3 py-1 rounded-lg font-black uppercase text-[7px] md:text-[8px] tracking-widest">Trocar</span>
                                 <input type="file" class="hidden" accept="image/*" onchange="window.handleAppFile(event, ${i})">
                             </label>
-                            <button type="button" onclick="window.removeApp(${i})" class="absolute top-2 right-2 bg-red-500/80 text-white p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 shadow-lg z-10" title="Remover App">
-                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                            <button type="button" onclick="window.removeApp(${i})" class="absolute top-1 right-1 md:top-2 md:right-2 bg-red-500/80 text-white p-1 md:p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 shadow-lg z-10" title="Remover App">
+                                <i data-lucide="trash-2" class="w-3 h-3 md:w-3.5 md:h-3.5"></i>
                             </button>
                         </div>
-                        <input type="text" value="${isData ? '' : u}" oninput="window.updateAppUrl(${i}, this.value)" class="w-full bg-black border border-white/10 rounded-xl p-3 text-[8px] text-stone-500 font-mono" placeholder="${isData ? '[IMAGEM CARREGADA]' : 'Colar Link Logo...'}">
+                        <input type="text" value="${isData ? '' : u}" oninput="window.updateAppUrl(${i}, this.value)" class="w-full bg-black border border-white/10 rounded-lg md:rounded-xl p-2.5 md:p-3 text-[7px] md:text-[8px] text-stone-500 font-mono" placeholder="${isData ? '[IMAGEM CARREGADA]' : 'Colar Link Logo...'}">
                     </div>`;
             });
             if(typeof lucide !== 'undefined') lucide.createIcons();
