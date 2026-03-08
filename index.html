@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATMOS EXPERIENCE | O Próximo Nível</title>
+    
+    <!-- NOVO: Favicon de Coroa Dourada -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d4af37' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14'/></svg>">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -80,9 +84,12 @@
 
         <!-- Navegação -->
         <nav class="relative z-10 container mx-auto px-8 py-10 flex justify-between items-center">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-3">
                 <div class="bg-gradient-to-tr from-amber-600 to-amber-300 p-1.5 rounded-full shadow-lg"><i data-lucide="crown" class="w-4 h-4 text-black"></i></div>
-                <span class="tracking-[0.4em] text-xs font-bold uppercase text-white">Atmos<span class="text-amber-500 font-light">Experience</span></span>
+                <div class="flex flex-col items-center mt-1">
+                    <span class="tracking-[0.4em] text-xs font-bold uppercase text-white leading-none">Vitrine Atmos</span>
+                    <span class="text-amber-500 font-light tracking-[0.4em] text-[9px] uppercase leading-tight mt-1">Experience</span>
+                </div>
             </div>
             <div class="flex items-center gap-6">
                 <button onclick="window.showPortal()" class="text-[10px] uppercase font-black tracking-widest text-stone-400 hover:text-amber-500 transition-all border-b border-transparent hover:border-amber-500/50 pb-1">Portal do Cliente</button>
