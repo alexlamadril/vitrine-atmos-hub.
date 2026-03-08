@@ -388,6 +388,12 @@
                         <div class="glass-panel p-8 rounded-[2rem] text-center border-white/5"><p class="text-stone-600 text-[10px] uppercase font-black mb-2 tracking-widest italic">Pagantes do Mês</p><span class="text-4xl font-black text-white" id="a-statMonth">R$ 0,00</span></div>
                         <div class="glass-panel p-8 rounded-[2rem] border-amber-500/20 text-center shadow-2xl"><p class="text-amber-500 text-[10px] uppercase font-black mb-2 tracking-widest underline underline-offset-8">Acumulado Anual</p><span class="text-5xl font-black text-white" id="a-statYear">R$ 0,00</span></div>
                     </div>
+                    
+                    <!-- NOVO: BOTÃO DE RESET PARA LANÇAMENTO OFICIAL -->
+                    <div class="flex justify-end -mt-6 pr-4">
+                        <button onclick="window.resetCaixaMes()" class="text-stone-700 hover:text-red-500 text-[9px] uppercase font-black tracking-widest transition-colors flex items-center gap-1 group"><i data-lucide="rotate-ccw" class="w-3 h-3 group-hover:-rotate-180 transition-transform duration-500"></i> Limpar Testes (Zerar Mês)</button>
+                    </div>
+
                     <div class="glass-panel rounded-[2.5rem] overflow-hidden shadow-2xl border-white/5">
                         <table class="w-full text-left text-xs">
                             <thead class="bg-stone-900/50 text-stone-600 uppercase tracking-widest">
@@ -1010,6 +1016,37 @@
             document.getElementById('a-statMonth').innerText = `R$ ${m.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
             document.getElementById('a-statYear').innerText = `R$ ${y.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
         }
+
+        // NOVO: SISTEMA PARA ZERAR O CAIXA E INICIAR A OPERAÇÃO OFICIAL
+        window.resetCaixaMes = function() {
+            if(confirm("ATENÇÃO: Deseja zerar o caixa de 'Hoje' e do 'Mês' para iniciar a operação oficial? \n\nIsso moverá os registros de teste antigos para Janeiro, zerando os marcadores de hoje mas mantendo o seu 'Acumulado Anual' intacto.")) {
+                const now = new Date();
+                const currentMonth = now.getMonth();
+                const currentYear = now.getFullYear();
+                let modified = false;
+
+                clients.forEach(c => {
+                    if(c.payments) {
+                        c.payments.forEach(p => {
+                            const pd = new Date(p.date);
+                            if(pd.getMonth() === currentMonth && pd.getFullYear() === currentYear) {
+                                // Move o pagamento de teste para 1º de Janeiro do ano atual para preservar o total anual
+                                p.date = new Date(currentYear, 0, 1).toISOString();
+                                modified = true;
+                            }
+                        });
+                    }
+                });
+
+                if(modified) {
+                    syncData();
+                    updateHQStats();
+                    window.showFeedback("CAIXA ZERADO PARA INÍCIO OFICIAL!");
+                } else {
+                    window.showFeedback("CAIXA JÁ ESTAVA ZERADO NESTE MÊS.");
+                }
+            }
+        };
 
         window.logPaymentAdmin = function(index) {
             const c = clients[index]; 
