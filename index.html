@@ -162,7 +162,7 @@
                     <span class="text-white mx-1.5">PC</span>
                 </p>
                 
-                <!-- ÍCONES DE DISPOSITIVOS (Resolvido: O gatilho de renderização foi corrigido) -->
+                <!-- ÍCONES DE DISPOSITIVOS -->
                 <div class="flex justify-center items-center gap-10 md:gap-16">
                     <div class="flex flex-col items-center gap-3 opacity-50 hover:opacity-100 transition-opacity duration-300">
                         <i data-lucide="tv" class="w-8 h-8 text-white"></i>
@@ -218,7 +218,7 @@
             </div>
         </section>
 
-        <!-- Planos RESTAURADOS (Design Fiel às Imagens 2 e 3) -->
+        <!-- Planos RESTAURADOS E OTIMIZADOS PARA VENDAS DIRETA -->
         <section class="relative z-10 container mx-auto px-8 pb-32 pt-10">
             <div class="grid md:grid-cols-3 gap-10 items-stretch">
                 
@@ -230,14 +230,16 @@
                     
                     <div class="flex-1 flex flex-col justify-center border-t border-white/5 pt-6 mt-6 mb-8">
                         <p class="text-stone-400 text-xs leading-relaxed mb-4">Escolha a sua preferência de acesso:</p>
-                        <select class="w-full bg-black border border-white/10 rounded-xl p-4 text-stone-300 text-xs font-bold focus:border-amber-500 outline-none transition-colors">
+                        <!-- ID ADICIONADO AQUI PARA PUXAR A OPÇÃO ESCOLHIDA -->
+                        <select id="landing-estudante-select" class="w-full bg-black border border-white/10 rounded-xl p-4 text-stone-300 text-xs font-bold focus:border-amber-500 outline-none transition-colors">
                             <option>📺 TV Online (Canais)</option>
                             <option>🎬 Streaming de Filmes</option>
                             <option>🍿 Streaming de Séries</option>
                         </select>
                     </div>
 
-                    <button onclick="window.showPortal()" class="premium-btn w-full py-5 rounded-[20px] font-black uppercase text-xs tracking-widest mt-auto text-black shadow-lg shadow-amber-500/10">Ativar Plano</button>
+                    <!-- FUNÇÃO ALTERADA PARA CONTATO DE VENDA -->
+                    <button onclick="window.buyPlan('estudante')" class="premium-btn w-full py-5 rounded-[20px] font-black uppercase text-xs tracking-widest mt-auto text-black shadow-lg shadow-amber-500/10">Ativar Plano</button>
                 </div>
 
                 <!-- CARD FULL (BEST-SELLER) -->
@@ -249,7 +251,8 @@
                     
                     <p class="text-stone-400 text-sm leading-relaxed mb-8 flex-1 px-4 border-t border-white/5 pt-6 mt-6">Acesso <b class="text-amber-500">total e ilimitado</b>. Tenha tudo num só lugar: TV ao Vivo, Lançamentos, Filmes e as Séries mais badaladas do momento.</p>
                     
-                    <button onclick="window.showPortal()" class="premium-btn w-full py-5 rounded-[20px] font-black uppercase text-xs tracking-widest mt-auto text-black shadow-lg shadow-amber-500/20">Garantir VIP</button>
+                    <!-- FUNÇÃO ALTERADA PARA CONTATO DE VENDA -->
+                    <button onclick="window.buyPlan('full')" class="premium-btn w-full py-5 rounded-[20px] font-black uppercase text-xs tracking-widest mt-auto text-black shadow-lg shadow-amber-500/20">Garantir VIP</button>
                 </div>
 
                 <!-- CARD TRIMESTRAL -->
@@ -260,7 +263,8 @@
                     
                     <p class="text-stone-400 text-sm leading-relaxed mb-8 flex-1 border-t border-white/5 pt-6 mt-6">Pacote com <b class="text-white">acesso total</b> a tudo (TV, Filmes e Séries) aliado à paz de espírito e estabilidade de um ciclo de 90 dias ininterruptos.</p>
                     
-                    <button onclick="window.showPortal()" class="bg-[#111] border border-white/5 hover:bg-white hover:text-black text-white w-full py-5 rounded-[20px] font-black uppercase text-xs tracking-widest transition-all mt-auto">Escolher Estabilidade</button>
+                    <!-- FUNÇÃO ALTERADA PARA CONTATO DE VENDA -->
+                    <button onclick="window.buyPlan('trimestral')" class="bg-[#111] border border-white/5 hover:bg-white hover:text-black text-white w-full py-5 rounded-[20px] font-black uppercase text-xs tracking-widest transition-all mt-auto">Escolher Estabilidade</button>
                 </div>
 
             </div>
@@ -324,7 +328,7 @@
                     </div>
                 </div>
 
-                <!-- BLOCO RENOVAR PLANO (Design Fiel à Imagem 3) -->
+                <!-- BLOCO RENOVAR PLANO -->
                 <div class="bg-[#0a0a0a] border border-white/5 p-10 rounded-[3rem] space-y-6 shadow-2xl mt-6">
                     <label class="text-[10px] text-stone-500 uppercase font-black tracking-widest block text-center">Renovar Plano:</label>
                     <select id="p-plan-select" class="w-full bg-[#111] border border-white/5 rounded-2xl p-6 text-white font-bold appearance-none text-center focus:border-amber-500 outline-none transition-colors">
@@ -668,7 +672,7 @@
         }
 
         function refreshAllUI() {
-            lucide.createIcons();
+            if(typeof lucide !== 'undefined') lucide.createIcons();
             updateHQStats();
             renderHQTable();
             renderMarquee();
@@ -762,7 +766,7 @@
                 } else {
                     historyContainer.innerHTML = `<p class="text-stone-600 text-[10px] uppercase tracking-widest italic text-center py-2">Nenhum histórico registado.</p>`;
                 }
-                lucide.createIcons();
+                if(typeof lucide !== 'undefined') lucide.createIcons();
 
                 window.showFeedback("BEM-VINDO EMBAIXADOR");
             } else { window.showFeedback("CLIENTE NÃO LOCALIZADO"); }
@@ -792,6 +796,24 @@
             document.getElementById('referralFriendName').value = "";
             document.getElementById('referralFriendPhone').value = "";
             window.showFeedback("CONVITE ENVIADO E GUARDADO NO HQ");
+        }
+
+        // FUNÇÃO DE COMPRA DA VITRINE DIRETAMENTE PELO WHATSAPP
+        window.buyPlan = function(planType) {
+            const telAlex = "5553981676662"; // Número do WhatsApp
+            let msg = "";
+            
+            if (planType === 'estudante') {
+                const selectEl = document.getElementById('landing-estudante-select');
+                const choice = selectEl.options[selectEl.selectedIndex].text;
+                msg = `Olá Amanda! ✨ Vi a curadoria na página Atmos Experience e quero ativar o plano Estudante (${choice}) por R$ 14,90/mês. Como ativo meu sinal agora?`;
+            } else if (planType === 'full') {
+                msg = `Olá Amanda! ✨ Vi a curadoria na página Atmos Experience e quero garantir meu VIP no Combo Full Atmos por R$ 35,00/mês. Como ativo meu sinal agora?`;
+            } else if (planType === 'trimestral') {
+                msg = `Olá Amanda! ✨ Vi a curadoria na página Atmos Experience e quero escolher a estabilidade do Ciclo Trimestral por R$ 95,00/90 dias. Como ativo meu sinal agora?`;
+            }
+            
+            window.open(`https://api.whatsapp.com/send?phone=${telAlex}&text=${encodeURIComponent(msg)}`, '_blank');
         }
 
         window.initPay = function(method) {
@@ -943,7 +965,7 @@
                     <td class="p-8 text-right font-black text-white">R$ ${(c.payments||[]).reduce((a,p)=>a+p.amountNet,0).toLocaleString('pt-BR')}</td>`;
                 tb.appendChild(tr);
             });
-            lucide.createIcons();
+            if(typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         // CARROSSEL DE POSTERS
@@ -1032,7 +1054,7 @@
                         <input type="text" value="${isData ? '' : u}" oninput="window.updatePosterUrl(${i}, this.value)" class="w-full bg-black border border-white/10 rounded-xl p-4 text-[9px] text-stone-500 font-mono" placeholder="${isData ? '[IMAGEM CARREGADA - Colar novo link...]' : 'Colar Link do Poster...'}">
                     </div>`;
             });
-            lucide.createIcons();
+            if(typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         // INPUTS DE APPS
@@ -1056,7 +1078,7 @@
                         <input type="text" value="${isData ? '' : u}" oninput="window.updateAppUrl(${i}, this.value)" class="w-full bg-black border border-white/10 rounded-xl p-3 text-[8px] text-stone-500 font-mono" placeholder="${isData ? '[IMAGEM CARREGADA]' : 'Colar Link Logo...'}">
                     </div>`;
             });
-            lucide.createIcons();
+            if(typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         window.handlePosterFile = function(e, i) {
