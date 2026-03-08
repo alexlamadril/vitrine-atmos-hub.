@@ -894,7 +894,8 @@
                 const d = lead.date ? new Date(lead.date).toLocaleDateString('pt-BR') : 'Recente';
                 const socName = lead.affiliateName || 'Sócio Atmos';
                 
-                const msg = `Olá ${lead.guestName || ''}! ✨ Vi que o seu amigo(a) ${socName} indicou a Atmos Experience para você! Aqui é a Amanda. Já conseguiu resgatar o seu acesso 4K? 🎬`;
+                const urlAtmos = window.location.href.split('?')[0];
+                const msg = `Olá ${lead.guestName || ''}! ✨ Vi que o seu amigo(a) ${socName} indicou a Atmos Experience para você! Aqui é a Amanda. Já conseguiu resgatar o seu acesso 4K? Acesse nosso portal: ${urlAtmos} 🎬`;
                 const wLink = `https://api.whatsapp.com/send?phone=${lead.guestPhone.replace(/\D/g,'')}&text=${encodeURIComponent(msg)}`;
 
                 tr.innerHTML = `
@@ -1039,7 +1040,12 @@
                 if(diff < 0) { sL = 'Vencido'; sC = 'status-due animate-pulse'; showM = true; }
                 else if(diff <= 5) { sL = `Expira em ${diff}d`; sC = 'status-warning'; showM = true; }
                 
-                const msg = `Olá ${c.name}! ✨ Aqui é a Amanda da Atmos TV. Vim te avisar que o seu sinal renova em ${diff < 0 ? 'alguns dias (vencido)' : diff + ' dias'}! Garanta sua diversão 4K sem travas no nosso portal. 🎬`;
+                // URL Curta da Atmos (Pega apenas o domínio principal)
+                const urlAtmos = window.location.href.split('?')[0].split('#')[0];
+                
+                // MENSAGEM OTIMIZADA COM CHAVE PIX E INCENTIVO AO PORTAL
+                const msg = `Olá ${c.name}! ✨ Aqui é a Amanda da Atmos TV. Vim te lembrar que o seu ciclo renova em ${diff < 0 ? 'breve' : diff + ' dias'}!\n\nPara não ficar sem o seu sinal 4K, você já pode renovar copiando e colando a nossa Chave PIX (Celular) no seu banco:\n*53981676662*\n\n🎁 Ah, você já conhece o nosso Portal do Cliente? Acesse de forma rápida pelo link abaixo informando apenas o seu número de celular:\n${urlAtmos}\n\nLá dentro você pode gerenciar sua conta e indicar amigos para ganhar MENSALIDADES GRÁTIS! 🎬`;
+                
                 const wLink = `https://api.whatsapp.com/send?phone=${c.phone.replace(/\D/g,'')}&text=${encodeURIComponent(msg)}`;
 
                 const planTag = c.customPrice !== undefined ? `${c.plan} (Especial)` : c.plan;
