@@ -47,12 +47,28 @@
         }
         .app-card:hover { transform: scale(1.05); border-color: rgba(212, 175, 55, 0.4); background: #111; }
 
+        /* Animação Universo Streaming 3D */
+        .floating-brand {
+            position: absolute;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            animation: float-camera linear infinite;
+            text-shadow: 0 0 30px currentColor;
+            pointer-events: none;
+            will-change: transform, opacity;
+        }
+        @keyframes float-camera {
+            0% { transform: translate(-50%, -50%) scale(0.05); opacity: 0; filter: blur(10px); }
+            20% { opacity: 0.4; filter: blur(5px); }
+            60% { opacity: 0.9; filter: blur(0px); }
+            100% { transform: translate(-50%, -50%) scale(4); opacity: 0; filter: blur(4px); }
+        }
+
         /* Status Styles */
         .status-due { color: #ef4444; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); }
         .status-warning { color: #f59e0b; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); }
         .status-ok { color: #10b981; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); }
         
-        /* Personalização do Calendário Nativo */
         input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1) sepia(100%) saturate(1000%) hue-rotate(10deg); cursor: pointer; font-size: 1.2rem; }
 
         .magic-button-animation { animation: pulse-gold 2s infinite; }
@@ -62,14 +78,13 @@
             100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
         }
 
-        /* Oculta scrollbar vertical elegante */
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 10px; }
     </style>
 </head>
 <body class="min-h-screen">
 
-    <!-- TELA DE CARREGAMENTO GLOBAL (OFFLINE-FIRST) -->
+    <!-- TELA DE CARREGAMENTO -->
     <div id="global-loader" class="fixed inset-0 z-[9999] bg-[#020202] flex flex-col items-center justify-center transition-opacity duration-500">
         <div class="relative w-24 h-24 flex items-center justify-center mb-6">
             <div class="absolute inset-0 rounded-full border-t-2 border-b-2 border-amber-500 animate-spin"></div>
@@ -81,31 +96,56 @@
     </div>
 
     <!-- VIEW 1: LANDING PAGE -->
-    <div id="view-landing" class="relative">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none" style="background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 70%);"></div>
+    <div id="view-landing" class="relative bg-[#020202]">
+        
+        <!-- HERO SECTION CINEFLICK STYLE -->
+        <div class="relative w-full min-h-[85vh] md:min-h-[95vh] flex flex-col justify-between">
+            <div class="absolute inset-0 z-0">
+                <img src="https://images.unsplash.com/photo-1593784991095-a205069470b6?q=80&w=2070" class="w-full h-full object-cover opacity-30" alt="Filmes e Séries">
+                <div class="absolute inset-0 bg-gradient-to-b from-[#020202]/60 via-[#020202]/80 to-[#020202]"></div>
+            </div>
 
-        <!-- Navegação Responsiva -->
-        <nav class="relative z-10 container mx-auto px-5 md:px-8 py-6 md:py-10 flex justify-between items-center">
-            <div class="flex items-center gap-2 md:gap-3">
-                <div class="bg-gradient-to-tr from-amber-600 to-amber-300 p-1.5 rounded-full shadow-lg"><i data-lucide="crown" class="w-4 h-4 text-black"></i></div>
-                <div class="flex flex-col items-start md:items-center mt-1">
-                    <span class="tracking-[0.3em] md:tracking-[0.4em] text-[10px] md:text-xs font-bold uppercase text-white leading-none">Vitrine Atmos</span>
-                    <span class="text-amber-500 font-light tracking-[0.3em] md:tracking-[0.4em] text-[8px] md:text-[9px] uppercase leading-tight mt-1">Experience</span>
+            <nav class="relative z-50 container mx-auto px-5 md:px-8 py-6 md:py-10 flex justify-between items-center">
+                <div class="flex items-center gap-2 md:gap-3">
+                    <div class="bg-gradient-to-tr from-amber-600 to-amber-300 p-1.5 rounded-full shadow-lg"><i data-lucide="crown" class="w-4 h-4 text-black"></i></div>
+                    <div class="flex flex-col items-start md:items-center mt-1">
+                        <span class="tracking-[0.3em] md:tracking-[0.4em] text-[10px] md:text-xs font-bold uppercase text-white leading-none drop-shadow-md">Vitrine Atmos</span>
+                        <span class="text-amber-500 font-light tracking-[0.3em] md:tracking-[0.4em] text-[8px] md:text-[9px] uppercase leading-tight mt-1 drop-shadow-md">Experience</span>
+                    </div>
                 </div>
-            </div>
-            <div class="flex items-center gap-4 md:gap-6">
-                <button onclick="window.showPortal()" class="text-[9px] md:text-[10px] uppercase font-black tracking-widest text-stone-400 hover:text-amber-500 transition-all border-b border-transparent hover:border-amber-500/50 pb-1">Portal</button>
-                <button onclick="window.requestAdminAccess()" class="bg-white/5 border border-white/10 px-3 py-2 md:px-4 md:py-2 rounded-lg text-[8px] md:text-[9px] uppercase font-black tracking-widest text-stone-500 hover:text-white transition-all">Acesso HQ</button>
-            </div>
-        </nav>
+                <div class="flex items-center gap-4 md:gap-6">
+                    <button onclick="window.showPortal()" class="text-[9px] md:text-[10px] uppercase font-black tracking-widest text-stone-300 hover:text-amber-500 transition-all border-b border-transparent hover:border-amber-500/50 pb-1 drop-shadow-md">Portal</button>
+                    <button onclick="window.requestAdminAccess()" class="bg-black/40 border border-white/20 px-3 py-2 md:px-4 md:py-2 rounded-lg text-[8px] md:text-[9px] uppercase font-black tracking-widest text-white hover:bg-white hover:text-black transition-all backdrop-blur-sm shadow-lg">Acesso HQ</button>
+                </div>
+            </nav>
 
-        <header class="relative z-10 container mx-auto px-5 md:px-8 pt-8 md:pt-12 pb-12 md:pb-16 text-center">
-            <div class="inline-block px-4 py-1.5 rounded-full border border-amber-500/10 bg-amber-500/5 mb-6 md:mb-8">
-                <span class="text-[8px] md:text-[9px] uppercase tracking-[0.3em] font-bold text-amber-500 italic">O Padrão Ouro do Entretenimento</span>
-            </div>
-            <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-light tracking-tighter leading-none mb-8 md:mb-10">Sua dose diária de <br /><span class="font-serif italic gold-text">Dopamina Digital.</span></h1>
-            <p class="max-w-2xl mx-auto text-stone-400 text-base md:text-xl font-light mb-12 italic px-2">Estabilidade absoluta em 4K HDR. A Vitrine Atmos é a sua melhor escolha.</p>
-        </header>
+            <header class="relative z-10 container mx-auto px-5 md:px-8 flex-1 flex flex-col items-center justify-center text-center pb-12 mt-6 md:mt-0">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 mb-6 md:mb-8 backdrop-blur-md shadow-lg shadow-green-500/5">
+                    <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span></span>
+                    <span class="text-[9px] md:text-[10px] uppercase tracking-[0.2em] font-black text-green-400">Sinal Estável 24/7</span>
+                </div>
+                
+                <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.1] mb-6 text-white uppercase italic drop-shadow-2xl">
+                    O Seu Cinema <br class="hidden sm:block"/>
+                    <span class="text-amber-500 font-sans">Particular.</span>
+                </h1>
+                
+                <p class="max-w-2xl mx-auto text-stone-300 text-sm md:text-lg font-medium leading-relaxed mb-10 px-2 drop-shadow-md">
+                    O catálogo mais completo de Filmes, Séries, Esportes e Canais ao Vivo em 4K HDR. Assista de onde quiser, sem travamentos.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto px-4 sm:px-0">
+                    <a href="#planos" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-400 text-black px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-[11px] md:text-xs transition-all shadow-[0_0_40px_rgba(212,175,55,0.4)] hover:scale-105 text-center flex items-center justify-center gap-2">
+                        <i data-lucide="play" class="w-4 h-4 fill-current"></i> Ver Planos e Assinar
+                    </a>
+                    <button onclick="window.showPortal()" class="w-full sm:w-auto bg-[#111]/80 border border-white/10 hover:bg-white/10 text-white px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-[11px] md:text-xs transition-all flex items-center justify-center gap-2 backdrop-blur-md shadow-xl">
+                        <i data-lucide="user" class="w-4 h-4"></i> Já sou Sócio
+                    </button>
+                </div>
+            </header>
+
+            <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#020202] to-transparent z-0"></div>
+        </div>
 
         <!-- Showcase Marquee -->
         <section class="relative z-10 py-6 md:py-10 overflow-hidden">
@@ -126,6 +166,19 @@
                 <div class="absolute top-0 left-0 h-full w-16 md:w-24 bg-gradient-to-r from-[#020202] to-transparent pointer-events-none"></div>
                 <div class="absolute top-0 right-0 h-full w-16 md:w-24 bg-gradient-to-l from-[#020202] to-transparent pointer-events-none"></div>
             </div>
+        </section>
+
+        <!-- NOVO: ANIMAÇÃO UNIVERSO STREAMING 3D -->
+        <section class="relative z-10 h-[350px] md:h-[450px] w-full overflow-hidden bg-[#050505] border-y border-white/5 flex items-center justify-center" id="floating-logos-container">
+            <!-- Ponto Focal de Luz -->
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.05)_0%,#050505_70%)] z-10 pointer-events-none"></div>
+            
+            <div class="absolute z-20 text-center px-4 pointer-events-none flex flex-col items-center justify-center">
+                 <h3 class="text-2xl md:text-4xl font-black text-white italic uppercase tracking-tighter drop-shadow-2xl">O <span class="text-amber-500">Universo</span> do Streaming</h3>
+                 <p class="text-stone-400 text-[9px] md:text-xs mt-2 font-bold uppercase tracking-[0.3em]">Mergulhe no conteúdo infinito</p>
+                 <i data-lucide="infinity" class="w-6 h-6 text-amber-500/50 mt-4"></i>
+            </div>
+            <!-- Logotipos gerados via JS serão inseridos aqui -->
         </section>
 
         <!-- Informação de Apps Gratuitos & Plataformas -->
@@ -153,7 +206,7 @@
                 </div>
             </div>
 
-            <!-- NOVA LINHA DE COMPATIBILIDADE RESPONSIVA -->
+            <!-- COMPATIBILIDADE RESPONSIVA -->
             <div class="mt-10 pt-8 border-t border-white/5 max-w-3xl mx-auto">
                 <p class="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] text-stone-500 leading-relaxed mb-8 px-2 flex flex-wrap justify-center items-center gap-y-2">
                     <span class="w-full text-center mb-1">Compatível com:</span>
@@ -165,7 +218,6 @@
                     <span class="text-white mx-1 md:mx-1.5">PC</span>
                 </p>
                 
-                <!-- ÍCONES DE DISPOSITIVOS -->
                 <div class="flex justify-center items-center gap-8 sm:gap-10 md:gap-16">
                     <div class="flex flex-col items-center gap-2 md:gap-3 opacity-50 hover:opacity-100 transition-opacity duration-300">
                         <i data-lucide="tv" class="w-6 h-6 md:w-8 md:h-8 text-white"></i>
@@ -206,7 +258,6 @@
                     </div>
                 </div>
 
-                <!-- Box de Indicação Responsivo -->
                 <div class="glass-panel p-8 md:p-12 rounded-[2rem] md:rounded-[3.5rem] border-amber-500/20 bg-amber-500/[0.03] text-center lg:sticky lg:top-10 mt-6 md:mt-0">
                     <i data-lucide="users" class="w-6 h-6 md:w-8 md:h-8 text-amber-500 mx-auto mb-4 md:mb-6"></i>
                     <h3 class="text-white font-black text-xl md:text-2xl mb-3 md:mb-4 italic uppercase tracking-tighter">Indique <span class="text-amber-500">&</span> Ganhe</h3>
@@ -217,17 +268,19 @@
         </section>
 
         <!-- Planos -->
-        <section class="relative z-10 container mx-auto px-5 md:px-8 pb-20 md:pb-32 pt-10">
+        <section id="planos" class="relative z-10 container mx-auto px-5 md:px-8 pb-20 md:pb-32 pt-10 scroll-mt-10">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-10 items-stretch">
                 
-                <!-- CARD ESTUDANTE -->
                 <div class="bg-[#0a0a0a] border border-white/5 p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] flex flex-col">
                     <span class="text-amber-500 text-[9px] md:text-[10px] font-black uppercase mb-2 italic tracking-wider">Plano Modular</span>
                     <h3 class="text-2xl md:text-3xl font-black text-white mb-4 uppercase tracking-tighter">Estudante</h3>
                     <div class="mb-2 flex items-baseline gap-1"><span class="text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter">14,90</span><span class="text-stone-500 text-[9px] md:text-[10px] font-black uppercase">/mês</span></div>
                     
                     <div class="flex-1 flex flex-col justify-center border-t border-white/5 pt-6 mt-6 mb-8">
-                        <p class="text-stone-400 text-[11px] md:text-xs leading-relaxed mb-4">Escolha a sua preferência de acesso:</p>
+                        <p class="text-stone-400 text-[11px] md:text-xs leading-relaxed mb-4">
+                            Investimento menor que <span class="text-amber-400 font-black tracking-wider drop-shadow-[0_0_12px_rgba(251,191,36,0.9)] text-sm md:text-base">R$ 0,49 por dia</span>.<br><br>
+                            Escolha a sua preferência de acesso:
+                        </p>
                         <select id="landing-estudante-select" class="w-full bg-black border border-white/10 rounded-xl p-3 md:p-4 text-stone-300 text-[11px] md:text-xs font-bold focus:border-amber-500 outline-none transition-colors">
                             <option>📺 TV Online (Canais)</option>
                             <option>🎬 Streaming de Filmes</option>
@@ -237,25 +290,29 @@
                     <button onclick="window.buyPlan('estudante')" class="premium-btn w-full py-4 md:py-5 rounded-[15px] md:rounded-[20px] font-black uppercase text-[10px] md:text-xs tracking-widest mt-auto text-black shadow-lg shadow-amber-500/10">Ativar Plano</button>
                 </div>
 
-                <!-- CARD FULL (BEST-SELLER) -->
                 <div class="bg-[#0a0a0a] border border-amber-500/40 p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] shadow-2xl relative overflow-hidden text-center flex flex-col lg:scale-105 z-10 order-first lg:order-none">
                     <div class="absolute top-4 md:top-6 -right-12 md:-right-12 bg-amber-500 text-black px-12 md:px-14 py-2 md:py-2.5 rotate-45 font-black text-[8px] md:text-[10px] uppercase tracking-widest shadow-xl">Best-Seller</div>
                     
                     <h3 class="text-2xl md:text-3xl font-bold text-white mb-4 italic font-serif mt-4 md:mt-6">Combo Full Atmos</h3>
                     <div class="mb-2 flex justify-center items-baseline gap-1"><span class="text-6xl md:text-7xl font-black text-white tracking-tighter">35,00</span><span class="text-stone-500 text-[9px] md:text-[10px] font-black uppercase">/mês</span></div>
                     
-                    <p class="text-stone-400 text-xs md:text-sm leading-relaxed mb-8 flex-1 px-2 md:px-4 border-t border-white/5 pt-6 mt-6">Acesso <b class="text-amber-500">total e ilimitado</b>. Tenha tudo num só lugar: TV ao Vivo, Lançamentos, Filmes e as Séries mais badaladas do momento.</p>
+                    <p class="text-stone-400 text-xs md:text-sm leading-relaxed mb-8 flex-1 px-2 md:px-4 border-t border-white/5 pt-6 mt-6">
+                        Acesso <b class="text-amber-500">total e ilimitado</b>. Tenha tudo num só lugar: TV ao Vivo, Lançamentos, Filmes e as Séries mais badaladas do momento.<br><br>
+                        Por menos de <span class="text-amber-400 font-black tracking-wider drop-shadow-[0_0_12px_rgba(251,191,36,0.9)] text-sm md:text-base">R$ 1,17 por dia</span>.
+                    </p>
                     
                     <button onclick="window.buyPlan('full')" class="premium-btn w-full py-4 md:py-5 rounded-[15px] md:rounded-[20px] font-black uppercase text-[10px] md:text-xs tracking-widest mt-auto text-black shadow-lg shadow-amber-500/20">Garantir VIP</button>
                 </div>
 
-                <!-- CARD TRIMESTRAL -->
                 <div class="bg-[#0a0a0a] border border-white/5 p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] flex flex-col">
                     <span class="text-stone-500 text-[9px] md:text-[10px] font-black uppercase mb-2 italic tracking-wider">Conforto Atmos</span>
                     <h3 class="text-2xl md:text-3xl font-black text-white mb-4 uppercase tracking-tighter">Ciclo Trimestral</h3>
                     <div class="mb-2 flex items-baseline gap-1"><span class="text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter">95,00</span><span class="text-stone-500 text-[9px] md:text-[10px] font-black uppercase">/90 dias</span></div>
                     
-                    <p class="text-stone-400 text-[11px] md:text-sm leading-relaxed mb-8 flex-1 border-t border-white/5 pt-6 mt-6">Pacote com <b class="text-white">acesso total</b> a tudo (TV, Filmes e Séries) aliado à paz de espírito e estabilidade de um ciclo de 90 dias ininterruptos.</p>
+                    <p class="text-stone-400 text-[11px] md:text-sm leading-relaxed mb-8 flex-1 border-t border-white/5 pt-6 mt-6">
+                        Pacote com <b class="text-white">acesso total</b> a tudo (TV, Filmes e Séries) aliado à paz de espírito e estabilidade de um ciclo de 90 dias ininterruptos. <br><br>
+                        Tudo isso por menos de <span class="text-amber-400 font-black tracking-wider drop-shadow-[0_0_12px_rgba(251,191,36,0.9)] text-sm md:text-base">R$ 1,06 por dia</span>.
+                    </p>
                     
                     <button onclick="window.buyPlan('trimestral')" class="bg-[#111] border border-white/5 hover:bg-white hover:text-black text-white w-full py-4 md:py-5 rounded-[15px] md:rounded-[20px] font-black uppercase text-[10px] md:text-xs tracking-widest transition-all mt-auto">Escolher Estabilidade</button>
                 </div>
@@ -263,7 +320,6 @@
             </div>
         </section>
 
-        <!-- RODAPÉ -->
         <footer class="relative z-10 py-10 md:py-16 px-5 md:px-8 text-center flex flex-col items-center gap-4 md:gap-5 bg-[#020202] border-t border-white/5">
             <div class="text-stone-800 text-[8px] md:text-[9px] font-bold uppercase tracking-[0.3em] md:tracking-[0.5em]">
                 © 2024 Atmos TV | Strategic Management by Alex Sander
@@ -341,9 +397,8 @@
         </div>
     </div>
 
-    <!-- VIEW 3: ADMIN HQ (THORAIKA) - OTIMIZADO -->
+    <!-- VIEW 3: ADMIN HQ (THORAIKA) -->
     <div id="view-admin" class="hidden min-h-screen flex-col lg:flex-row">
-        <!-- Sidebar de Topo/Lateral -->
         <aside class="w-full lg:w-72 border-b lg:border-b-0 lg:border-r border-stone-900 bg-black flex flex-col p-5 lg:p-8 shrink-0 z-20 shadow-2xl">
             <div class="flex items-center justify-between lg:mb-16">
                 <div class="flex items-center gap-3">
@@ -352,7 +407,6 @@
                     </div>
                     <span class="font-bold text-xs md:text-sm text-white uppercase tracking-widest">Atmos HQ</span>
                 </div>
-                <!-- Sair no Mobile -->
                 <button onclick="window.showLanding()" class="lg:hidden flex items-center gap-1 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-xl text-[9px] font-black tracking-widest transition-colors">
                     <i data-lucide="log-out" class="w-3 h-3"></i> Sair
                 </button>
@@ -364,7 +418,6 @@
                 <button onclick="window.switchAdminTab('media')" id="tab-btn-media" class="flex-1 lg:w-full whitespace-nowrap text-center lg:text-left px-3 py-3 lg:p-4 rounded-xl bg-stone-900/30 lg:bg-transparent text-stone-500 font-black text-[9px] lg:text-[10px] uppercase tracking-widest transition-colors hover:bg-stone-900">Vitrine</button>
             </nav>
             
-            <!-- Sair no Desktop -->
             <button onclick="window.showLanding()" class="hidden lg:flex items-center justify-center gap-2 lg:mt-auto shrink-0 bg-stone-900/50 p-4 rounded-xl text-stone-700 hover:text-red-500 hover:bg-red-500/10 uppercase text-[10px] font-black tracking-widest transition-colors">
                 <i data-lucide="log-out" class="w-4 h-4"></i> Sair do HQ
             </button>
@@ -545,7 +598,6 @@
         <i data-lucide="check-circle" class="w-3 h-3 md:w-4 md:h-4 shrink-0"></i><span id="feedbackMsg" class="leading-relaxed">Sucesso</span>
     </div>
 
-    <!-- MÓDULO DE INTELIGÊNCIA EM NUVEM E LÓGICA -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -613,6 +665,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             bootOfflineFirst();
             if(typeof lucide !== 'undefined') lucide.createIcons();
+            initFloatingLogos(); // NOVO: Inicia a animação das marcas
 
             try {
                 const firebaseConfig = {
@@ -638,6 +691,45 @@
                 hideLoader();
             }
         });
+
+        // FUNÇÃO DE GERAÇÃO DAS MARCAS 3D FLUTUANTES
+        function initFloatingLogos() {
+            const container = document.getElementById('floating-logos-container');
+            if (!container) return;
+
+            // Cores oficiais das marcas para imersão
+            const brands = [
+                { name: 'NETFLIX', color: '#E50914' },
+                { name: 'HBO MAX', color: '#9933FF' },
+                { name: 'DISNEY+', color: '#113CCF' },
+                { name: 'APPLE TV+', color: '#FFFFFF' },
+                { name: 'PREMIERE', color: '#00A859' },
+                { name: 'DISCOVERY', color: '#00AEEF' },
+                { name: 'GLOBOPLAY', color: '#FF0000' },
+                { name: 'PRIME VIDEO', color: '#00A8E1' }
+            ];
+
+            // Cria 25 logotipos flutuando simultaneamente com delays e posições aleatórias
+            for(let i = 0; i < 25; i++) {
+                const brand = brands[Math.floor(Math.random() * brands.length)];
+                const el = document.createElement('div');
+                el.className = 'floating-brand font-black italic tracking-tighter';
+                el.innerText = brand.name;
+                el.style.color = brand.color;
+                
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                const delay = Math.random() * 10;
+                const duration = 5 + Math.random() * 5; // 5 a 10 segundos de viagem
+                
+                el.style.left = `${left}%`;
+                el.style.top = `${top}%`;
+                el.style.animationDuration = `${duration}s`;
+                el.style.animationDelay = `-${delay}s`;
+                
+                container.appendChild(el);
+            }
+        }
 
         async function initCloud() {
             try {
@@ -875,9 +967,7 @@
             }
         }
 
-        // LÓGICA DE ABAS BLINDADA PARA EVITAR CONFLITOS DE CSS
         window.switchAdminTab = function(t) { 
-            // Oculta/Exibe os containers principais removendo e adicionando a classe "flex" com precisão
             ['dash', 'leads', 'media'].forEach(tab => {
                 const el = document.getElementById('admin-' + tab);
                 if (t === tab) {
@@ -889,7 +979,6 @@
                 }
             });
             
-            // Atualiza o estilo visual dos botões
             const baseTabBtnClass = "flex-1 lg:w-full whitespace-nowrap text-center lg:text-left px-3 py-3 lg:p-4 rounded-xl font-black text-[9px] lg:text-[10px] uppercase tracking-widest transition-colors";
             
             document.getElementById('tab-btn-dash').className = `${baseTabBtnClass} ${t === 'dash' ? 'bg-amber-500/10 text-amber-500' : 'bg-stone-900/30 lg:bg-transparent text-stone-500 hover:bg-stone-900'}`;
