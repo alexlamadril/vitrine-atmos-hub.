@@ -848,14 +848,14 @@
         window.requestAdminAccess = function() { document.getElementById('thoraika-modal').classList.remove('hidden'); document.getElementById('thoraika-modal').classList.add('flex'); }
         
         window.validateThoraika = function() {
-            const inputVal = document.getElementById('thoraika-input').value;
+            // Remove espaços e normaliza para Capitalized (Thoraika)
+            const inputVal = document.getElementById('thoraika-input').value.trim();
+            const normalized = inputVal.charAt(0).toUpperCase() + inputVal.slice(1).toLowerCase();
             
-            // NOVO: ALGORITMO DE CRIPTOGRAFIA ATMOS (Base64 Reverso)
-            // A palavra original nunca mais aparecerá no código fonte.
-            const secureHash = btoa(unescape(encodeURIComponent(inputVal))).split('').reverse().join('');
+            const secureHash = btoa(unescape(encodeURIComponent(normalized))).split('').reverse().join('');
             
-            // "=E2apiFmvhGV" é o resultado matemático encriptado da senha correta
-            if(secureHash === "=E2apiFmvhGV") {
+            // Hash matemático corrigido e exato para "Thoraika"
+            if(secureHash === "=E2apFmcvhGV") {
                 document.getElementById('thoraika-modal').classList.add('hidden');
                 document.getElementById('view-landing').classList.add('hidden');
                 document.getElementById('view-admin').classList.remove('hidden');
