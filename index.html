@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>ATMOS EXPERIENCE | O Próximo Nível</title>
     
-    <!-- NOVO: ESCUDO ANTI-INSPECÇÃO ATMOS -->
+    <!-- ESCUDO ANTI-INSPECÇÃO ATMOS -->
     <script>
         // Bloqueia o clique com o botão direito
         document.addEventListener('contextmenu', event => event.preventDefault());
@@ -392,7 +392,7 @@
                         <option value="mensal">Mensal Regular - R$ 35,00</option>
                         <option value="trimestral">Trimestral (Combo) - R$ 95,00</option>
                         <option value="estudante - tv online">Estudante (📺 TV Online) - R$ 14,90</option>
-                        <option value="estudante - filmes">Estudante (🎬 Filmes) - R$ 14,90</option>
+                        <option value="estudante - filmes">Estudante - Filmes) - R$ 14,90</option>
                         <option value="estudante - séries">Estudante (🍿 Séries) - R$ 14,90</option>
                     </select>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
@@ -601,7 +601,8 @@
                 
                 <div class="flex gap-2 mt-2">
                     <button type="button" onclick="window.closeModal('client')" class="flex-1 text-stone-500 text-[9px] md:text-[10px] uppercase font-black tracking-widest hover:text-white transition-colors text-center p-2 md:p-3">Cancelar</button>
-                    <button type="button" id="client-delete-btn" onclick="window.deleteClientAdmin()" class="hidden flex-1 text-red-500 text-[9px] md:text-[10px] uppercase font-black tracking-widest hover:text-red-400 transition-colors text-center p-2 md:p-3 bg-red-500/10 rounded-lg md:rounded-xl border border-red-500/20">Excluir</button>
+                    <!-- BOTÃO DE EXCLUIR MODIFICADO PARA PRESERVAR CAIXA -->
+                    <button type="button" id="client-delete-btn" onclick="window.deleteClientAdmin()" class="hidden flex-1 text-red-500 text-[9px] md:text-[10px] uppercase font-black tracking-widest hover:text-red-400 transition-colors text-center p-2 md:p-3 bg-red-500/10 rounded-lg md:rounded-xl border border-red-500/20">Remover Acesso</button>
                 </div>
             </form>
         </div>
@@ -866,7 +867,8 @@
 
         window.handleClientLogin = function() {
             const phone = document.getElementById('clientPhoneInput').value.replace(/\D/g, '');
-            const c = clients.find(cl => cl.phone.replace(/\D/g, '') === phone);
+            // IGNORA CLIENTES QUE FORAM DELETADOS (EXCLUSÃO LÓGICA)
+            const c = clients.find(cl => cl.phone.replace(/\D/g, '') === phone && !cl.deleted);
             if(c) {
                 activeClient = c;
                 if(!c.affiliateCode) { c.affiliateCode = 'ATMOS-' + Math.random().toString(36).substr(2, 4).toUpperCase(); syncData(); }
@@ -917,7 +919,7 @@
                 if(typeof lucide !== 'undefined') lucide.createIcons();
 
                 window.showFeedback("BEM-VINDO EMBAIXADOR");
-            } else { window.showFeedback("CLIENTE NÃO LOCALIZADO"); }
+            } else { window.showFeedback("CLIENTE NÃO LOCALIZADO OU ACESSO REVOGADO"); }
         }
 
         window.sendReferral = function() {
@@ -1102,11 +1104,12 @@
         }
 
         window.deleteClientAdmin = function() {
-            if(confirm("ATENÇÃO: Tem certeza que deseja excluir este assinante? A ação não pode ser desfeita.")) {
-                clients.splice(editingClientIndex, 1);
+            // ATUALIZADO: Soft Delete preserva os dados mas inativa o usuário
+            if(confirm("ATENÇÃO: Tem certeza que deseja remover este assinante? O acesso dele será revogado, mas o histórico financeiro será mantido para os relatórios anuais.")) {
+                clients[editingClientIndex].deleted = true;
                 syncData();
                 window.closeModal('client');
-                window.showFeedback("ATIVO EXCLUÍDO");
+                window.showFeedback("CLIENTE REMOVIDO (CAIXA PRESERVADO)");
             }
         }
 
@@ -1125,6 +1128,7 @@
             
             let d = 0, m = 0, y = 0;
             
+            // Lógica intacta: Lê TODOS os clientes (mesmo os deletados) para manter a contabilidade perfeita.
             clients.forEach(c => {
                 (c.payments || []).forEach(p => {
                     const pd = new Date(p.date);
@@ -1193,10 +1197,60 @@
             syncData();
         }
 
+        // NOVO: MOTOR DE MENSAGENS SAZONAIS AUTOMÁTICAS
+        function getSeasonalMessage(clientName, diff, urlAtmos) {
+            const today = new Date();
+            const month = today.getMonth() + 1; 
+            const day = today.getDate(); 
+            
+            // Calendário Anual de Campanhas
+            const seasons = [
+                { name: "Páscoa", startM: 3, startD: 20, endM: 4, endD: 15, emoji: "🐰", greeting: "passando para te desejar uma Feliz Páscoa, repleta de paz e muito chocolate! 🍫", context: "Aproveitando o clima doce, vim te dar um aviso fofo" },
+                { name: "Mães", startM: 5, startD: 1, endM: 5, endD: 15, emoji: "🌹", greeting: "passando para homenagear as mães e desejar um mês maravilhoso! ❤️", context: "Aproveitando esse clima de carinho, vim te dar um aviso" },
+                { name: "Namorados", startM: 6, startD: 1, endM: 6, endD: 12, emoji: "❤️", greeting: "passando para desejar um feliz Mês dos Namorados, cheio de amor e séries agarradinhos! 🥰", context: "Aproveitando esse clima romântico, vim te dar um aviso" },
+                { name: "Pais", startM: 8, startD: 1, endM: 8, endD: 15, emoji: "👔", greeting: "passando para desejar um super Mês dos Pais, com aquele filmaço em família! 🍿", context: "Aproveitando o clima, vim te dar um aviso importante" },
+                { name: "Halloween", startM: 10, startD: 20, endM: 10, endD: 31, emoji: "🎃", greeting: "passando para te desejar um feliz Halloween! Preparado(a) para uma maratona de terror? 👻", context: "Aproveitando o clima de doces ou travessuras, vim te dar um aviso" },
+                { name: "Black Friday", startM: 11, startD: 15, endM: 11, endD: 30, emoji: "🖤", greeting: "passando para te avisar que estamos em clima de Black Friday! 🚀", context: "Aproveitando o momento de ofertas, vim te lembrar que" },
+                { name: "Natal", startM: 12, startD: 10, endM: 12, endD: 25, emoji: "🎄", greeting: "passando para te desejar um Feliz Natal, cheio de luz, união e muita pipoca! 🎅", context: "Aproveitando a magia do Natal, vim te dar um aviso fofo" },
+                { name: "Ano Novo", startM: 12, startD: 26, endM: 1, endD: 5, emoji: "🎆", greeting: "passando para desejar um Ano Novo incrível, cheio de conquistas e estreias top! 🥂", context: "Aproveitando o clima de renovação, vim te dar um aviso" }
+            ];
+
+            let activeSeason = null;
+            for (let s of seasons) {
+                if (s.startM <= s.endM) {
+                    if (month >= s.startM && month <= s.endM) {
+                        if (month === s.startM && day < s.startD) continue;
+                        if (month === s.endM && day > s.endD) continue;
+                        activeSeason = s; break;
+                    }
+                } else { // Para o Ano Novo (Dezembro a Janeiro)
+                    if ((month === s.startM && day >= s.startD) || (month === s.endM && day <= s.endD)) {
+                        activeSeason = s; break;
+                    }
+                }
+            }
+
+            let prazoMsg = '';
+            if (diff > 0) prazoMsg = `faltam apenas *${diff} dia(s)* para o vencimento da sua tela`;
+            else if (diff === 0) prazoMsg = `a sua tela vence *exatamente HOJE*`;
+            else prazoMsg = `a sua tela venceu há *${Math.abs(diff)} dia(s)*`;
+
+            if (activeSeason) {
+                // Mensagem Temática (ex: Páscoa, Natal, etc.)
+                return `${activeSeason.emoji} Olá ${clientName}! ✨ Aqui é a Amanda da Atmos TV ${activeSeason.greeting}\n\n${activeSeason.context}: ${prazoMsg}!\n\nPara garantir que a maratona não pare, você já pode renovar rapidinho copiando a nossa Chave PIX (Celular):\n*53981676662*\n\n🎁 Acesso ao Portal do Cliente: ${urlAtmos}\n\n⚠️ *Aviso com carinho:* Se você já efetuou o pagamento, por favor, desconsidere esta mensagem e aproveite muito o seu sinal! ❤️`;
+            } else {
+                // Mensagem Padrão de Negócios
+                return `🎬 Olá ${clientName}! ✨ Aqui é a Amanda da Atmos TV. Vim te lembrar que ${prazoMsg}!\n\nPara não ficar sem o seu sinal 4K, você já pode renovar copiando e colando a nossa Chave PIX (Celular) no seu banco:\n*53981676662*\n\n🎁 Ah, você já conhece o nosso Portal do Cliente? Acesse de forma rápida pelo link abaixo informando apenas o seu número de celular:\n${urlAtmos}\n\nLá dentro você pode gerenciar sua conta e indicar amigos para ganhar MENSALIDADES GRÁTIS! 🍿\n\n⚠️ *Aviso:* Se você já efetuou o pagamento, por favor, desconsidere esta mensagem!`;
+            }
+        }
+
         function renderHQTable() {
             const tb = document.getElementById('admin-table'); if(!tb) return; tb.innerHTML = '';
             const today = new Date(); today.setHours(0,0,0,0);
             clients.forEach((c, i) => {
+                // ATUALIZADO: Ignora clientes removidos para não poluir a interface da Amanda
+                if (c.deleted) return;
+
                 const nxt = new Date(c.nextBillingDate + 'T00:00:00');
                 const diff = Math.ceil((nxt - today) / 86400000);
                 const tr = document.createElement('tr');
@@ -1205,7 +1259,9 @@
                 else if(diff <= 5) { sL = `Expira em ${diff}d`; sC = 'status-warning'; showM = true; }
                 
                 const urlAtmos = window.location.href.split('?')[0].split('#')[0];
-                const msg = `Olá ${c.name}! ✨ Aqui é a Amanda da Atmos TV. Vim te lembrar que o seu ciclo renova em ${diff < 0 ? 'breve' : diff + ' dias'}!\n\nPara não ficar sem o seu sinal 4K, você já pode renovar copiando e colando a nossa Chave PIX (Celular) no seu banco:\n*53981676662*\n\n🎁 Ah, você já conhece o nosso Portal do Cliente? Acesse de forma rápida pelo link abaixo informando apenas o seu número de celular:\n${urlAtmos}\n\nLá dentro você pode gerenciar sua conta e indicar amigos para ganhar MENSALIDADES GRÁTIS! 🎬`;
+                
+                // USA A INTELIGÊNCIA DE MENSAGENS SAZONAIS
+                const msg = getSeasonalMessage(c.name, diff, urlAtmos);
                 
                 const wLink = `https://api.whatsapp.com/send?phone=${c.phone.replace(/\D/g,'')}&text=${encodeURIComponent(msg)}`;
 
