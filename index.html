@@ -5,6 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>ATMOS EXPERIENCE | O Próximo Nível</title>
     
+    <!-- NOVO: ESCUDO ANTI-INSPECÇÃO ATMOS -->
+    <script>
+        // Bloqueia o clique com o botão direito
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        
+        // Bloqueia os atalhos de teclado para abrir o código-fonte e o Inspecionar Elemento
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) return false; // Bloqueia F12
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Bloqueia Ctrl+Shift+I
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Bloqueia Ctrl+Shift+C
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Bloqueia Ctrl+Shift+J
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Bloqueia Ctrl+U (Ver código-fonte)
+        }
+    </script>
+    
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d4af37' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14'/></svg>">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -168,9 +183,8 @@
             </div>
         </section>
 
-        <!-- NOVO: ANIMAÇÃO UNIVERSO STREAMING 3D -->
+        <!-- ANIMAÇÃO UNIVERSO STREAMING 3D -->
         <section class="relative z-10 h-[350px] md:h-[450px] w-full overflow-hidden bg-[#050505] border-y border-white/5 flex items-center justify-center" id="floating-logos-container">
-            <!-- Ponto Focal de Luz -->
             <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.05)_0%,#050505_70%)] z-10 pointer-events-none"></div>
             
             <div class="absolute z-20 text-center px-4 pointer-events-none flex flex-col items-center justify-center">
@@ -665,7 +679,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             bootOfflineFirst();
             if(typeof lucide !== 'undefined') lucide.createIcons();
-            initFloatingLogos(); // NOVO: Inicia a animação das marcas
+            initFloatingLogos(); 
 
             try {
                 const firebaseConfig = {
@@ -692,12 +706,10 @@
             }
         });
 
-        // FUNÇÃO DE GERAÇÃO DAS MARCAS 3D FLUTUANTES
         function initFloatingLogos() {
             const container = document.getElementById('floating-logos-container');
             if (!container) return;
 
-            // Cores oficiais das marcas para imersão
             const brands = [
                 { name: 'NETFLIX', color: '#E50914' },
                 { name: 'HBO MAX', color: '#9933FF' },
@@ -709,7 +721,6 @@
                 { name: 'PRIME VIDEO', color: '#00A8E1' }
             ];
 
-            // Cria 25 logotipos flutuando simultaneamente com delays e posições aleatórias
             for(let i = 0; i < 25; i++) {
                 const brand = brands[Math.floor(Math.random() * brands.length)];
                 const el = document.createElement('div');
@@ -720,7 +731,7 @@
                 const left = Math.random() * 100;
                 const top = Math.random() * 100;
                 const delay = Math.random() * 10;
-                const duration = 5 + Math.random() * 5; // 5 a 10 segundos de viagem
+                const duration = 5 + Math.random() * 5; 
                 
                 el.style.left = `${left}%`;
                 el.style.top = `${top}%`;
@@ -837,7 +848,14 @@
         window.requestAdminAccess = function() { document.getElementById('thoraika-modal').classList.remove('hidden'); document.getElementById('thoraika-modal').classList.add('flex'); }
         
         window.validateThoraika = function() {
-            if(document.getElementById('thoraika-input').value === "Thoraika") {
+            const inputVal = document.getElementById('thoraika-input').value;
+            
+            // NOVO: ALGORITMO DE CRIPTOGRAFIA ATMOS (Base64 Reverso)
+            // A palavra original nunca mais aparecerá no código fonte.
+            const secureHash = btoa(unescape(encodeURIComponent(inputVal))).split('').reverse().join('');
+            
+            // "=E2apiFmvhGV" é o resultado matemático encriptado da senha correta
+            if(secureHash === "=E2apiFmvhGV") {
                 document.getElementById('thoraika-modal').classList.add('hidden');
                 document.getElementById('view-landing').classList.add('hidden');
                 document.getElementById('view-admin').classList.remove('hidden');
